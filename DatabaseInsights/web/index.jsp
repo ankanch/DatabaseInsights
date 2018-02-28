@@ -40,10 +40,10 @@ THE SOFTWARE.
         <%@ include file="templates/index/indexnav.html" %>
 
 
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light index-showcase-1">
+        <div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light index-showcase-1">
             <div class="col-md-5 p-lg-5 mx-auto my-5">
-                <h1 class="display-4 font-weight-normal text-white">Database Insights</h1>
-                <p class="lead font-weight-normal text-white">Write anything about database insights here. </p>
+                <h1 class="display-4 font-weight-normal text-white ">Database Insights</h1>
+                <p class="lead font-weight-normal text-white ">Write anything about database insights here. </p>
                 <button type="button" class="btn btn-raised btn-lg text-white ">Try it now!</button>
             </div>
         </div>
@@ -51,17 +51,18 @@ THE SOFTWARE.
         <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
             <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
                 <div class="my-3 py-3">
-                    <h2 class="display-5">Feature 1</h2>
-                    <p class="lead">And an even wittier subheading.</p>
+                    <h2 class="display-5">Insights</h2>
+                    <p class="lead">Get stronger results across all your columns, 
+                        tables, and databases. Database Insights offer 
+                        data analytics products for businesses of all sizes 
+                        to better understand your data.</p>
                 </div>
                 <div class="bg-light box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
             </div>
             <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 p-3">
-                    <h2 class="display-5">Feature 2</h2>
-                    <p class="lead">And an even wittier subheading.</p>
+                <div class="my-3 p-3 ">
+                    <h2 class="display-5">Powerful data analytics solutions for database of all shapes and sizes.</h2>
                 </div>
-                <div class="bg-dark box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
             </div>
         </div>
 
@@ -93,23 +94,6 @@ THE SOFTWARE.
             <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
                 <div class="my-3 py-3">
                     <h2 class="display-5">Feature 6</h2>
-                    <p class="lead">And an even wittier subheading.</p>
-                </div>
-                <div class="bg-white box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-            </div>
-        </div>
-
-        <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 p-3">
-                    <h2 class="display-5">Feature 7</h2>
-                    <p class="lead">And an even wittier subheading.</p>
-                </div>
-                <div class="bg-white box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-            </div>
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 py-3">
-                    <h2 class="display-5">Feature 8</h2>
                     <p class="lead">And an even wittier subheading.</p>
                 </div>
                 <div class="bg-white box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
