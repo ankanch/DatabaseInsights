@@ -40,14 +40,12 @@ THE SOFTWARE.
         <%@ include file="templates/index/indexnav.html" %>
 
 
-        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" style="background-image:url('static/img/showcase/database_center1.jpg');">
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light index-showcase-1">
             <div class="col-md-5 p-lg-5 mx-auto my-5">
                 <h1 class="display-4 font-weight-normal text-white">Database Insights</h1>
                 <p class="lead font-weight-normal text-white">Write anything about database insights here. </p>
-                <a class="btn btn-outline-secondary text-white" href="#">Coming soon</a>
+                <button type="button" class="btn btn-raised btn-lg text-white ">Try it now!</button>
             </div>
-            <div class="product-device box-shadow d-none d-md-block"></div>
-            <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
         </div>
 
         <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
