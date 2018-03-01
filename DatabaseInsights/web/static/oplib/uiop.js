@@ -25,3 +25,6 @@
  */
 
 
+function showMsg(msg) {
+    $.snackbar({content: msg});
+}

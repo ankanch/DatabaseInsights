@@ -27,26 +27,26 @@ THE SOFTWARE.
 <form action="api/signup" method="post">
     <div class="form-group">
         <label for="signup_name" class="bmd-label-floating">Your name</label>
-        <input type="text" class="form-control" id="signup_name" name="name">
+        <input type="text" required="required" class="form-control" id="signup_name" name="name">
         <span class="bmd-help">We'll never share your email with anyone else.</span>
     </div>
     <div class="form-group">
         <label for="signup_email" class="bmd-label-floating">Email address</label>
-        <input type="email" class="form-control" id="signup_email" name="email">
+        <input type="email" required="required" class="form-control" id="signup_email" name="email">
         <span class="bmd-help">We'll never share your email with anyone else.</span>
     </div>
     <div class="form-group">
         <label for="signup_password" class="bmd-label-floating">Password</label>
-        <input type="password" class="form-control" id="signup_password" name="password">
-        <span class="bmd-help">Please use strong password including symbol,lowercase,uppercase and number.</span>
+        <input type="password" required="required" class="form-control" id="signup_password" name="password">
+        <span class="bmd-help">Including symbol,lowercase,uppercase and number.</span>
     </div>
     <div class="form-group">
         <label for="signup_confirmpassword" class="bmd-label-floating">Confirm Password</label>
-        <input type="password" class="form-control" id="signup_confirmpassword">
+        <input type="password" required="required" class="form-control" id="signup_confirmpassword" oninput="checkpassword(this)">
     </div>
     <div class="checkbox pt-md-5 pb-md-4">
         <label>
-            <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1">
+            <input type="checkbox" required="required" name="optionsRadios" id="optionsRadios1" value="option1">
             I agree with the <a href="#" target="_blank">End User Agreement</a> 
         </label>
     </div>
@@ -55,5 +55,11 @@ THE SOFTWARE.
     <button type="button" class="btn btn-link btn-block"><small>Login</small></button>
 </form>
 <script>
-    
+    function checkpassword(input) {
+        if (input.value != document.getElementById('signup_password').value) {
+            input.setCustomValidity('Password Not Match.');
+        } else {
+            input.setCustomValidity('');
+        }
+    }
 </script>

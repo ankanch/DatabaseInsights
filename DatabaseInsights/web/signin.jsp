@@ -21,11 +21,11 @@
                     <form action="api/login" method="post">
                         <div class="form-group">
                             <label for="login_email" class="bmd-label-floating">Email address</label>
-                            <input type="email" class="form-control" id="login_email" name="email">
+                            <input type="email" required="required" class="form-control" id="login_email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="login_password" class="bmd-label-floating">Password</label>
-                            <input type="password" class="form-control" id="login_password" name="password">
+                            <input type="password" required="required" class="form-control" id="login_password" name="password">
                         </div>
                         <div class="checkbox pt-md-5 pb-md-4">
                             <label>
@@ -34,7 +34,7 @@
                             </label>
                         </div>
                         <button type="submit" class="btn btn-raised btn-success btn-lg btn-block">Login</button>
-                        <button type="button" class="btn btn-link btn-block"><small>Problem in login?</small></button>
+                        <button type="button" class="btn btn-link btn-block" onclick="window.location='resetpassword.jsp'"><small>Problem in login?</small></button>
                     </form>
                     <script>
                         $('body').bootstrapMaterialDesign();

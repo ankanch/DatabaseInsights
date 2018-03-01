@@ -24,4 +24,36 @@
  * THE SOFTWARE.
  */
 
-
+function SubmitForm(url, formid, error_msg, success_msg) {
+    // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: $('#' + formid).serialize(),
+        success: function (data) {
+            console.log(data)
+            if (data.indexOf("ERROR") > -1) {
+                showMsg(error_msg);
+            } else {
+                showMsg(success_msg);
+            }
+        }
+    });
+}
+function SubmitFormF(url, formid, error_msg, success_func) {
+    // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: $('#' + formid).serialize(),
+        success: function (data) {
+            console.log(data)
+            if (data.indexOf("ERROR") > -1) {
+                showMsg(error_msg);
+            } else {
+                showMsg("success_msg");
+                success_func();
+            }
+        }
+    });
+}
