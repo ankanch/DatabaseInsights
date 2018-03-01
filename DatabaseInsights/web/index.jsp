@@ -51,7 +51,7 @@ THE SOFTWARE.
         <div class="d-md-flex flex-md-equal w-100">
             <div class="bg-primary pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
                 <div class="my-3 py-3">
-                    <h2 class="display-5">Insights</h2>
+                    <h2 class="display-5">Turn insights into potentials</h2>
                     <p class="lead px-5 mx-5">Get stronger results across all your columns, 
                         tables, and databases. Database Insights offer 
                         data analytics products for businesses of all sizes 
@@ -62,8 +62,8 @@ THE SOFTWARE.
         </div>
 
         <div class="d-md-flex flex-md-equal w-100">
-            <div class="pt-3 pt-md-5 pb-md-5 px-md-5 text-center text-white overflow-hidden ">
-                <div class="bg-light mb-3 mx-auto index-showcase-3" style="height: 300px; border-radius: 5px 5px 5px 5px;"></div>
+            <div class="pt-3 pt-md-5 text-center text-white overflow-hidden ">
+                <div class=" mb-3 index-showcase-3" style="height: 430px;"></div>
             </div>
             <div class="pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden my-auto">
                 <div class="my-3 p-3 ">
@@ -75,7 +75,7 @@ THE SOFTWARE.
         <div class="d-md-flex flex-md-equal w-100 text-white">
             <div class="bg-dark  pt-3 px-3 pt-md-5 pb-md-5 mb-5 px-md-5 text-center overflow-hidden">
                 <div class="my-3 py-3">
-                    <h2 class="display-5">Features</h2>
+                    <h2 class="display-5" id="title_features">Features</h2>
                 </div>
                 <div class="card-deck">
                     <div class="card text-black" style="width: 18rem;">

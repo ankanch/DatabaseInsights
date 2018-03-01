@@ -70,11 +70,10 @@ THE SOFTWARE.
 }
 
 .index-showcase-3{
-    background-image:url(img/showcase/showcase3.png);
-    background-size:     cover;                      /* <------ */
+    background-image:url(img/showcase/showcase_comp.png);/*howcase3.png);*/
+    background-size:     contain;                      /* <------ */
     background-repeat:   no-repeat;
     background-position: center center;              /* optional, center the image */
-    box-shadow: 0 0 8px 8px white inset;
 }
 
 .index-showcase-feature{

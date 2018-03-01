@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "signup", urlPatterns = {"/signup"})
+@WebServlet(name = "signup", urlPatterns = {"/api/signup"})
 public class signup extends HttpServlet {
 
     /**
