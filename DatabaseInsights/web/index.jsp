@@ -48,55 +48,65 @@ THE SOFTWARE.
             </div>
         </div>
 
-        <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-            <div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+        <div class="d-md-flex flex-md-equal w-100">
+            <div class="bg-primary pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
                 <div class="my-3 py-3">
                     <h2 class="display-5">Insights</h2>
-                    <p class="lead">Get stronger results across all your columns, 
+                    <p class="lead px-5 mx-5">Get stronger results across all your columns, 
                         tables, and databases. Database Insights offer 
                         data analytics products for businesses of all sizes 
                         to better understand your data.</p>
                 </div>
-                <div class="bg-light box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
+                <div class="bg-light box-shadow mx-auto index-showcase-2" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
             </div>
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        </div>
+
+        <div class="d-md-flex flex-md-equal w-100">
+            <div class="pt-3 pt-md-5 pb-md-5 px-md-5 text-center text-white overflow-hidden ">
+                <div class="bg-light mb-3 mx-auto index-showcase-3" style="height: 300px; border-radius: 5px 5px 5px 5px;"></div>
+            </div>
+            <div class="pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden my-auto">
                 <div class="my-3 p-3 ">
                     <h2 class="display-5">Powerful data analytics solutions for database of all shapes and sizes.</h2>
                 </div>
             </div>
         </div>
 
-        <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 p-3">
-                    <h2 class="display-5">Feature 3</h2>
-                    <p class="lead">And an even wittier subheading.</p>
-                </div>
-                <div class="bg-dark box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-            </div>
-            <div class="bg-primary mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+        <div class="d-md-flex flex-md-equal w-100 text-white">
+            <div class="bg-dark  pt-3 px-3 pt-md-5 pb-md-5 mb-5 px-md-5 text-center overflow-hidden">
                 <div class="my-3 py-3">
-                    <h2 class="display-5">Feature 4</h2>
-                    <p class="lead">And an even wittier subheading.</p>
+                    <h2 class="display-5">Features</h2>
                 </div>
-                <div class="bg-light box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-            </div>
-        </div>
-
-        <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 p-3">
-                    <h2 class="display-5">Feature 5</h2>
-                    <p class="lead">And an even wittier subheading.</p>
+                <div class="card-deck">
+                    <div class="card text-black" style="width: 18rem;">
+                        <img class="card-img-top index-showcase-feature" src="static/img/showcase/showcase_feature_relation.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Full Relations</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                    <div class="card text-black" style="width: 18rem;">
+                        <img class="card-img-top index-showcase-feature" src="static/img/showcase/showcase_features_realtime.png" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Realtime Analyzing</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                    <div class="card text-black" style="width: 18rem;">
+                        <img class="card-img-top index-showcase-feature" src="static/img/showcase/showcase_feature_dbs.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Multiple DBS support</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
+                    <div class="card text-black" style="width: 18rem;">
+                        <img class="card-img-top index-showcase-feature" src="static/img/showcase/showcase_feature_report.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Full Detailed Report</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
-            </div>
-            <div class="bg-light mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
-                <div class="my-3 py-3">
-                    <h2 class="display-5">Feature 6</h2>
-                    <p class="lead">And an even wittier subheading.</p>
-                </div>
-                <div class="bg-white box-shadow mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
             </div>
         </div>
 

@@ -51,7 +51,7 @@ THE SOFTWARE.
 }
 
 /*
- * Dummy devices (replace them with your own or something else entirely!)
+ * index showcase
  */
 
 .index-showcase-1{
@@ -61,6 +61,29 @@ THE SOFTWARE.
     background-position: center center;              /* optional, center the image */
 
 }
+
+.index-showcase-2{
+    background-image:url(img/showcase/showcase2.jpg);
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;              /* optional, center the image */
+}
+
+.index-showcase-3{
+    background-image:url(img/showcase/showcase3.png);
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;              /* optional, center the image */
+    box-shadow: 0 0 8px 8px white inset;
+}
+
+.index-showcase-feature{
+    object-fit:f;
+    width:100%;
+    height:215px;
+    box-shadow: 0 0 8px 8px white inset;
+}
+
 
 
 /*
@@ -91,7 +114,19 @@ THE SOFTWARE.
 .text-white{
     color:white;
 }
+.text-black{
+    color:black;
+}
 
 .bg-white{
     background-color: white;
 }
+
+.full-width{
+    width:100%;
+}
+
+.full-height{
+    height:100%;
+}
+
