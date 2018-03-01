@@ -13,10 +13,10 @@
         <%@ include file="templates/globehead.html" %>
     </head>
     <body>
-        <%@ include file="templates/index/indexnav.html" %>
-        <div class="pt-md-5 pb-md-5">
+        <%@ include file="templates/index/indexnav_titleonly.html" %>
+        <div class="pt-md-4 pb-md-5">
             <div class="card bg-light mx-auto " style="max-width: 400px;">
-                <div class="card-header">Sign up</div>
+                <div class="card-header"><h4>Sign up</h4></div>
                 <div class="card-body">
                    <%@ include file="templates/components/form_signup.html" %>
                 </div>

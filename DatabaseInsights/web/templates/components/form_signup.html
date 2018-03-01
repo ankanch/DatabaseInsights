@@ -24,7 +24,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
-<form>
+<form action="api/signup" method="post">
     <div class="form-group">
         <label for="signup_name" class="bmd-label-floating">Your name</label>
         <input type="text" class="form-control" id="signup_name">
@@ -44,15 +44,15 @@ THE SOFTWARE.
         <label for="signup_confirmpassword" class="bmd-label-floating">Confirm Password</label>
         <input type="password" class="form-control" id="signup_confirmpassword">
     </div>
-    <div class="radio pt-md-5 pb-md-3">
+    <div class="checkbox pt-md-5 pb-md-4">
         <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            Option one is this and that&mdash;be sure to include why it's great
+            <input type="checkbox" name="optionsRadios" id="optionsRadios1" value="option1">
+            I agree with the <a href="#" target="_blank">End User Agreement</a> 
         </label>
     </div>
 
-    <button class="btn btn-default">Cancel</button>
-    <button type="submit" class="btn btn-primary btn-raised">Submit</button>
+    <button type="submit" class="btn btn-raised btn-success btn-lg btn-block">Register</button>
+    <button type="button" class="btn btn-link btn-block"><small>Login</small></button>
 </form>
 <script>
     

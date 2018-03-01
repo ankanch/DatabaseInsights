@@ -44,10 +44,10 @@ THE SOFTWARE.
             <div class="col-md-5 p-lg-5 mx-auto my-5">
                 <h1 class="display-4 font-weight-normal text-white ">Database Insights</h1>
                 <p class="lead font-weight-normal text-white ">Write anything about database insights here. </p>
-                <button type="button" class="btn btn-raised btn-lg text-white ">Try it now!</button>
+                <button type="button" class="btn btn-raised btn-lg text-white " data-toggle="modal" data-target="#modal_quick_signup">Try it now!</button>
             </div>
         </div>
-
+        <%@ include file="templates/dialogs/quicksignup.jsp" %>
         <div class="d-md-flex flex-md-equal w-100">
             <div class="bg-primary pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
                 <div class="my-3 py-3">
