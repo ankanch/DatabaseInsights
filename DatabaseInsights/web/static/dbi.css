@@ -32,6 +32,10 @@ THE SOFTWARE.
     max-width: 960px;
 }
 
+.nav {text-transform: none !important;}
+
+.nav-link {text-transform: none !important;}
+
 /*
  * Custom translucent site header
  */
