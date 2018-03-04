@@ -28,3 +28,17 @@
 function showMsg(msg) {
     $.snackbar({content: msg});
 }
+
+/* function for loading content */
+function loadContent(container, url,type) {
+    // e.g.  loadContent("content_id","/settings",".html");
+    $("#"+container).load(url + type);
+}
+
+function loadJsp(container,url){
+    loadContent(container, url,".jsp");
+}
+
+function loadHtml(container,url){
+    loadContent(container, url,".html");
+}

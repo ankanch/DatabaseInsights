@@ -241,3 +241,15 @@ h1 {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
 }
+
+
+/* CONSOLE CSS*/
+.console-nav-split{
+    margin-bottom: .1rem;
+}
+
+.console-nav-split-text{
+    color: rgba(0,0,0,0.54);
+    font: 500 13px Roboto,sans-serif;
+    padding: 8px 0 2px 24px;
+}
