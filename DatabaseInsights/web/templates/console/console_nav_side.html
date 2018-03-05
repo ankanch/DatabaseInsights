@@ -28,36 +28,70 @@ THE SOFTWARE.
     <span class="console-nav-split-text">Analytics</span>
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-            <a class="nav-link active" data-url="/templates/console/overview">Overview <span class="sr-only">(current)</span></a>
+            <a class="nav-link console-siderbar active" data-url="/templates/console/overview" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">account_balance</i><span class="console-sidebar-icon-text">Overview</span>
+                <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/reports">Reports</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/reports" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">assignment</i><span class="console-sidebar-icon-text">Reports</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/realtimeanalytics">Realtime</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/realtimeanalytics" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">timeline</i><span class="console-sidebar-icon-text">Realtime</span>
+            </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/analytics">Analytics</a>
+        <li class="nav-item" data-toggle="collapse" data-target="#moreAnalytics" class="collapsed">
+            <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">assessment</i><span class="console-sidebar-icon-text">Analytics</span>
+                <i class="material-icons console-sidebar-icon-text mr-0">expand_more</i>
+            </a>
         </li>
+        <ul class="sub-menu collapse console-sidebar-collapse" id="moreAnalytics" style="height: 0px;">
+            <li class="nav-item console-sidebar-subnav">
+                <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                    <i class="material-icons console-sidebar-icon-text">lightbulb_outline</i><span class="console-sidebar-icon-text">Auto</span>
+                </a>
+            </li>
+            <li class="nav-item console-sidebar-subnav">
+                <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                    <i class="material-icons console-sidebar-icon-text">library_books</i><span class="console-sidebar-icon-text">Cross-table</span>
+                </a>
+            </li>
+            <li class="nav-item console-sidebar-subnav">
+                <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                    <i class="material-icons console-sidebar-icon-text">settings_ethernet</i><span class="console-sidebar-icon-text">Customize</span>
+                </a>
+            </li>
+        </ul>
     </ul>
 
     <hr class="console-nav-split"><span class="console-nav-split-text">Database</span>
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/logs" href="#">Nav item</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/logs" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">content_cut</i><span class="console-sidebar-icon-text">Logs</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/credentials">Credentials</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/credentials" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">archive</i><span class="console-sidebar-icon-text">Credentials</span>
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/logs">Logs</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/logs" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">assignment_late</i><span class="console-sidebar-icon-text">Logs</span>
+            </a>
         </li>
     </ul>
 
     <hr class="console-nav-split"><span class="console-nav-split-text">Account</span>
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-            <a class="nav-link" data-url="/templates/console/settings">Settings</a>
+            <a class="nav-link console-siderbar" data-url="/templates/console/settings" href="javascript:">
+                <i class="material-icons console-sidebar-icon-text">settings</i><span class="console-sidebar-icon-text">Settings</span>
+            </a>
         </li>
     </ul>
 </nav>

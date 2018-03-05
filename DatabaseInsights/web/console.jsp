@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Console - Database Insights</title>
         <%@ include file="templates/globehead.html" %>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body style="padding-top: 50px;">
         <%@ include file="templates/console/console_nav.html" %>
@@ -32,10 +33,16 @@
         <script>
             $(document).ready(function () {
                 $("a.nav-link").on("click", function () {
-                    console.log("nav-clicked");
+                    if ($(this).hasClass("active")) {
+                        return;
+                    }
                     $("a.nav-link").removeClass("active");
                     $(this).addClass("active");
+                    $("i.material-icons").removeClass("orange600");
+                    $(this).find(".material-icons").addClass("orange600");
+                    showMsg("loading...");
                     loadJsp('dbimc', this.dataset.url);
+
                 });
                 loadJsp('dbimc', '/templates/console/overview');
             });

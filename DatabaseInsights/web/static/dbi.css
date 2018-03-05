@@ -121,6 +121,10 @@ THE SOFTWARE.
     color:black;
 }
 
+orange600{
+    color: #FB8C00;
+}
+
 .bg-white{
     background-color: white;
 }
@@ -252,4 +256,24 @@ h1 {
     color: rgba(0,0,0,0.54);
     font: 500 13px Roboto,sans-serif;
     padding: 8px 0 2px 24px;
+}
+
+.console-siderbar{
+    cursor: pointer;
+}
+.console-siderbar:hover{
+    color: #0e24c1;
+    font: 600 1rem Roboto,sans-serif;
+}
+.console-sidebar-icon-text{
+    display: inline-flex;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+.console-sidebar-collapse{
+    background: #ffffffc2;
+}
+
+.console-sidebar-subnav{
+    list-style-type: none;
 }
