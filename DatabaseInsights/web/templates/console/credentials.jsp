@@ -31,29 +31,29 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Database</th>
+                    <th scope="col">Account</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Operations</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
+                <tr id="credtable_row_">
+                    <th scope="row" style="vertical-align: inherit;">1</th>
+                    <td id="credtable_row__col_1" style="vertical-align: inherit;padding: 0rem;">
+                        <input class="console-table-input" type="text" name="dbname">
+                    </td>
+                    <td id="credtable_row__col_2" style="vertical-align: inherit;padding: 0rem;">
+                        <input class="console-table-input" type="text" name="dbaccount">
+                    </td>
+                    <td id="credtable_row__col_3" style="vertical-align: inherit;padding: 0rem;">
+                        <input class="console-table-input" type="password" name="dbpassword">
+                    </td>
+                    <td>
+                        <button id="credtable_row__edit" type="button" class="btn btn-secondary">Edit</button>
+                        <button id="credtable_row__save" type="button" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

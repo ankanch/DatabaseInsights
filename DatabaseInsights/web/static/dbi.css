@@ -278,10 +278,22 @@ h1 {
     list-style-type: none;
 }
 
+/* margin to v-center */
 .console-vc{
     position: relative;
     top: 50%;
     transform: translateY(-50%);
 }
 
-
+/*  */
+.console-table-input{
+    background: transparent;
+    border:0;
+    outline: none;
+    max-width: 150px;
+}
+.console-table-input:focus{
+    background: white;
+    border:1px solid #FB8C00;
+    outline: #FB8C00;
+}
