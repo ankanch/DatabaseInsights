@@ -23,6 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+var error_identifier = "!@ERR!"
 
 function SubmitForm(url, formid, error_msg, success_msg) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
@@ -31,8 +32,7 @@ function SubmitForm(url, formid, error_msg, success_msg) {
         type: 'post',
         data: $('#' + formid).serialize(),
         success: function (data) {
-            console.log(data)
-            if (data.indexOf("ERROR") > -1) {
+            if (data.indexOf(error_identifier) > -1) {
                 showMsg(error_msg);
             } else {
                 showMsg(success_msg);
@@ -47,11 +47,41 @@ function SubmitFormF(url, formid, error_msg, success_func) {
         type: 'post',
         data: $('#' + formid).serialize(),
         success: function (data) {
-            console.log(data)
-            if (data.indexOf("ERROR") > -1) {
+            if (data.indexOf(error_identifier) > -1) {
                 showMsg(error_msg);
             } else {
-                showMsg("success_msg");
+                success_func();
+            }
+        }
+    });
+}
+
+function SubmitFormF(url, formid, error_func, success_func) {
+    // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: $('#' + formid).serialize(),
+        success: function (data) {
+            if (data.indexOf(error_identifier) > -1) {
+                error_func();
+            } else {
+                success_func();
+            }
+        }
+    });
+}
+
+function SubmitFormF(url, keyvalue, error_func, success_func) {
+    // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: keyvalue,
+        success: function (data) {
+            if (data.indexOf(error_identifier) > -1) {
+                error_func();
+            } else {
                 success_func();
             }
         }
