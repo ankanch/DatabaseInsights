@@ -101,14 +101,19 @@
             $("#" + inputprefix + "2").attr('disabled', 'disabled');
             $("#" + inputprefix + "3").attr('disabled', 'disabled');
             $("#" + inputprefix + "4").attr('disabled', 'disabled');
-        })
+        });
     }
 
     function del(row) {
-        //send update to server
-
-        //update UI
-        $("#credtable_row_" + row).remove();
+        $("#progressbar").show();
+        //send updates to server
+        SubmitFormF("/api/deleteCredentials", {dbhost: "", dbname: "", dbuser: ""}, function error() {
+            showMsg("Failed to delete,please try again later.");
+        }, function success() {
+            showMsg("Credential has been deleted.");
+            $("#progressbar").hide();
+            $("#credtable_row_" + row).remove();
+        });
     }
 
 </script>
