@@ -277,3 +277,12 @@ h1 {
 .console-sidebar-subnav{
     list-style-type: none;
 }
+
+.console-vc{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+/* material design progress bar */

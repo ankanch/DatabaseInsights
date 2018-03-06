@@ -42,7 +42,6 @@
                     $(this).find(".material-icons").addClass("orange600");
                     showMsg("loading...");
                     loadJsp('dbimc', this.dataset.url);
-
                 });
                 loadJsp('dbimc', '/templates/console/overview');
             });
