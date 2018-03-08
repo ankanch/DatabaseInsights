@@ -2,7 +2,7 @@
  * The MIT License
  *
  * *** Copyright © ChengShiyi (Miss Zhang)
- * *** Code created on  三月 08 2018
+ * *** Code created on  三月 04 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,31 +28,31 @@ package dbi.db.adaptor;
  *
  * @author Miss Zhang
  */
-public class DatabaseAdaptor {
-    public String getColumnNamesByTable(String Table){
-        return "";
+public class OracleAdaptor extends DatabaseAdaptor{
+    public String getColumnNamesByTable(String TableName){
+        return "select column_name\n" +
+                "from all_tab_columns \n" +
+                "where table_name = '" + TableName + "'";
     }
+    
     public String getColumnNames(String[] Tables){
-        return "";
+        return "select column_name from all_tab_columns where table_name in ('"+  String.join("','", Tables) +"')";
     }
-     
-    public String getAllColumnsNameByName(String TableName){
-        return "";
-    }    
-   
     
     public String getTableList(){
-        return "";
+        return "select table_name from user_tables";
     }
     public String getColumnSpecies(String Table){
-        return "";
+        return "SELECT * FROM user_tab_columns WHERE TABLE_NAME='"+Table+"'";
     }
     
     public String getColumnSpeciesByName(String Column,String table){
-        return "";
+        return "SELECT * \n" +
+                "FROM all_tab_columns\n" +
+                " WHERE column_name  =  '"+ Column +"' and table_name = '"+table+"'";
     }
     
     public String generateSelect(String querys,String table,String condition){
-        return "";
+        return "select "+ querys+" from "+table+" where "+condition;
     }
 }
