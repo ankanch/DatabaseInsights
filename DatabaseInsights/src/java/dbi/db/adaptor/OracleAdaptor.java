@@ -28,7 +28,7 @@ package dbi.db.adaptor;
  *
  * @author Miss Zhang
  */
-public class OracleAdaptor extends DataBaseAdaptor{
+public class OracleAdaptor extends DatabaseAdaptor{
     public String getColumnNamesByTable(String TableName){
         return "select column_name\n" +
                 "from all_tab_columns \n" +

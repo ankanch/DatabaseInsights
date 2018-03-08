@@ -41,7 +41,7 @@ import javax.sql.DataSource;
  */
 public class DatabaseHelper {
 
-    private DataBaseAdaptor DBAdaptor;
+    private DatabaseAdaptor DBAdaptor;
     private DatabaseConfig databaseConfig;
     private Connection conn;
 
@@ -50,7 +50,7 @@ public class DatabaseHelper {
         int dbcode = this.databaseConfig.getDatabase();
        
         if(dbcode == DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
-            DBAdaptor = new MySQLAdaptor();
+            DBAdaptor  = new MySQLAdaptor();
         }else if(dbcode == DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
             DBAdaptor = new OracleAdaptor();
         }

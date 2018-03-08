@@ -1,8 +1,8 @@
 /*
  * The MIT License
  *
- * **** Copyright © ChengShiyi.
- * **** Code created on Mar 01 2018
+ * *** Copyright © ChengShiyi (Miss Zhang)
+ * *** Code created on  三月 08 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,8 +26,33 @@ package dbi.db.adaptor;
 
 /**
  *
- * @author ChengShiyi
+ * @author Miss Zhang
  */
 public class DatabaseAdaptor {
+    public String getColumnNamesByTable(String Table){
+        return "";
+    }
+    public String getColumnNames(String[] Tables){
+        return "";
+    }
+     
+    public String getAllColumnsNameByName(String TableName){
+        return "";
+    }    
+   
     
+    public String getTableList(){
+        return "";
+    }
+    public String getColumnSpecies(String Table){
+        return "";
+    }
+    
+    public String getColumnSpeciesByName(String Column,String table){
+        return "";
+    }
+    
+    public String generateSelect(String querys,String table,String condition){
+        return "";
+    }
 }
