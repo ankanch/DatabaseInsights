@@ -30,5 +30,6 @@ package dbi.utils;
  * @author kanch
  */
 public class VarString {
-    public static String SERVLET_ERROR_IDENTIFIER = "!@ERR!";
+    public static String SERVLET_IDENTIFIER_ERROR = "!@ERR!";
+    public static String SERVLET_IDENTIFIER_SUCCESS = "!@SUCC!";
 }

@@ -64,6 +64,7 @@ public class DatabaseHelper {
         } catch (Exception e) {
             System.err.println("错误：无法从数据库中读取数据，可能是网络问题或者驱动问题。");
             System.err.println(e.getMessage());
+            return false;
         }
         return true;
     }

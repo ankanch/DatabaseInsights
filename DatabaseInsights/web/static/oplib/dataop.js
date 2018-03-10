@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-var error_identifier = "!@ERR!"
+var error_identifier = "!@ERR!";
 
 function SubmitForm(url, formid, error_msg, success_msg) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
@@ -40,6 +40,7 @@ function SubmitForm(url, formid, error_msg, success_msg) {
         }
     });
 }
+
 function SubmitFormF(url, formid, error_msg, success_func) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
     $.ajax({
@@ -56,7 +57,7 @@ function SubmitFormF(url, formid, error_msg, success_func) {
     });
 }
 
-function SubmitFormF(url, formid, error_func, success_func) {
+function SubmitFormFF(url, formid, error_func, success_func) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
     $.ajax({
         url: url,
@@ -72,7 +73,7 @@ function SubmitFormF(url, formid, error_func, success_func) {
     });
 }
 
-function SubmitFormF(url, keyvalue, error_func, success_func) {
+function SubmitFormKVF(url, keyvalue, error_func, success_func) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
     $.ajax({
         url: url,
