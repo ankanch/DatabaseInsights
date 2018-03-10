@@ -23,9 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dbi.usermgr;
+package dbi.mgr.credential;
 
-import dbi.utils.VarString;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -38,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletAddCredentials", urlPatterns = {"/api/addCredentials"})
-public class servletAddCredentials extends HttpServlet {
+@WebServlet(name = "servletDeleteCredentials", urlPatterns = {"/api/deleteCredentials"})
+public class servletDeleteCredentials extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,7 +54,15 @@ public class servletAddCredentials extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println(VarString.SERVLET_ERROR_IDENTIFIER);
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet servletDeleteCredentials</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet servletDeleteCredentials at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -71,7 +78,7 @@ public class servletAddCredentials extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**

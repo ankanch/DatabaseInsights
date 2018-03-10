@@ -1,9 +1,9 @@
 /*
  * The MIT License
  *
- * **** Copyright © Long Zhang(kanch).
- * **** Email: kanchisme@gmail.com
- * **** Code created on Feb 28 2018
+ * *** Copyright © Long Zhang(kanch)
+ * *** Email: kanchisme@gmail.com
+ * *** Code created on Mar 06 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dbi.usermgr;
+package dbi.mgr.credential;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "signup", urlPatterns = {"/api/signup"})
-public class signup extends HttpServlet {
+@WebServlet(name = "servletUpdateCredential", urlPatterns = {"/api/updateCredential"})
+public class servletUpdateCredential extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,10 +57,10 @@ public class signup extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet signup</title>");            
+            out.println("<title>Servlet servletUpdateCredential</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet signup at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet servletUpdateCredential at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
