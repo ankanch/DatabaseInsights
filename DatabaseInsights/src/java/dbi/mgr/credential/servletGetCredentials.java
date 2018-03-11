@@ -23,9 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dbi.mgr.user;
+package dbi.mgr.credential;
 
-import dbi.utils.VarString;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -38,8 +37,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletRegisteUser", urlPatterns = {"/api/RegisteUser"})
-public class servletRegisteUser extends HttpServlet {
+@WebServlet(name = "servletGetCredentials", urlPatterns = {"/api/servletGetCredentials"})
+public class servletGetCredentials extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,18 +52,17 @@ public class servletRegisteUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Boolean status = false;
-        String username = request.getParameter("name");
-        String password = request.getParameter("password");
-        String email = request.getParameter("email");
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(VarString.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(VarString.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet servletGetCredentials</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet servletGetCredentials at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -80,7 +78,7 @@ public class servletRegisteUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // processRequest(request, response);
+        processRequest(request, response);
     }
 
     /**
