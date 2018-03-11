@@ -25,6 +25,8 @@
  */
 package dbi.utils;
 
+import dbi.db.adaptor.DatabaseConfig;
+
 /**
  *
  * @author kanch
@@ -32,4 +34,8 @@ package dbi.utils;
 public class VarString {
     public static String SERVLET_IDENTIFIER_ERROR = "!@ERR!";
     public static String SERVLET_IDENTIFIER_SUCCESS = "!@SUCC!";
+    public static String CONFIG_DATABASE_HOST ="jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights";
+    public static String CONFIG_DATABASE_USER="di";
+    public static String CONFIG_DATABASE_PASSWORD="DI2017";
+    public static String CONFIG_DATABASE_DRIVER=DatabaseConfig.DatabaseDriver.ORACLE_12C;
 }

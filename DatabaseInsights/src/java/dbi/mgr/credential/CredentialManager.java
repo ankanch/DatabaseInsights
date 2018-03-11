@@ -29,5 +29,16 @@ package dbi.mgr.credential;
  * @author Miss Zhang
  */
 public class CredentialManager {
-    
+    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod){
+        return true;
+    }
+    public Boolean deleteCredential(String crdid){
+        return true;
+    }
+    public Boolean alterCredential(String crdid,String charged_key_value){
+        return true;
+    }
+    public Boolean validiateCreditial(String crd){
+        return true;
+    }
 }

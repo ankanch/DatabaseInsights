@@ -55,4 +55,22 @@ public class OracleAdaptor extends DatabaseAdaptor{
     public String generateSelect(String querys,String table,String condition){
         return "select "+ querys+" from "+table+" where "+condition;
     }
+    
+    public String findPrimaryKey(String table){
+        String findPrimaryKey="select  column_name\n" +
+            "from user_constraints con,user_cons_columns col\n" +
+            "where\n" +
+            "con.constraint_name=col.constraint_name and con.constraint_type='P'\n" +
+            "and col.table_name='"+table+"'";
+        return findPrimaryKey;
+    }
+    
+    public String findForeignKey(String table){
+        String findForeignKey="select b.column_name refColumn,c.table_name as refTable\n" +
+            "from user_constraints a\n" +
+            "left  join user_cons_columns b on a.constraint_name = b.constraint_name\n" +
+            "left  join user_cons_columns c on a.r_constraint_name = c.constraint_name\n" +
+            "where a.constraint_type = 'R' and a.table_name = '"+table+"' ";
+        return findForeignKey;
+    }
 }

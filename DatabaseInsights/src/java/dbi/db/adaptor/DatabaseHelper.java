@@ -24,6 +24,7 @@
  */
 package dbi.db.adaptor;
 
+import dbi.utils.DBIResultSet;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+
 
 /**
  *
@@ -64,7 +67,6 @@ public class DatabaseHelper {
         } catch (Exception e) {
             System.err.println("错误：无法从数据库中读取数据，可能是网络问题或者驱动问题。");
             System.err.println(e.getMessage());
-            return false;
         }
         return true;
     }
@@ -98,7 +100,7 @@ public class DatabaseHelper {
             // 执行数据库语句
             ResultSet rs = st.executeQuery(DBAdaptor.getTableList());
             // 遍历获取结果
-
+         
             while (rs.next()) {
                 table_name = rs.getString("table_name");
                 tables.add(table_name);
@@ -135,28 +137,41 @@ public class DatabaseHelper {
 
     /* get column name and species of a given table */
     public ArrayList<String> getAllColumnSpecies(String table) {
-        ArrayList<String> species = new ArrayList<>();
+        ArrayList<String> species = new ArrayList<>();//第一个参数放置表的主键，第二个放置外键名称，第三个放置参照的表的名称
         
-        String columnName="column_name";
-        String date_type="data_type";
-        String isPrimary="";
-        String isForeignKey="";
-        String foreignKeyREF="";
+        String columnName="";
+        String refColumn="";
+        String refTable="";
+       
         
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
-            ResultSet rs = st.executeQuery(DBAdaptor.getColumnSpecies(table));
+            ResultSet rs = st.executeQuery(DBAdaptor.findPrimaryKey(table));
             // 遍历获取结果
 
             while (rs.next()) {
-                columnName=rs.getString("");
-                date_type=rs.getString("");
-                isPrimary=rs.getString("");
-                isForeignKey=rs.getString("");
-                foreignKeyREF=rs.getString("");
+                columnName=rs.getString("column_name");
+                species.add(columnName);
             }
-
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        
+        try {
+            Statement st = conn.createStatement();
+            // 执行数据库语句
+            ResultSet bs = st.executeQuery(DBAdaptor.findForeignKey(table));
+            // 遍历获取结果
+            
+            while (bs.next()) {
+                refColumn=bs.getString("refColumn");//查找到外键名称
+                refTable=bs.getString("refTable");//查找到外键参照的表
+                species.add(refColumn);
+                species.add(refTable);
+            }
             st.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -172,6 +187,38 @@ public class DatabaseHelper {
         
         return species;
     }
+    
+    public DBIResultSet runSelect(String querys,String table,String condition){
+        DBIResultSet sqlResult=new DBIResultSet();
+        
+        int i;
+
+        try {
+            Statement st = conn.createStatement();
+            // 执行数据库语句
+            System.out.println(DBAdaptor.generateSelect(querys,table,condition));
+            ResultSet rs = st.executeQuery(DBAdaptor.generateSelect(querys,table,condition));
+            // 遍历获取结果
+            
+            int columnNumber=rs.getMetaData().getColumnCount();
+            System.out.println("count:"+columnNumber);
+            String s[]=new String[columnNumber];
+            while (rs.next()) {
+                for(i=0;i<columnNumber;i++){
+                    s[i]=rs.getString(i+1);
+                }
+                sqlResult.addRow(sqlResult.makeRow(s));
+                
+                System.out.println();
+            }
+
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        return sqlResult;
+    }
 
     public static void main(String[] args) {
 
@@ -179,8 +226,9 @@ public class DatabaseHelper {
         DatabaseConfig a=new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_MYSQL,"org.gjt.mm.mysql.Driver","jdbc:mysql://115.159.197.66:3306/IncidentsReport","ir", "2yvaVjSNVYHwWwcR");
         DatabaseHelper test = new DatabaseHelper(a);
         System.out.println(test.Connect());
-        System.out.println(test.getTables());
-        System.out.println(test.checkConnection());
+        
+        System.out.println(test.runSelect("*","INCIDENTS","1").getRow(1));
+        
         test.Disconnect();
         System.out.println(test.checkConnection());
     }
