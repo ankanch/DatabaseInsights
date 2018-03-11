@@ -25,6 +25,7 @@
  */
 package dbi.mgr.credential;
 
+import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -52,17 +53,18 @@ public class servletGetCredentials extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        Boolean status = false;
+        String para = request.getParameter("paraname");
+
+       
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet servletGetCredentials</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet servletGetCredentials at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            if (status) {
+                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
+            } else { // ERROR
+                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
+            }
         }
     }
 
@@ -78,7 +80,7 @@ public class servletGetCredentials extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       // processRequest(request, response);
     }
 
     /**

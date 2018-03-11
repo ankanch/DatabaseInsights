@@ -25,6 +25,7 @@
  */
 package dbi.mgr.user;
 
+import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -37,8 +38,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "signup", urlPatterns = {"/api/signup"})
-public class signup extends HttpServlet {
+@WebServlet(name = "servletSignup", urlPatterns = {"/api/signup"})
+public class servletSignup extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,17 +53,23 @@ public class signup extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        Boolean status = false;
+        String username = request.getParameter("name");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        
+        UserManager um = new UserManager();
+        if( um.registerUser(username, password, email) ){
+            status = true;
+        }
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet signup</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet signup at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            if (status) {
+                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
+            } else { // ERROR
+                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
+            }
         }
     }
 
@@ -78,7 +85,7 @@ public class signup extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
     }
 
     /**
