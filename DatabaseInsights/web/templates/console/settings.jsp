@@ -5,12 +5,62 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="..." alt="Card image cap">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+<h2>Settings</h2>
+<div class="card mb-3 pl-5 pr-5">
+    <div class="card-body pl-5 pr-5">
+        <p>Account Registed on: April 22 2017</p>
+        <p>Account Status: Normal</p>
+        <p>Last Login: March 13 2018 at Los Angeles</p>
+    </div>
+</div>
+<div class="card mb-3 pl-5 pr-5">
+    <div class="card-body pl-5 pr-5">
+        <div class="row">
+            <form class="console-mw-500 col-md-8">
+                <div class="form-group">
+                    <label for="settings_username" class="bmd-label-floating">Username</label>
+                    <input type="text" class="form-control" id="settings_username" readonly>
+                    <span class="bmd-help">You can't change your username.</span>
+                </div>
+                <div class="form-group">
+                    <label for="settings_email" class="bmd-label-floating">Email address</label>
+                    <input type="email" class="form-control" id="settings_email">
+                    <span class="bmd-help">We'll never share your email with anyone else.</span>
+                </div>
+            </form>
+            <div class="col-md-4 ">
+                <button type="button" class="btn btn-raised btn-success ">Save Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 pl-5 pr-5">
+    <div class="card-body pl-5 pr-5">
+        <div class="row">
+            <form class="console-mw-500 col-md-8">
+                <div class="form-group">
+                    <label for="settings_oldpassword" class="bmd-label-floating">Old Password</label>
+                    <input type="password" class="form-control" id="settings_oldpassword">
+                </div>
+                <div class="form-group">
+                    <label for="settings_newpassword" class="bmd-label-floating">New Password</label>
+                    <input type="password" class="form-control" id="settings_newpassword">
+                </div>
+                <div class="form-group">
+                    <label for="settings_confirmnewpassword" class="bmd-label-floating">Confirm New Password</label>
+                    <input type="password" class="form-control" id="settings_confirmnewpassword">
+                </div>
+            </form>
+            <div class="col-md-4 ">
+                <button type="button" class="btn btn-raised btn-success ">Save Change</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 pl-5 pr-5">
+    <div class="card-body pl-5 pr-5">
+        <button type="button" class="btn btn-raised btn-danger">Delete Account</button> <small>Watch out, it 
+            can not be reversed</small>
     </div>
 </div>
 <script>

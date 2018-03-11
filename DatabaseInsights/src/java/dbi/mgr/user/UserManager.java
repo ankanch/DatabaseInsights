@@ -42,85 +42,88 @@ import java.util.HashMap;
  * @author kanch
  */
 public class UserManager {
+
     private Connection conn;
-    
-    public static class columnNumber{
-        static public int username=100;
-        static public int password=200;
-        static public int status=300;
-        static public int email=400;
+
+    public static class columnNumber {
+
+        static public int username = 100;
+        static public int password = 200;
+        static public int status = 300;
+        static public int email = 400;
     }
-            
-    public Boolean validateUser(String username,String password){
-        int columnNumber=-1;
-        DBIResultSet result=new DBIResultSet();
-        try{    
+
+    public Boolean validateUser(String username, String password) {
+        int columnNumber = -1;
+        DBIResultSet result = new DBIResultSet();
+        try {
             DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
             DatabaseHelper dbhepler = new DatabaseHelper(dbconfig);
-            
-            if(dbhepler.Connect()){
-                result=dbhepler.runSelect("username,password", "T_DI_USER", "username='"+username+"' and password='"+password+"'");
+
+            if (dbhepler.Connect()) {
+                result = dbhepler.runSelect("username,password", "T_DI_USER", "username='" + username + "' and password='" + password + "'");
             }
-            if(result.rowCount()!=1){
+            if (result.rowCount() != 1) {
                 return false;
             }
-            
+
             dbhepler.Disconnect();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
 
         }
-       return true;
+        return true;
     }
-    
-    public Boolean registerUser(String UserName,String passWord,String email){
-        DBIResultSet result=new DBIResultSet();
-        try{    
+
+    public Boolean registerUser(String UserName, String passWord, String email) {
+        DBIResultSet result = new DBIResultSet();
+        try {
             DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
             DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-            
-            if(dbhelper.Connect()){
-                result=dbhelper.runSelect("username", "T_DI_USER", "username='"+UserName+"'");
-                if(result.rowCount()==0){
-                    dbhelper.runSQL("INSERT INTO T_DI_USER (USERNAME, PASSWORD, STATUS, EMAIL, LASTLOGIN) VALUES ('"+UserName+"', '"+passWord+"',0,'"+email+"',sysdate);");
-                }else{
+
+            if (dbhelper.Connect()) {
+                result = dbhelper.runSelect("username", "T_DI_USER", "username='" + UserName + "'");
+                if (result.rowCount() == 0) {
+                    dbhelper.runSQL("INSERT INTO T_DI_USER (USERNAME, PASSWORD, STATUS, EMAIL, LASTLOGIN) VALUES ('" + UserName + "', '" + passWord + "',0,'" + email + "',sysdate);");
+                } else {
                     System.out.println("重复的用户名！");
                     return false;
                 }
-            }else{
+            } else {
                 return false;
             }
-           
-            
+
             dbhelper.Disconnect();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
 
         }
-       return true;
+        return true;
     }
-    public Boolean disableUser(int userID){
-        try{    
+
+    public Boolean disableUser(int userID) {
+        try {
             DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
             DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-            
-            if(dbhelper.Connect()){
-                dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='"+userID+"'");
-            }                       
+
+            if (dbhelper.Connect()) {
+                dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='" + userID + "'");
+            }
             dbhelper.Disconnect();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return false;
         }
-       return true;
+        return true;
     }
-    public Boolean alterUser(int userID,HashMap charged_key_value){
 
+    public Boolean alterUser(int userID, HashMap charged_key_value) {
+        return true;
     }
-    
-    public static void main(String[] args){
-        UserManager manager=new UserManager();
+
+    public static void main(String[] args) {
+        UserManager manager = new UserManager();
         System.out.println(manager.validateUser("vicky", "123"));
     }
-    
+
 }

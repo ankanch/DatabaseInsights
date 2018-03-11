@@ -20,7 +20,7 @@
                 <%@ include file="templates/console/console_nav_side.html" %>
 
                 <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3 bg-light">
-                    <div id="dbimc" class="">
+                    <div id="dbimc" style="padding-bottom:70px;">
                     </div>
                     <footer class="sticky-footer">
                         <div class="effects">

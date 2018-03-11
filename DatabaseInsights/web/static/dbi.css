@@ -297,3 +297,7 @@ h1 {
     border:1px solid #FB8C00;
     outline: #FB8C00;
 }
+
+.console-mw-500{
+    max-width: 500px;
+}

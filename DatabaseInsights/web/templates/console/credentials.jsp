@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <h2>Credentials</h2>
-<div class="card mb-5">
+<div class="card">
     <div class="progress-line" id="progressbar"></div>
     <div class="card-body" id="credentialscard">
         <div class="row">
