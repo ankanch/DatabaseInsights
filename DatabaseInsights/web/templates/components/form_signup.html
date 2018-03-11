@@ -24,9 +24,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
-<form action="api/signup" method="post">
+<form action="api/RegisteUser" method="post" id="form_signup">
     <div class="form-group">
-        <label for="signup_name" class="bmd-label-floating">Your name</label>
+        <label for="signup_name" class="bmd-label-floating">Username</label>
         <input type="text" required="required" class="form-control" id="signup_name" name="name">
         <span class="bmd-help">We'll never share your email with anyone else.</span>
     </div>
@@ -46,12 +46,12 @@ THE SOFTWARE.
     </div>
     <div class="checkbox pt-md-5 pb-md-4">
         <label>
-            <input type="checkbox" required="required" name="optionsRadios" id="optionsRadios1" value="option1">
+            <input type="checkbox" required="required" name="optionsRadios" id="agreement" value="option1">
             I agree with the <a href="#" target="_blank">End User Agreement</a> 
         </label>
     </div>
 
-    <button type="submit" class="btn btn-raised btn-success btn-lg btn-block">Register</button>
+    <button type="button" class="btn btn-raised btn-success btn-lg btn-block" onclick="signup(this)">Register</button>
     <button type="button" class="btn btn-link btn-block"><small>Login</small></button>
 </form>
 <script>
@@ -60,6 +60,34 @@ THE SOFTWARE.
             input.setCustomValidity('Password Not Match.');
         } else {
             input.setCustomValidity('');
+        }
+    }
+
+    function signup(btn) {
+        var form = document.getElementById("form_signup");
+        // Form is invalid!
+        if (!form.checkValidity()) {
+            // Create the temporary button, click and remove it
+            const tmpSubmit = document.createElement('button');
+            form.appendChild(tmpSubmit);
+            tmpSubmit.click();
+            form.removeChild(tmpSubmit);
+        } else {
+            if ($("#agreement").is(':checked') == false) {
+                showMsg("Please agree our aggrement to continue!");
+                return;
+            }
+            // Form is valid, then we submit form
+            $("#progressbar").show();
+            btn.disabled = true;
+            SubmitFormFF("/api/RegisteUser", "form_signup", function error() {
+                showMsg("Failed to registe! Please try again later.");
+                $("#progressbar").hide();
+                btn.disabled = false;
+            }, function success() {
+                showMsg("Successfully registed!Redirecting you to the login page...");
+                $("#progressbar").hide();
+            });
         }
     }
 </script>

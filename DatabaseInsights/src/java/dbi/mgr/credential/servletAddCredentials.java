@@ -25,6 +25,8 @@
  */
 package dbi.mgr.credential;
 
+import dbi.db.adaptor.DatabaseConfig;
+import dbi.db.adaptor.DatabaseHelper;
 import dbi.utils.VarString;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,9 +55,36 @@ public class servletAddCredentials extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        //get parameters
+        String dbscode = request.getParameter("dbs");
+        String dbhost = request.getParameter("dbhost");
+        String dbname = request.getParameter("dbname");
+        String dbuser = request.getParameter("dbusername");
+        String dbpwd = request.getParameter("dbpass");
+        Boolean status = false;
+        int dbcode = Integer.parseInt(dbscode);
+        //check wether the infomation provaided is correct
+        if (DatabaseConfig.DatabaseCode.check(dbcode)) {
+            DatabaseConfig dbc = new DatabaseConfig(dbcode, DatabaseConfig.DatabaseDriver.chooseDriver(dbcode),
+                    DatabaseConfig.JDBCHostPrefix.autoGenHost(dbcode, dbhost, dbname),
+                    dbuser, dbpwd);
+            DatabaseHelper test = new DatabaseHelper(dbc);
+            if( test.Connect() ){
+                status = true;
+                test.Disconnect();
+                // save credentials to database
+                
+            }
+        }
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println(VarString.SERVLET_ERROR_IDENTIFIER);
+            if (status) {
+                out.println(VarString.SERVLET_IDENTIFIER_SUCCESS);
+            } else { // ERROR
+                out.println(VarString.SERVLET_IDENTIFIER_ERROR);
+            }
         }
     }
 
