@@ -2,7 +2,7 @@
  * The MIT License
  *
  * *** Copyright © ChengShiyi (Miss Zhang)
- * *** Code created on  三月 08 2018
+ * *** Code created on  三月 11 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dbi.db.adaptor;
+package dbi.mgr.credential;
 
 /**
  *
  * @author Miss Zhang
  */
-public class DatabaseAdaptor {
-    public String getColumnNamesByTable(String Table){
-        return "";
+public class CredentialManager {
+    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod){
+        return true;
     }
-    public String getColumnNames(String[] Tables){
-        return "";
+    public Boolean deleteCredential(String crdid){
+        return true;
     }
-     
-    public String getAllColumnsNameByName(String TableName){
-        return "";
-    }    
-   
-    
-    public String getTableList(){
-        return "";
+    public Boolean alterCredential(String crdid,String charged_key_value){
+        return true;
     }
-    public String getColumnSpecies(String Table){
-        return "";
-    }
-    
-    public String getColumnSpeciesByName(String Column,String table){
-        return "";
-    }
-    
-    public String generateSelect(String querys,String table,String condition){
-        return "";
-    }
-    
-    public String findPrimaryKey(String table){
-        return "";
-    }
-    
-    public String findForeignKey(String table){
-        return "";
+    public Boolean validiateCreditial(String crd){
+        return true;
     }
 }
