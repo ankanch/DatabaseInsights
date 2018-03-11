@@ -27,13 +27,15 @@ package dbi.mgr.user;
 
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
-import dbi.utils.VarString;
+import dbi.utils.DBIResultSet;
+import dbi.utils.GlobeVar;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 /**
  *
@@ -51,19 +53,19 @@ public class UserManager {
             
     public Boolean validateUser(String username,String password){
         int columnNumber=-1;
+        DBIResultSet result=new DBIResultSet();
         try{    
-            DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C,
-                    VarString.CONFIG_DATABASE_DRIVER, VarString.CONFIG_DATABASE_HOST,VarString.CONFIG_DATABASE_USER, VarString.CONFIG_DATABASE_PASSWORD);
-            DatabaseHelper test = new DatabaseHelper(a);
+            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+            DatabaseHelper dbhepler = new DatabaseHelper(dbconfig);
             
-            if(test.Connect()){
-                
-
+            if(dbhepler.Connect()){
+                result=dbhepler.runSelect("username,password", "T_DI_USER", "username='"+username+"' and password='"+password+"'");
             }
-
+            if(result.rowCount()!=1){
+                return false;
+            }
             
-            test.Disconnect();
-            
+            dbhepler.Disconnect();
         }catch(Exception e){
             System.out.println(e);
 
@@ -72,73 +74,48 @@ public class UserManager {
     }
     
     public Boolean registerUser(String UserName,String passWord,String email){
+        DBIResultSet result=new DBIResultSet();
         try{    
-            DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
-            DatabaseHelper test = new DatabaseHelper(a);
+            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+            DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
             
-            Class.forName(a.getDriver());
-
-            conn = DriverManager.getConnection(a.getHost(), a.getUsername(), a.getPassword());
-
-            PreparedStatement p = conn.prepareStatement("INSERT INTO T_DI_USER (USERNAME, PASSWORD, STATUS, EMAIL,LASTLOGIN) VALUES ('"+UserName+"', '"+passWord+"',0,'"+email+"',sysdate)");
-            p.executeUpdate();//表示执行PreparedStatement 中封装的sql语句
+            if(dbhelper.Connect()){
+                result=dbhelper.runSelect("username", "T_DI_USER", "username='"+UserName+"'");
+                if(result.rowCount()==0){
+                    dbhelper.runSQL("INSERT INTO T_DI_USER (USERNAME, PASSWORD, STATUS, EMAIL, LASTLOGIN) VALUES ('"+UserName+"', '"+passWord+"',0,'"+email+"',sysdate);");
+                }else{
+                    System.out.println("重复的用户名！");
+                    return false;
+                }
+            }else{
+                return false;
+            }
+           
             
-            conn.close();
+            dbhelper.Disconnect();
         }catch(Exception e){
             System.out.println(e);
-            return false;
+
         }
-        return true;
+       return true;
     }
     public Boolean disableUser(int userID){
         try{    
-            DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
-            DatabaseHelper test = new DatabaseHelper(a);          
-            Class.forName(a.getDriver());
-            conn = DriverManager.getConnection(a.getHost(), a.getUsername(), a.getPassword());
+            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+            DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
             
-            Statement state=conn.createStatement();   //容器
-            String sql="update T_DI_USER set STATUS=0 where USERID='"+userID+"' ";   //SQL语句
-            state.executeUpdate(sql);  
-            
-            conn.close();
+            if(dbhelper.Connect()){
+                dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='"+userID+"'");
+            }                       
+            dbhelper.Disconnect();
         }catch(Exception e){
             System.out.println(e);
             return false;
         }
-        return true;
+       return true;
     }
-    public Boolean alterUser(int userID,int changed_number,String charged_key_value){
-        try{    
-            DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
-            DatabaseHelper test = new DatabaseHelper(a);          
-            Class.forName(a.getDriver());
-            conn = DriverManager.getConnection(a.getHost(), a.getUsername(), a.getPassword());
-            
-            Statement state=conn.createStatement();   //容器
-            String sql="";   //SQL语句
-            
-            if(changed_number==UserManager.columnNumber.username){
-                sql="update T_DI_USER set username='"+charged_key_value+"' where USERID='"+userID+"' "; 
-            }
-            if(changed_number==UserManager.columnNumber.password){
-                sql="update T_DI_USER set password='"+charged_key_value+"' where USERID='"+userID+"' "; 
-            }
-            if(changed_number==UserManager.columnNumber.status){
-                sql="update T_DI_USER set status='"+Integer.parseInt(charged_key_value)+"' where USERID='"+userID+"' "; 
-            }
-            if(changed_number==UserManager.columnNumber.email){
-                sql="update T_DI_USER set email='"+charged_key_value+"' where USERID='"+userID+"' "; 
-            }
-            state.executeUpdate(sql);  
-            System.out.println(sql);
-            conn.close();
-        }catch(Exception e){
-            System.out.println(e);
-            return false;
-        }
-        
-        return true;
+    public Boolean alterUser(int userID,HashMap charged_key_value){
+
     }
     
     public static void main(String[] args){

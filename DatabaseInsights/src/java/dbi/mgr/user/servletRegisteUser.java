@@ -25,7 +25,7 @@
  */
 package dbi.mgr.user;
 
-import dbi.utils.VarString;
+import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -61,9 +61,9 @@ public class servletRegisteUser extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             if (status) {
-                out.println(VarString.SERVLET_IDENTIFIER_SUCCESS);
+                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
             } else { // ERROR
-                out.println(VarString.SERVLET_IDENTIFIER_ERROR);
+                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
             }
         }
     }

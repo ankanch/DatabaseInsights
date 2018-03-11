@@ -219,6 +219,18 @@ public class DatabaseHelper {
         
         return sqlResult;
     }
+    
+    public boolean runSQL(String sql){
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(sql);  
+            st.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
 
     public static void main(String[] args) {
 
