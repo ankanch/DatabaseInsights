@@ -62,14 +62,7 @@ public class MySQLAdaptor extends DatabaseAdaptor{
         return "select "+ querys+" from "+table+" where "+condition;
     }
     
-    public String findPrimaryKey(String table){
-        return "SELECT COLUMN_NAME\n" +
-        "FROM INFORMATION_SCHEMA.COLUMNS\n" +
-        "WHERE table_name =  '"+table+"'\n" +
-        "AND COLUMN_KEY =  'PRI'";
-    }
-    
-    public String findForeignKey(String table){
-        return "select REFERENCED_COLUMN_NAME refColumn ,REFERENCED_TABLE_NAME refTable from INFORMATION_SCHEMA.KEY_COLUMN_USAGE  where TABLE_NAME='"+table+"'";
+    public static void main(String[] args) {
+       
     }
 }

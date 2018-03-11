@@ -55,12 +55,4 @@ public class DatabaseAdaptor {
     public String generateSelect(String querys,String table,String condition){
         return "";
     }
-    
-    public String findPrimaryKey(String table){
-        return "";
-    }
-    
-    public String findForeignKey(String table){
-        return "";
-    }
 }
