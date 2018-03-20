@@ -35,10 +35,25 @@ function loadContent(container, url,type) {
     $("#"+container).load(url + type);
 }
 
+/* function for loading content */
+function loadContentF(container, url,type,complete) {
+    // e.g.  loadContent("content_id","/settings",".html");
+    $("#"+container).load(url + type);
+    complete();
+}
+
 function loadJsp(container,url){
     loadContent(container, url,".jsp");
 }
 
+function loadJspF(container,url,complete){
+    loadContent(container, url,".jsp",complete);
+}
+
 function loadHtml(container,url){
     loadContent(container, url,".html");
+}
+
+function loadHtmlF(container,url,complete){
+    loadContent(container, url,".html",complete);
 }
