@@ -18,9 +18,9 @@
         <div class="card-body pl-5 pr-5">
             <div class="row">
                 <form class="console-mw-500 col-md-8">
-                    <div class="form-group">
+                    <div class="form-group is-focused bmd-form-group">
                         <label for="settings_username" class="bmd-label-floating">Username</label>
-                        <input type="text" class="form-control" id="settings_username" readonly>
+                        <input type="text" class="form-control console-table-input" id="settings_username" disabled value="test">
                         <span class="bmd-help">You can't change your username.</span>
                     </div>
                     <div class="form-group">

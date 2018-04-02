@@ -46,7 +46,7 @@ THE SOFTWARE.
     </div>
     <div class="checkbox pt-md-5 pb-md-4">
         <label>
-            <input type="checkbox" required="required" name="optionsRadios" id="agreement" value="option1">
+            <input type="checkbox" name="optionsRadios" id="agreement" value="option1">
             I agree with the <a href="#" target="_blank">End User Agreement</a> 
         </label>
     </div>
@@ -75,18 +75,20 @@ THE SOFTWARE.
         } else {
             if ($("#agreement").is(':checked') == false) {
                 showMsg("Please agree our aggrement to continue!");
+                console.log("agreement not checked.");
                 return;
             }
             // Form is valid, then we submit form
             $("#progressbar").show();
             btn.disabled = true;
             SubmitFormFF("/api/RegisteUser", "form_signup", function error() {
-                showMsg("Failed to registe! Please try again later.");
+                showMsg("Failed to registe! Please try again later.Username may already in use.");
                 $("#progressbar").hide();
                 btn.disabled = false;
             }, function success() {
                 showMsg("Successfully registed!Redirecting you to the login page...");
                 $("#progressbar").hide();
+                window.location = "signin.jsp";
             });
         }
     }

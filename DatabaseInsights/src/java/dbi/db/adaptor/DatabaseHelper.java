@@ -25,18 +25,19 @@
 package dbi.db.adaptor;
 
 import dbi.utils.DBIResultSet;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
-
-
 
 /**
  *
@@ -51,36 +52,39 @@ public class DatabaseHelper {
     public DatabaseHelper(DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
         int dbcode = this.databaseConfig.getDatabase();
-       
-        if(dbcode == DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
-            DBAdaptor  = new MySQLAdaptor();
-        }else if(dbcode == DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
+
+        if (dbcode == DatabaseConfig.DatabaseCode.DATABASE_MYSQL) {
+            DBAdaptor = new MySQLAdaptor();
+        } else if (dbcode == DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C) {
             DBAdaptor = new OracleAdaptor();
         }
     }
 
     public Boolean Connect() {
-        try {
-            // 创建数据库连接
-            Class.forName(databaseConfig.getDriver());
-            conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
-        } catch (Exception e) {
-            System.err.println("错误：无法从数据库中读取数据，可能是网络问题或者驱动问题。");
-            System.err.println(e.getMessage());
+        if (!checkConnection()) {
+            try {
+                // 创建数据库连接
+                Class.forName(databaseConfig.getDriver());
+                conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
+            } catch (Exception e) {
+                System.err.println("错误：无法从数据库中读取数据，可能是网络问题或者驱动问题。");
+                System.err.println(e.getMessage());
+                return false;
+            }
         }
         return true;
     }
 
     private Boolean checkConnection() {
-        Boolean check = true;
         try {
             if (conn.isClosed()) {
-                check = false;
+                return false;
             }
         } catch (Exception e) {
             System.out.println("error");
+            return false;
         }
-        return check;
+        return true;
     }
 
     public void Disconnect() {
@@ -100,7 +104,7 @@ public class DatabaseHelper {
             // 执行数据库语句
             ResultSet rs = st.executeQuery(DBAdaptor.getTableList());
             // 遍历获取结果
-         
+
             while (rs.next()) {
                 table_name = rs.getString("table_name");
                 tables.add(table_name);
@@ -138,12 +142,11 @@ public class DatabaseHelper {
     /* get column name and species of a given table */
     public ArrayList<String> getAllColumnSpecies(String table) {
         ArrayList<String> species = new ArrayList<>();//第一个参数放置表的主键，第二个放置外键名称，第三个放置参照的表的名称
-        
-        String columnName="";
-        String refColumn="";
-        String refTable="";
-       
-        
+
+        String columnName = "";
+        String refColumn = "";
+        String refTable = "";
+
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
@@ -151,24 +154,23 @@ public class DatabaseHelper {
             // 遍历获取结果
 
             while (rs.next()) {
-                columnName=rs.getString("column_name");
+                columnName = rs.getString("column_name");
                 species.add(columnName);
             }
             st.close();
         } catch (Exception e) {
             System.out.println(e);
         }
-        
-        
+
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
             ResultSet bs = st.executeQuery(DBAdaptor.findForeignKey(table));
             // 遍历获取结果
-            
+
             while (bs.next()) {
-                refColumn=bs.getString("refColumn");//查找到外键名称
-                refTable=bs.getString("refTable");//查找到外键参照的表
+                refColumn = bs.getString("refColumn");//查找到外键名称
+                refTable = bs.getString("refTable");//查找到外键参照的表
                 species.add(refColumn);
                 species.add(refTable);
             }
@@ -182,33 +184,31 @@ public class DatabaseHelper {
     /* get column names of a given table */
     public ArrayList<String> getColumnSpecies(String column) {
         ArrayList<String> species = new ArrayList<>();
-        
-        
-        
+
         return species;
     }
-    
-    public DBIResultSet runSelect(String querys,String table,String condition){
-        DBIResultSet sqlResult=new DBIResultSet();
-        
+
+    public DBIResultSet runSelect(String querys, String table, String condition) {
+        DBIResultSet sqlResult = new DBIResultSet();
+
         int i;
 
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
-            System.out.println(DBAdaptor.generateSelect(querys,table,condition));
-            ResultSet rs = st.executeQuery(DBAdaptor.generateSelect(querys,table,condition));
+            System.out.println(DBAdaptor.generateSelect(querys, table, condition));
+            ResultSet rs = st.executeQuery(DBAdaptor.generateSelect(querys, table, condition));
             // 遍历获取结果
-            
-            int columnNumber=rs.getMetaData().getColumnCount();
-            System.out.println("count:"+columnNumber);
-            String s[]=new String[columnNumber];
+
+            int columnNumber = rs.getMetaData().getColumnCount();
+            System.out.println("count:" + columnNumber);
+            String s[] = new String[columnNumber];
             while (rs.next()) {
-                for(i=0;i<columnNumber;i++){
-                    s[i]=rs.getString(i+1);
+                for (i = 0; i < columnNumber; i++) {
+                    s[i] = rs.getString(i + 1);
                 }
                 sqlResult.addRow(sqlResult.makeRow(s));
-                
+
                 System.out.println();
             }
 
@@ -216,14 +216,15 @@ public class DatabaseHelper {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         return sqlResult;
     }
-    
-    public boolean runSQL(String sql){
+
+    public boolean runSQL(String sql) {
         try {
             Statement st = conn.createStatement();
-            st.executeUpdate(sql);  
+            st.executeUpdate(sql);
+            conn.commit();
             st.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -232,16 +233,32 @@ public class DatabaseHelper {
         return true;
     }
 
+    /**
+     * INPUT Example: (myfunction(?,?,?),param_1,param_2,param_3) RETURNS: int
+     */
+    public int executeOracleFunction(String funcDef, String... params) throws SQLException {
+
+        String query = "{? = call @funcDef@}".replace("@funcDef@", funcDef);
+        CallableStatement statement = conn.prepareCall(query);
+        statement.registerOutParameter(1, Types.INTEGER);
+        for (int i = 2; i <= params.length + 1; i++) {
+            statement.setString(i, params[i - 2]);
+        }
+        statement.execute();
+        return statement.getInt(1);
+    }
+
     public static void main(String[] args) {
 
-        //DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
-        DatabaseConfig a=new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_MYSQL,"org.gjt.mm.mysql.Driver","jdbc:mysql://115.159.197.66:3306/IncidentsReport","ir", "2yvaVjSNVYHwWwcR");
+        DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
+        //DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_MYSQL, "org.gjt.mm.mysql.Driver", "jdbc:mysql://115.159.197.66:3306/IncidentsReport", "ir", "2yvaVjSNVYHwWwcR");
         DatabaseHelper test = new DatabaseHelper(a);
-        System.out.println(test.Connect());
-        
-        System.out.println(test.runSelect("*","INCIDENTS","1").getRow(1));
-        
-        test.Disconnect();
-        System.out.println(test.checkConnection());
+        test.Connect();
+        try {
+            Object rv = test.executeOracleFunction("F_CREATE_USER(?,?,?)", "'TEST_P'", "'TEST_P'", "'TEST_P'");
+            System.out.println((int) rv);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 }

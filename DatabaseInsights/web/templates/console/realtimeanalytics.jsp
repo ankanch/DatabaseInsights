@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div id="realtimeanalytics">
+    <h1>Realtime</h1>
     <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
         <div class="card-header">Header</div>
         <div class="card-body">

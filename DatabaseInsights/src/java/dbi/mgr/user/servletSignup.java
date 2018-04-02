@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletSignup", urlPatterns = {"/api/signup"})
+@WebServlet(name = "servletSignup", urlPatterns = {"/api/RegisteUser"})
 public class servletSignup extends HttpServlet {
 
     /**
@@ -62,7 +62,6 @@ public class servletSignup extends HttpServlet {
         if( um.registerUser(username, password, email) ){
             status = true;
         }
-
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             if (status) {

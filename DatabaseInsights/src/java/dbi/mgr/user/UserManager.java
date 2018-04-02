@@ -44,52 +44,17 @@ import java.util.HashMap;
 public class UserManager {
 
     private Connection conn;
-
-    public static class columnNumber {
-
-        static public int username = 100;
-        static public int password = 200;
-        static public int status = 300;
-        static public int email = 400;
-    }
+    private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+    private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
 
     public Boolean validateUser(String username, String password) {
         int columnNumber = -1;
         DBIResultSet result = new DBIResultSet();
         try {
-            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
-            DatabaseHelper dbhepler = new DatabaseHelper(dbconfig);
-
-            if (dbhepler.Connect()) {
-                result = dbhepler.runSelect("username,password", "T_DI_USER", "username='" + username + "' and password='" + password + "'");
+            if (dbhelper.Connect()) {
+                result = dbhelper.runSelect("username,password", "T_DI_USER", "username='" + username + "' and password='" + password + "'");
             }
             if (result.rowCount() != 1) {
-                return false;
-            }
-
-            dbhepler.Disconnect();
-        } catch (Exception e) {
-            System.out.println(e);
-
-        }
-        return true;
-    }
-
-    public Boolean registerUser(String UserName, String passWord, String email) {
-        DBIResultSet result = new DBIResultSet();
-        try {
-            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
-            DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-
-            if (dbhelper.Connect()) {
-                result = dbhelper.runSelect("username", "T_DI_USER", "username='" + UserName + "'");
-                if (result.rowCount() == 0) {
-                    dbhelper.runSQL("INSERT INTO T_DI_USER (USERNAME, PASSWORD, STATUS, EMAIL, LASTLOGIN) VALUES ('" + UserName + "', '" + passWord + "',0,'" + email + "',sysdate);");
-                } else {
-                    System.out.println("重复的用户名！");
-                    return false;
-                }
-            } else {
                 return false;
             }
 
@@ -101,10 +66,23 @@ public class UserManager {
         return true;
     }
 
+    public Boolean registerUser(String username, String password, String email) {
+        if (dbhelper.Connect()) {
+            try {
+                int ret = dbhelper.executeOracleFunction("F_CREATE_USER(?,?,?)", username, password, email);
+                if(ret == -1){  // ret = -1 stands for user already exist
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println("ERROR:" + e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
     public Boolean disableUser(int userID) {
         try {
-            DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
-            DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
 
             if (dbhelper.Connect()) {
                 dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='" + userID + "'");
