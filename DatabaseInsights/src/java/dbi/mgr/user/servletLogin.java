@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletLogin", urlPatterns = {"/api/Login"})
+@WebServlet(name = "servletLogin", urlPatterns = {"/api/login"})
 public class servletLogin extends HttpServlet {
 
     /**
@@ -52,11 +53,19 @@ public class servletLogin extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         Boolean status = false;
-        String para = request.getParameter("paraname");
+        String password = request.getParameter("password");
+        String username = request.getParameter("username");
+        String sid = request.getSession().getId();
 
-       
+        UserManager um = new UserManager();
+        if (um.loginInUser(username, password,sid)) {
+            status = true;
+            Cookie cookie = new Cookie("uname",username);
+            cookie.setMaxAge(60 * 60 * 48); 
+            response.addCookie(cookie);
+        }
+        response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -80,7 +89,7 @@ public class servletLogin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       // processRequest(request, response);
+        // processRequest(request, response);
     }
 
     /**

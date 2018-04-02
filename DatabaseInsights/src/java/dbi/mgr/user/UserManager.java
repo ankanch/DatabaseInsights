@@ -47,30 +47,14 @@ public class UserManager {
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
 
-    public Boolean validateUser(String username, String password) {
-        int columnNumber = -1;
-        DBIResultSet result = new DBIResultSet();
-        try {
-            if (dbhelper.Connect()) {
-                result = dbhelper.runSelect("username,password", "T_DI_USER", "username='" + username + "' and password='" + password + "'");
-            }
-            if (result.rowCount() != 1) {
-                return false;
-            }
-
-            dbhelper.Disconnect();
-        } catch (Exception e) {
-            System.out.println(e);
-
-        }
-        return true;
-    }
-
-    public Boolean registerUser(String username, String password, String email) {
+    /*
+    * This functio nused for check if current session is valid, by which, means if user logged in.
+    */
+    public Boolean validateSession(String sid) {
         if (dbhelper.Connect()) {
             try {
-                int ret = dbhelper.executeOracleFunction("F_CREATE_USER(?,?,?)", username, password, email);
-                if(ret == -1){  // ret = -1 stands for user already exist
+                int ret = dbhelper.executeOracleFunction("F_VALIDATE_SESSION(?)", sid);
+                if (ret == -1) {  // ret = -1 stands for didn't login yet
                     return false;
                 }
             } catch (SQLException e) {
@@ -79,6 +63,52 @@ public class UserManager {
             }
         }
         return true;
+    }
+
+    /*
+    * This function is used to log you in to the console.
+    * function will add current session id to the Usession column of user table
+     */
+    public Boolean loginInUser(String username, String password, String session_id) {
+        if (dbhelper.Connect()) {
+            try {
+                int ret = dbhelper.executeOracleFunction("F_LOGIN_USER(?,?,?)", username, password, session_id);
+                if (ret == -1) {  // ret = -1 stands for username isn't exists or password incorrect
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println("ERROR:" + e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /*
+    * Give username,password, email to registe
+     */
+    public Boolean registerUser(String username, String password, String email) {
+        if (dbhelper.Connect()) {
+            try {
+                int ret = dbhelper.executeOracleFunction("F_CREATE_USER(?,?,?)", username, password, email);
+                if (ret == -1) {  // ret = -1 stands for user already exist
+                    return false;
+                }
+            } catch (SQLException e) {
+                System.out.println("ERROR:" + e.getMessage());
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /*
+    * This function used to get user info, for render some part of console
+    */
+    public HashMap<String,String> getUserInfo(){
+        HashMap<String,String> info = new HashMap<>();
+        
+        return info;
     }
 
     public Boolean disableUser(int userID) {
@@ -101,7 +131,7 @@ public class UserManager {
 
     public static void main(String[] args) {
         UserManager manager = new UserManager();
-        System.out.println(manager.validateUser("vicky", "123"));
+        //System.out.println(manager.validateUser("vicky", "123"));
     }
 
 }

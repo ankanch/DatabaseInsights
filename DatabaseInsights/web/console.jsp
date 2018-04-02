@@ -4,6 +4,7 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.mgr.user.UserManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,6 +14,12 @@
         <%@ include file="templates/globehead.html" %>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
+    <% // check if user are authorized to visit this page
+        UserManager um = new UserManager();
+        if (!um.validateSession(session.getId())) {
+    %><jsp:forward page="signin.jsp" /> <%
+        }
+    %>
     <body style="padding-top: 50px;">
         <%@ include file="templates/console/console_nav.html" %>
         <div class="container-fluid">
