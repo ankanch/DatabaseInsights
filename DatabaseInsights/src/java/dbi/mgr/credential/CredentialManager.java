@@ -24,14 +24,42 @@
  */
 package dbi.mgr.credential;
 
+import dbi.db.adaptor.DatabaseConfig;
+import dbi.db.adaptor.DatabaseHelper;
+import dbi.mgr.user.UserManager;
+import dbi.utils.GlobeVar;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  *
  * @author Miss Zhang
  */
 public class CredentialManager {
-    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod){
+     private Connection conn;
+    private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+    private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
+    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
+        if (dbhelper.Connect()) {
+            System.out.println("ggggggggggggggggg");
+            dbhost=dbhost+":"+dbport;
+            try {
+                Object rv = dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?)", dbhost, dbname,dbuser,dbpod, id);
+                if((int)rv==1){
+                    System.out.println("成功创建credential");
+                }else if((int)rv==-1){
+                    System.out.println("创建失败");
+                    return false;
+                }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
     }
+    
+    
     public Boolean deleteCredential(String crdid){
         return true;
     }
@@ -41,4 +69,11 @@ public class CredentialManager {
     public Boolean validiateCreditial(String crd){
         return true;
     }
+    
+    public static void main(String[] args) {
+        CredentialManager manager = new CredentialManager();
+        //addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
+        System.out.println(manager.addCredential("host","name","port","user","123",123123));
+    }
+ 
 }
