@@ -39,9 +39,8 @@ public class CredentialManager {
      private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
+    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,String id){
         if (dbhelper.Connect()) {
-            System.out.println("ggggggggggggggggg");
             dbhost=dbhost+":"+dbport;
             try {
                 Object rv = dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?)", dbhost, dbname,dbuser,dbpod, id);
@@ -73,7 +72,7 @@ public class CredentialManager {
     public static void main(String[] args) {
         CredentialManager manager = new CredentialManager();
         //addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
-        System.out.println(manager.addCredential("host","name","port","user","123",123123));
+        System.out.println(manager.addCredential("123host","123name","123port","123user","www123","123123"));
     }
  
 }
