@@ -4,7 +4,14 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.mgr.user.UserManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% // check if user are authorized to visit this page
+    UserManager um = new UserManager();
+    if (um.validateSession(session.getId())) {
+%><jsp:forward page="console.jsp" /> <%
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,10 +25,10 @@
             <div class="card bg-light mx-auto " style="max-width: 400px;">
                 <div class="card-header"><h4>Sign up</h4></div>
                 <div class="card-body">
-                   <%@ include file="templates/components/form_signup.html" %>
+                    <%@ include file="templates/components/form_signup.html" %>
                 </div>
             </div>
-           
+
         </div>
         <footer class="container py-5">
             <%@ include file="templates/index/footer.html" %>

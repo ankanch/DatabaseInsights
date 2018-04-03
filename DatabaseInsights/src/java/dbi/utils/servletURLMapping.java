@@ -36,11 +36,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author kanch
+ * @author kanch This servlet is used to process some server-end operations,
+ * by pass session id and only requires return a status code.
+ * 
  */
-@WebServlet(name = "servletConsoleURLMapping", urlPatterns = {"/curlmap"}, initParams = {
+@WebServlet(name = "servletConsoleURLMapping", urlPatterns = {"/urlmap"}, initParams = {
     @WebInitParam(name = "target", value = "notarget")})
-public class servletConsoleURLMapping extends HttpServlet {
+public class servletURLMapping extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +56,18 @@ public class servletConsoleURLMapping extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         Boolean status = false;
+        String target = request.getParameter("target");
+        String sid = request.getSession().getId();
+
+        // add the URL mapping here
+        System.out.println("URL Map Recived Parameter :" + target);
+        if (target == null || target.equalsIgnoreCase("notarget") || target.length() < 1) {
+            status = false;
+        } else if (target.equalsIgnoreCase("console-user-signout")) {
+            status =  GlobeVar.OBJ_MANAGER_USER.signoutUser(sid);
+        }
 
         try (PrintWriter out = response.getWriter()) {
             if (status) {

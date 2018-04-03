@@ -111,11 +111,23 @@ public class UserManager {
         if (dbhelper.Connect()) {
             DBIResultSet rs = dbhelper.runSelect("USERID,USERNAME,STATUS", "T_DI_USER", "USESSION='" + session + "'");
             ArrayList<Object> row = rs.getRow(1);
-            info.put("USERID", (String)row.get(0));
-            info.put("USERNAME", (String)row.get(1));
-            info.put("STATUS", (String)row.get(2));
+            info.put("USERID", (String) row.get(0));
+            info.put("USERNAME", (String) row.get(1));
+            info.put("STATUS", (String) row.get(2));
         }
         return info;
+    }
+
+    public Boolean signoutUser(String session) {
+        try {
+            if (dbhelper.Connect()) {
+                dbhelper.runSQL("UPDATE T_DI_USER SET USESSION='' WHERE USESSION='" + session + "'");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
     }
 
     public Boolean disableUser(int userID) {

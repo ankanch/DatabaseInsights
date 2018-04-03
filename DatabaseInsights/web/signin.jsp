@@ -4,7 +4,14 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.mgr.user.UserManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% // check if user are authorized to visit this page
+    UserManager um = new UserManager();
+    if (um.validateSession(session.getId())) {
+%><jsp:forward page="console.jsp" /> <%
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -40,13 +47,13 @@
                         $('body').bootstrapMaterialDesign();
                         $("#nav_1").text("Database Insights Console");
                         var btn = document.getElementById("btn_login");
-                        
-                        function rememberpwd(){
-                            
+
+                        function rememberpwd() {
+
                         }
 
                         function login() {
-                             btn.disabled = true;
+                            btn.disabled = true;
                             SubmitFormFF("/api/login", "form_login", function error() {
                                 showMsg("Failed to log you in! Either the user isn't exists or password in correct!");
                                 $("#progressbar").hide();
