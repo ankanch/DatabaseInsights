@@ -21,7 +21,7 @@
         }
     %>
     <body style="padding-top: 50px;">
-        <%@ include file="templates/console/console_nav.html" %>
+        <%@ include file="templates/console/console_nav.jsp" %>
         <div class="container-fluid">
             <div class="row">
                 <%@ include file="templates/console/console_nav_side.html" %>

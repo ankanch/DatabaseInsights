@@ -35,6 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -49,7 +50,7 @@ public class UserManager {
 
     /*
     * This functio nused for check if current session is valid, by which, means if user logged in.
-    */
+     */
     public Boolean validateSession(String sid) {
         if (dbhelper.Connect()) {
             try {
@@ -101,13 +102,19 @@ public class UserManager {
         }
         return true;
     }
-    
+
     /*
     * This function used to get user info, for render some part of console
-    */
-    public HashMap<String,String> getUserInfo(){
-        HashMap<String,String> info = new HashMap<>();
-        
+     */
+    public HashMap<String, String> getUserInfo(String session) {
+        HashMap<String, String> info = new HashMap<>();
+        if (dbhelper.Connect()) {
+            DBIResultSet rs = dbhelper.runSelect("USERID,USERNAME,STATUS", "T_DI_USER", "USESSION='" + session + "'");
+            ArrayList<Object> row = rs.getRow(1);
+            info.put("USERID", (String)row.get(0));
+            info.put("USERNAME", (String)row.get(1));
+            info.put("STATUS", (String)row.get(2));
+        }
         return info;
     }
 

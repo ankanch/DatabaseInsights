@@ -31,43 +31,65 @@ import java.util.ArrayList;
  * @author Miss Zhang
  */
 public class DBIResultSet {
-   private ArrayList<ArrayList<Object>> rs;
-   private static ArrayList<Object> srow = new ArrayList<>();
+
+    private ArrayList<ArrayList<Object>> rs;
+    private static ArrayList<Object> srow = new ArrayList<>();
+    private Boolean rowCompleted = false;
 
     public DBIResultSet() {
-        rs = new  ArrayList<>();
+        rs = new ArrayList<>();
+    }
+
+    /*
+    * add current data to one temporery row
+     */
+    public void addToRow(Object data) {
+        if(rowCompleted){
+            srow.clear();
+            rowCompleted = false;
+        }
+        srow.add(data);
     }
     
-    public ArrayList<Object> makeRow(Object... row){
+    /*
+    * finish the row created by addToRow function.
+    * then add it to the table rs
+    */
+    public ArrayList<Object> finishRow(){
+        rowCompleted = true;
+        rs.add(srow);
+        return (ArrayList<Object>) srow.clone();
+    }
+
+    public ArrayList<Object> makeRow(Object... row) {
         srow.clear();
-        for(Object obj : row){
+        for (Object obj : row) {
             srow.add(obj);
         }
-        return (ArrayList<Object>)srow.clone();
+        return (ArrayList<Object>) srow.clone();
     }
-    
-    public ArrayList<ArrayList<Object>> addRow(ArrayList<Object> row){
+
+    public ArrayList<ArrayList<Object>> addRow(ArrayList<Object> row) {
         rs.add(row);
         return rs;
     }
-    
-    public ArrayList<Object> getRow(int i){
-        return rs.get(i);
+
+    /*
+    * get designed row by row number which row must no less than 1
+    */
+    public ArrayList<Object> getRow(int i) {
+        assert(i>0);
+        return rs.get(i-1);
     }
-    
-    public int rowCount(){
+
+    public int rowCount() {
         return rs.size();
     }
-    
-    
-   // public int columnCount(){
-     //   return  ( rs.size() == 0 || rs.get(0).size() == rs.get(0).size() );
-    //}
-    
-    public static void main(String[] args){
-        String s[]=new String[]{"abc","sss","aaa","zzz"};
-        DBIResultSet a=new DBIResultSet();
+
+    public static void main(String[] args) {
+        String s[] = new String[]{"abc", "sss", "aaa", "zzz"};
+        DBIResultSet a = new DBIResultSet();
         System.out.println(a.makeRow(s));
     }
-   
+
 }

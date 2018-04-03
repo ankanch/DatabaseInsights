@@ -34,13 +34,16 @@ import dbi.db.adaptor.DatabaseConfig;
 public class GlobeVar {
     public static String SERVLET_IDENTIFIER_ERROR = "!@ERR!";
     public static String SERVLET_IDENTIFIER_SUCCESS = "!@SUCC!";
-    public static String CONFIG_DATABASE_HOST ="jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights";
+    public static String CONFIG_DATABASE_HOST ="jdbc:oracle:thin:@//cd.kcs.akakanch.com:1521/DatabaseInsights";
     public static String CONFIG_DATABASE_USER="di";
     public static String CONFIG_DATABASE_PASSWORD="DI2017";
     public static String CONFIG_DATABASE_DRIVER=DatabaseConfig.DatabaseDriver.ORACLE_12C;
     
     public static final DatabaseConfig VAR_DATABASE_CONFIG = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C,
                     GlobeVar.CONFIG_DATABASE_DRIVER, GlobeVar.CONFIG_DATABASE_HOST,GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD);
+    
+    
+    //public static URLMAP_CONSOLE
 }
 
 

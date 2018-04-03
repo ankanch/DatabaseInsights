@@ -190,28 +190,18 @@ public class DatabaseHelper {
 
     public DBIResultSet runSelect(String querys, String table, String condition) {
         DBIResultSet sqlResult = new DBIResultSet();
-
-        int i;
-
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
             System.out.println(DBAdaptor.generateSelect(querys, table, condition));
             ResultSet rs = st.executeQuery(DBAdaptor.generateSelect(querys, table, condition));
             // 遍历获取结果
-
-            int columnNumber = rs.getMetaData().getColumnCount();
-            System.out.println("count:" + columnNumber);
-            String s[] = new String[columnNumber];
             while (rs.next()) {
-                for (i = 0; i < columnNumber; i++) {
-                    s[i] = rs.getString(i + 1);
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    sqlResult.addToRow(rs.getString(i + 1));
                 }
-                sqlResult.addRow(sqlResult.makeRow(s));
-
-                System.out.println();
+                sqlResult.finishRow();
             }
-
             st.close();
         } catch (Exception e) {
             System.out.println(e);
