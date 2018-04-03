@@ -9,8 +9,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     UserManager um1 = new UserManager();
-    HashMap<String,String> hm = um1.getUserInfo(session.getId());
-    
+    HashMap<String, String> hm = um1.getUserInfo(session.getId());
+
 %>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg  fixed-top">
     <a class="navbar-brand" href="#">
@@ -20,12 +20,12 @@
     <ul class="navbar-nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <%= hm.get("USERNAME") %>
+                <%= hm.get("USERNAME")%>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Account Settings</a>
                 <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="/">Sign out</a>
+                <a class="dropdown-item" href="javascript:signout()">Sign out</a>
             </div>
         </li>
     </ul>
@@ -37,4 +37,13 @@
         </ul>
     </div>
 </nav>
-
+<script>
+    function signout() {
+        SubmitFormKVF("/urlmap", {target : "console-user-signout" }, function error() {
+            showMsg("Failed to signout, network error!");
+        }, function success() {
+            showMsg("You are signed out now!");
+            window.location = "signin.jsp";
+        });
+    }
+</script>
