@@ -60,9 +60,37 @@ public class CredentialManager {
     
     
     public Boolean deleteCredential(String crdid){
+        if (dbhelper.Connect()) {
+            try {
+                Object rv = dbhelper.executeOracleFunction("F_DELETE_CREDENTIAL(?)", crdid);
+                if((int)rv==1){
+                    System.out.println("成功删除凭证");
+                }else if((int)rv==-1){
+                    System.out.println("凭证不存在，无法删除");
+                    return false;
+                }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
     }
-    public Boolean alterCredential(String crdid,String charged_key_value){
+    public Boolean alterCredential(String crdid,String dbname,String dbhost,String password){
+        if (dbhelper.Connect()) {
+            try {
+                Object rv = dbhelper.executeOracleFunction("F_ALTER_CREDENTIAL(?,?,?,?)", crdid,dbname,dbhost,password);
+                if((int)rv==1){
+                    System.out.println("成功更改凭证");
+                }else if((int)rv==-1){
+                    System.out.println("凭证不存在，无法修改");
+                    return false;
+                }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
     }
     public Boolean validiateCreditial(String crd){
@@ -71,8 +99,8 @@ public class CredentialManager {
     
     public static void main(String[] args) {
         CredentialManager manager = new CredentialManager();
-        //addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
-        System.out.println(manager.addCredential("123host","123name","123port","123user","www123","123123"));
+        //String crdid,String dbname,String dbhost,String password
+        System.out.println(manager.alterCredential("34","NEW dbname","NEW dbhost","NEW password"));
     }
  
 }
