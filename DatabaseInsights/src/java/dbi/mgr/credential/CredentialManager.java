@@ -93,8 +93,20 @@ public class CredentialManager {
         }
         return true;
     }
-    public Boolean validiateCreditial(String crd){
-        return true;
+    
+    public Boolean validiateCreditial(String dbscode,String dbhost,String dbname,String dbuser,String dbpwd,int dbcode){
+        Boolean status=false;
+                //check wether the infomation provaided is correct
+        if (DatabaseConfig.DatabaseCode.check(dbcode)) {
+            DatabaseConfig dbc = new DatabaseConfig(dbcode, DatabaseConfig.DatabaseDriver.chooseDriver(dbcode),
+                    DatabaseConfig.JDBCHostPrefix.autoGenHost(dbcode, dbhost, dbname),
+                    dbuser, dbpwd);
+            DatabaseHelper test = new DatabaseHelper(dbc);
+            if( test.Connect() ){
+                status = true;
+            }
+        }
+        return status;
     }
     
     public static void main(String[] args) {
