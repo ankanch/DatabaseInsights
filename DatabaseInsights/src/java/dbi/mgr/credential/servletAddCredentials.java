@@ -62,19 +62,15 @@ public class servletAddCredentials extends HttpServlet {
         String dbname = request.getParameter("dbname");
         String dbuser = request.getParameter("dbusername");
         String dbpwd = request.getParameter("dbpass");
+        String sid = request.getSession().getId();
+        String dbtype=request.getParameter("dbtype");
         Boolean status = false;
+        
         int dbcode = Integer.parseInt(dbscode);
-        //check wether the infomation provaided is correct
-        if (DatabaseConfig.DatabaseCode.check(dbcode)) {
-            DatabaseConfig dbc = new DatabaseConfig(dbcode, DatabaseConfig.DatabaseDriver.chooseDriver(dbcode),
-                    DatabaseConfig.JDBCHostPrefix.autoGenHost(dbcode, dbhost, dbname),
-                    dbuser, dbpwd);
-            DatabaseHelper test = new DatabaseHelper(dbc);
-            if( test.Connect() ){
-                status = true;
-                test.Disconnect();
-                // save credentials to database
-                
+        CredentialManager use=new CredentialManager();
+        if(use.validiateCreditial(dbscode, dbhost, dbname, dbuser, dbpwd, dbcode)){
+            if(use.addCredential(dbhost,dbname,dbuser,dbpwd,sid,dbtype)){
+                 status=true;
             }
         }
 
