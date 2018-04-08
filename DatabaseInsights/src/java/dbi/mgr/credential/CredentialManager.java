@@ -39,17 +39,26 @@ public class CredentialManager {
      private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
+    public Boolean addCredential(String dbhost,String dbname,String dbuser,String dbpawd,String userid,String dbtype){
+        /*
+          DBHOSTS IN VARCHAR2 
+        , DBNAMES IN VARCHAR2 
+        , DBUSERS IN VARCHAR2 
+        , DBPAWDS IN VARCHAR2 
+        , USERIDS IN NUMBER 
+        , DBTYPES IN NUMBER
+        */
         if (dbhelper.Connect()) {
-            System.out.println("ggggggggggggggggg");
-            dbhost=dbhost+":"+dbport;
+            
             try {
-                Object rv = dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?)", dbhost, dbname,dbuser,dbpod, id);
-                if((int)rv==1){
+                int rv = (int)dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost,dbname,dbuser,dbpawd,userid,dbtype);
+                if(rv==1){
                     System.out.println("成功创建credential");
-                }else if((int)rv==-1){
-                    System.out.println("创建失败");
+                }else if(rv==-3){
+                    System.out.println("未找到数据");
                     return false;
+                }else if(rv==-1){
+                    System.out.println("创建失败");
                 }
             } catch (Exception e) {
                  System.out.println(e);
@@ -61,19 +70,71 @@ public class CredentialManager {
     
     
     public Boolean deleteCredential(String crdid){
+        if (dbhelper.Connect()) {
+            try {
+                Object rv = dbhelper.executeOracleFunction("F_DELETE_CREDENTIAL(?)", crdid);
+                if((int)rv==1){
+                    System.out.println("成功删除凭证");
+                }else if((int)rv==-1){
+                    System.out.println("凭证不存在，无法删除");
+                    return false;
+                }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
     }
-    public Boolean alterCredential(String crdid,String charged_key_value){
+    public Boolean alterCredential(String crdid,String dbname,String dbhost,String password){
+        if (dbhelper.Connect()) {
+            try {
+                Object rv = dbhelper.executeOracleFunction("F_ALTER_CREDENTIAL(?,?,?,?)", crdid,dbname,dbhost,password);
+                if((int)rv==1){
+                    System.out.println("成功更改凭证");
+                }else if((int)rv==-1){
+                    System.out.println("凭证不存在，无法修改");
+                    return false;
+                }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
     }
-    public Boolean validiateCreditial(String crd){
+    
+    public Boolean getCredential(){
+        if (dbhelper.Connect()) {
+            try {
+                
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
         return true;
+    }
+    
+    public Boolean validiateCreditial(String dbscode,String dbhost,String dbname,String dbuser,String dbpwd,int dbcode){
+        Boolean status=false;
+                //check wether the infomation provaided is correct
+        if (DatabaseConfig.DatabaseCode.check(dbcode)) {
+            DatabaseConfig dbc = new DatabaseConfig(dbcode, DatabaseConfig.DatabaseDriver.chooseDriver(dbcode),
+                    DatabaseConfig.JDBCHostPrefix.autoGenHost(dbcode, dbhost, dbname),
+                    dbuser, dbpwd);
+            DatabaseHelper test = new DatabaseHelper(dbc);
+            if( test.Connect() ){
+                status = true;
+            }
+        }
+        return status;
     }
     
     public static void main(String[] args) {
         CredentialManager manager = new CredentialManager();
-        //addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,int id){
-        System.out.println(manager.addCredential("host","name","port","user","123",123123));
+        //String crdid,String dbname,String dbhost,String password
+        System.out.println(manager.alterCredential("34","NEW dbname","NEW dbhost","NEW password"));
     }
  
 }
