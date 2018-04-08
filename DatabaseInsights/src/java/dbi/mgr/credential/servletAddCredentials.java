@@ -62,12 +62,16 @@ public class servletAddCredentials extends HttpServlet {
         String dbname = request.getParameter("dbname");
         String dbuser = request.getParameter("dbusername");
         String dbpwd = request.getParameter("dbpass");
+        String sid = request.getSession().getId();
+        String dbtype=request.getParameter("dbtype");
         Boolean status = false;
+        
         int dbcode = Integer.parseInt(dbscode);
         CredentialManager use=new CredentialManager();
         if(use.validiateCreditial(dbscode, dbhost, dbname, dbuser, dbpwd, dbcode)){
-            use.addCredential(dbhost, dbname, dbhost, dbuser, dbpwd, dbpwd);
-            status=true;
+            if(use.addCredential(dbhost,dbname,dbuser,dbpwd,sid,dbtype)){
+                 status=true;
+            }
         }
 
         try (PrintWriter out = response.getWriter()) {

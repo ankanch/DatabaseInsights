@@ -39,16 +39,26 @@ public class CredentialManager {
      private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    public Boolean addCredential(String dbhost,String dbname,String dbport,String dbuser,String dbpod,String id){
+    public Boolean addCredential(String dbhost,String dbname,String dbuser,String dbpawd,String userid,String dbtype){
+        /*
+          DBHOSTS IN VARCHAR2 
+        , DBNAMES IN VARCHAR2 
+        , DBUSERS IN VARCHAR2 
+        , DBPAWDS IN VARCHAR2 
+        , USERIDS IN NUMBER 
+        , DBTYPES IN NUMBER
+        */
         if (dbhelper.Connect()) {
-            dbhost=dbhost+":"+dbport;
+            
             try {
-                Object rv = dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?)", dbhost, dbname,dbuser,dbpod, id);
-                if((int)rv==1){
+                int rv = (int)dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost,dbname,dbuser,dbpawd,userid,dbtype);
+                if(rv==1){
                     System.out.println("成功创建credential");
-                }else if((int)rv==-1){
-                    System.out.println("创建失败");
+                }else if(rv==-3){
+                    System.out.println("未找到数据");
                     return false;
+                }else if(rv==-1){
+                    System.out.println("创建失败");
                 }
             } catch (Exception e) {
                  System.out.println(e);
@@ -86,6 +96,18 @@ public class CredentialManager {
                     System.out.println("凭证不存在，无法修改");
                     return false;
                 }
+            } catch (Exception e) {
+                 System.out.println(e);
+                 return false;
+            }
+        }
+        return true;
+    }
+    
+    public Boolean getCredential(){
+        if (dbhelper.Connect()) {
+            try {
+                
             } catch (Exception e) {
                  System.out.println(e);
                  return false;
