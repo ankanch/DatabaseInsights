@@ -27,6 +27,7 @@ package dbi.mgr.credential;
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import dbi.mgr.user.UserManager;
+import dbi.utils.DBIResultSet;
 import dbi.utils.GlobeVar;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -104,16 +105,16 @@ public class CredentialManager {
         return true;
     }
     
-    public Boolean getCredential(){
+    public DBIResultSet getCredential(){
+        DBIResultSet result=null;
         if (dbhelper.Connect()) {
             try {
-                
+                result=dbhelper.runSelect("*", "T_DATABASE_CERTIFICATION", "");
             } catch (Exception e) {
                  System.out.println(e);
-                 return false;
             }
         }
-        return true;
+        return result;
     }
     
     public Boolean validiateCreditial(String dbscode,String dbhost,String dbname,String dbuser,String dbpwd,int dbcode){
@@ -134,7 +135,11 @@ public class CredentialManager {
     public static void main(String[] args) {
         CredentialManager manager = new CredentialManager();
         //String crdid,String dbname,String dbhost,String password
-        System.out.println(manager.alterCredential("34","NEW dbname","NEW dbhost","NEW password"));
+        DBIResultSet a=manager.getCredential();
+        for(int i=1;i<=a.rowCount();i++){
+            System.out.println(a.getRow(i));
+        }
+            
     }
  
 }
