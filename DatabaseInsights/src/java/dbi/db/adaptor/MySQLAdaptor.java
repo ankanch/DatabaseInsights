@@ -59,7 +59,11 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     }
     
     public String generateSelect(String querys,String table,String condition){
-        return "select "+ querys+" from "+table+" where "+condition;
+        String sql="select "+ querys+" from "+table+" where "+condition;
+        if(condition == ""){
+            sql="select "+ querys+" from "+table;
+        }
+        return sql;
     }
     
     public String findPrimaryKey(String table){

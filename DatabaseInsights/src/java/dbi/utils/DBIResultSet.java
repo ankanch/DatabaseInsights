@@ -89,7 +89,8 @@ public class DBIResultSet {
     public static void main(String[] args) {
         String s[] = new String[]{"abc", "sss", "aaa", "zzz"};
         DBIResultSet a = new DBIResultSet();
-        System.out.println(a.makeRow(s));
+        a.addRow(a.makeRow(s));
+        System.out.println(a.getRow(1));
     }
 
 }
