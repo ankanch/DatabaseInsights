@@ -72,16 +72,21 @@ public class UserManager {
      */
     public Boolean checkPassword(String sid, String oldpass) {
         try {
-            String SQL = "SELECT USERID FROM T_DI_USER WHERE USESSION=''{1}'' AND PASSWORD=''{2}''";
+            String condition = " USESSION=''{0}'' AND PASSWORD=''{1}''";
             if (dbhelper.Connect()) {
-                dbhelper.runSQL(MessageFormat.format(SQL,sid,oldpass));
+                DBIResultSet re = dbhelper.runSelect("USERID",
+                                                     "T_DI_USER",
+                                                     MessageFormat.format(condition, sid,oldpass) );
+                if(re.rowCount() > 0){
+                    return true;
+                }
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
             System.out.println(e);
             return false;
         }
-        return true;
+        return false;
     }
 
     /*
@@ -166,15 +171,11 @@ public class UserManager {
     /*
     * We only allow user to change his email and password
      */
-    public Boolean alterUser(String uid, String usession, HashMap<String, String> changed_key_value) {
-        String SQL = "UPDATE T_DI_USER SET ";
-        for (String key : changed_key_value.keySet()) {
-            SQL = SQL + key + "='" + changed_key_value.get(key) + "'";
-        }
-        SQL = SQL + " WHERE USESSION='" + usession + "'";
+    public Boolean alterUser(String usession, HashMap<String, Object> changed_key_value) {
+        String condition = " USESSION='" + usession + "'";
         try {
             if (dbhelper.Connect()) {
-                dbhelper.runSQL(SQL);
+                dbhelper.runUpdate("T_DI_USER", changed_key_value, condition);
             }
             dbhelper.Disconnect();
         } catch (Exception e) {

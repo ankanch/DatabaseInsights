@@ -25,19 +25,17 @@
 package dbi.db.adaptor;
 
 import dbi.utils.DBIResultSet;
+import dbi.utils.GlobeVar;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+import java.util.HashMap;
 
 /**
  *
@@ -45,6 +43,7 @@ import javax.sql.DataSource;
  */
 public class DatabaseHelper {
 
+    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>DatabaseHelper>>";
     private DatabaseAdaptor DBAdaptor;
     private DatabaseConfig databaseConfig;
     private Connection conn;
@@ -208,6 +207,40 @@ public class DatabaseHelper {
         }
 
         return sqlResult;
+    }
+
+    public boolean runUpdate(String table, HashMap<String, Object> keyValues, String condition) {
+        // make up SQL UPDATE statment
+        String SQL = "UPDATE {0} SET {1} WHERE {2}";
+        String kvstr = "";
+        for (String key : keyValues.keySet()) {
+            Object val = keyValues.get(key);
+            if (val instanceof String) {
+                kvstr += key + "='" + (String) val + "',";
+            } else if (val instanceof Integer) {
+                kvstr += key + "=" + String.valueOf((Integer) val) + ",";
+            } else if (val instanceof Boolean) {
+                kvstr += key + "=" + String.valueOf((Boolean) val) + ",";
+            }
+        }
+        kvstr = kvstr.substring(0, kvstr.length() - 1);
+        if (condition.length() < 1) {
+            // no condition provided
+            condition = " true ";
+        }
+        SQL = MessageFormat.format(SQL, table, kvstr, condition);
+        System.out.println(DEBUG_PREFIX + "runUpdate()|::SQL=" + SQL);
+        //Execute update statment
+        try {
+            Statement st = conn.createStatement();
+            st.executeUpdate(SQL);
+            st.close();
+        } catch (Exception e) {
+            System.out.println(DEBUG_PREFIX + "runUpdate()|::ERROR=" + e);
+            return false;
+        }
+
+        return true;
     }
 
     public boolean runSQL(String sql) {

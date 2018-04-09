@@ -51,6 +51,7 @@ public class GlobeVar {
     public static UserManager OBJ_MANAGER_USER = new UserManager();
     public static CredentialManager OBJ_MANAGER_CREDENTIAL = new CredentialManager();
     
+    
 }
 
 
