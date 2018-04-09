@@ -35,6 +35,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,6 +63,23 @@ public class UserManager {
                 System.out.println("ERROR:" + e.getMessage());
                 return false;
             }
+        }
+        return true;
+    }
+
+    /*
+    * Check if password is correct for given user
+     */
+    public Boolean checkPassword(String sid, String oldpass) {
+        try {
+            String SQL = "SELECT USERID FROM T_DI_USER WHERE USESSION=''{1}'' AND PASSWORD=''{2}''";
+            if (dbhelper.Connect()) {
+                dbhelper.runSQL(MessageFormat.format(SQL,sid,oldpass));
+            }
+            dbhelper.Disconnect();
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
         }
         return true;
     }
@@ -109,11 +127,13 @@ public class UserManager {
     public HashMap<String, String> getUserInfo(String session) {
         HashMap<String, String> info = new HashMap<>();
         if (dbhelper.Connect()) {
-            DBIResultSet rs = dbhelper.runSelect("USERID,USERNAME,STATUS", "T_DI_USER", "USESSION='" + session + "'");
+            DBIResultSet rs = dbhelper.runSelect("USERID,USERNAME,STATUS,LASTLOGIN,EMAIL", "T_DI_USER", "USESSION='" + session + "'");
             ArrayList<Object> row = rs.getRow(1);
             info.put("USERID", (String) row.get(0));
             info.put("USERNAME", (String) row.get(1));
             info.put("STATUS", (String) row.get(2));
+            info.put("LASTLOGIN", (String) row.get(3));
+            info.put("EMAIL", (String) row.get(4));
         }
         return info;
     }
@@ -132,7 +152,6 @@ public class UserManager {
 
     public Boolean disableUser(int userID) {
         try {
-
             if (dbhelper.Connect()) {
                 dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='" + userID + "'");
             }
@@ -144,7 +163,24 @@ public class UserManager {
         return true;
     }
 
-    public Boolean alterUser(int userID, HashMap charged_key_value) {
+    /*
+    * We only allow user to change his email and password
+     */
+    public Boolean alterUser(String uid, String usession, HashMap<String, String> changed_key_value) {
+        String SQL = "UPDATE T_DI_USER SET ";
+        for (String key : changed_key_value.keySet()) {
+            SQL = SQL + key + "='" + changed_key_value.get(key) + "'";
+        }
+        SQL = SQL + " WHERE USESSION='" + usession + "'";
+        try {
+            if (dbhelper.Connect()) {
+                dbhelper.runSQL(SQL);
+            }
+            dbhelper.Disconnect();
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
         return true;
     }
 

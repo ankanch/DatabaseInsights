@@ -54,7 +54,15 @@ public class servletUpdateUserinfo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         Boolean status = false;
-        String para = request.getParameter("paraname");
+        String  typex = request.getParameter("typex");
+        String  email = request.getParameter("email");
+        String  oldpwd = request.getParameter("opwd");
+        String  newpwd = request.getParameter("npwd");
+        if(typex == "email"){
+            
+        }else if(typex == "pwd"){
+            
+        }
 
        
 
