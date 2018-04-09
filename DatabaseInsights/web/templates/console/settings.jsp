@@ -10,7 +10,7 @@
 <%
     UserManager um1 = new UserManager();
     HashMap<String, String> hm = um1.getUserInfo(session.getId());
-
+    
 %>
 <div id="settings">
     <h2>Settings</h2>

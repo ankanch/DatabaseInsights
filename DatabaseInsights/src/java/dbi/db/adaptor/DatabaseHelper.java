@@ -66,8 +66,7 @@ public class DatabaseHelper {
                 Class.forName(databaseConfig.getDriver());
                 conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
             } catch (Exception e) {
-                System.err.println("错误：无法从数据库中读取数据，可能是网络问题或者驱动问题。");
-                System.err.println(e.getMessage());
+                System.err.println(DEBUG_PREFIX + "Connect()|::ERROR=" + e);
                 return false;
             }
         }
@@ -80,7 +79,7 @@ public class DatabaseHelper {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("error");
+            //System.out.println(DEBUG_PREFIX + "checkConnection()|::ERROR=" + e);
             return false;
         }
         return true;
@@ -90,7 +89,7 @@ public class DatabaseHelper {
         try {
             conn.close();
         } catch (Exception e) {
-            System.out.println("error");
+            System.out.println(DEBUG_PREFIX + "Disconnect()|::ERROR=" + e);
         }
     }
 
@@ -111,7 +110,7 @@ public class DatabaseHelper {
 
             st.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "getTables()|::ERROR=" + e);
         }
         return tables;
     }
@@ -133,7 +132,7 @@ public class DatabaseHelper {
 
             st.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "getColumns()|::ERROR=" + e);
         }
         return columns;
     }
@@ -175,7 +174,7 @@ public class DatabaseHelper {
             }
             st.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "getAllColumnSpecies()|::ERROR=" + e);
         }
         return species;
     }
@@ -191,9 +190,10 @@ public class DatabaseHelper {
         DBIResultSet sqlResult = new DBIResultSet();
         try {
             Statement st = conn.createStatement();
+            String sql = DBAdaptor.generateSelect(querys, table, condition);
             // 执行数据库语句
-            System.out.println(DBAdaptor.generateSelect(querys, table, condition));
-            ResultSet rs = st.executeQuery(DBAdaptor.generateSelect(querys, table, condition));
+            System.out.println(DEBUG_PREFIX + "runSelect()|::SQL=" + sql);
+            ResultSet rs = st.executeQuery(sql);
             // 遍历获取结果
             while (rs.next()) {
                 for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
@@ -203,7 +203,7 @@ public class DatabaseHelper {
             }
             st.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "runSelect()|::ERROR=" + e);
         }
 
         return sqlResult;
@@ -239,7 +239,6 @@ public class DatabaseHelper {
             System.out.println(DEBUG_PREFIX + "runUpdate()|::ERROR=" + e);
             return false;
         }
-
         return true;
     }
 
@@ -247,10 +246,10 @@ public class DatabaseHelper {
         try {
             Statement st = conn.createStatement();
             st.executeUpdate(sql);
-            conn.commit();
+            //conn.commit();
             st.close();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "runSQL()|::ERROR=" + e);
             return false;
         }
         return true;
@@ -260,7 +259,7 @@ public class DatabaseHelper {
      * INPUT Example: (myfunction(?,?,?),param_1,param_2,param_3) RETURNS: int
      */
     public int executeOracleFunction(String funcDef, String... params) throws SQLException {
-
+        
         String query = "{? = call @funcDef@}".replace("@funcDef@", funcDef);
         CallableStatement statement = conn.prepareCall(query);
         statement.registerOutParameter(1, Types.INTEGER);

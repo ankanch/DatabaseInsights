@@ -29,12 +29,9 @@ import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import dbi.utils.DBIResultSet;
 import dbi.utils.GlobeVar;
+import dbi.utils.stringTranslator;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +42,7 @@ import java.util.HashMap;
  */
 public class UserManager {
 
+    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>UserManager>>";
     private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
@@ -60,9 +58,11 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println("ERROR:" + e.getMessage());
+                System.out.println(DEBUG_PREFIX + "validateSession()|::ERROR=" + e);
                 return false;
             }
+        } else {
+            return false;
         }
         return true;
     }
@@ -75,15 +75,15 @@ public class UserManager {
             String condition = " USESSION=''{0}'' AND PASSWORD=''{1}''";
             if (dbhelper.Connect()) {
                 DBIResultSet re = dbhelper.runSelect("USERID",
-                                                     "T_DI_USER",
-                                                     MessageFormat.format(condition, sid,oldpass) );
-                if(re.rowCount() > 0){
+                        "T_DI_USER",
+                        MessageFormat.format(condition, sid, oldpass));
+                if (re.rowCount() > 0) {
                     return true;
                 }
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(DEBUG_PREFIX + "checkPassword()|::ERROR=" + e);
             return false;
         }
         return false;
@@ -101,9 +101,11 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println("ERROR:" + e.getMessage());
+                System.out.println(DEBUG_PREFIX + "loginUser()|::ERROR=" + e);
                 return false;
             }
+        } else {
+            return false;
         }
         return true;
     }
@@ -119,9 +121,11 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println("ERROR:" + e.getMessage());
+                System.out.println(DEBUG_PREFIX + "registerUser()|::ERROR=" + e);
                 return false;
             }
+        } else {
+            return false;
         }
         return true;
     }
@@ -136,36 +140,44 @@ public class UserManager {
             ArrayList<Object> row = rs.getRow(1);
             info.put("USERID", (String) row.get(0));
             info.put("USERNAME", (String) row.get(1));
-            info.put("STATUS", (String) row.get(2));
+            info.put("STATUS", stringTranslator.translateUserStatusCode(Integer.valueOf((String) row.get(2))));
             info.put("LASTLOGIN", (String) row.get(3));
             info.put("EMAIL", (String) row.get(4));
         }
         return info;
     }
 
+    /*
+    * sign out a user by clear current session id of the user.
+     */
     public Boolean signoutUser(String session) {
         try {
             if (dbhelper.Connect()) {
-                dbhelper.runSQL("UPDATE T_DI_USER SET USESSION='' WHERE USESSION='" + session + "'");
+                if (dbhelper.runSQL("UPDATE T_DI_USER SET USESSION='' WHERE USESSION='" + session + "'")) {
+                    return true;
+                }
             }
         } catch (Exception e) {
-            System.out.println(e);
-            return false;
+            System.out.println(DEBUG_PREFIX + "signoutUser()|::ERROR=" + e);
         }
-        return true;
+        return false;
     }
 
-    public Boolean disableUser(int userID) {
+    public Boolean disableUser(int usession) {
         try {
             if (dbhelper.Connect()) {
-                dbhelper.runSQL("update T_DI_USER set STATUS=0 where USERID='" + userID + "'");
+                String condition = "USESSION='" + usession + "'";
+                HashMap<String, Object> kvs = new HashMap<>();
+                kvs.put("STATUS", -100);
+                if (dbhelper.runUpdate("T_DI_USER", kvs, condition)) {
+                    return true;
+                }
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(e);
-            return false;
+            System.out.println(DEBUG_PREFIX + "alterUser()|::ERROR=" + e);
         }
-        return true;
+        return false;
     }
 
     /*
@@ -175,14 +187,15 @@ public class UserManager {
         String condition = " USESSION='" + usession + "'";
         try {
             if (dbhelper.Connect()) {
-                dbhelper.runUpdate("T_DI_USER", changed_key_value, condition);
+                if (dbhelper.runUpdate("T_DI_USER", changed_key_value, condition)) {
+                    return true;
+                }
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(e);
-            return false;
+            System.out.println(DEBUG_PREFIX + "alterUser()|::ERROR=" + e);
         }
-        return true;
+        return false;
     }
 
     public static void main(String[] args) {
