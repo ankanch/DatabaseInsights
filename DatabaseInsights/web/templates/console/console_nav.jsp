@@ -9,7 +9,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     UserManager um1 = new UserManager();
-    HashMap<String, String> hm = um1.getUserInfo(session.getId());
+    HashMap<String, String> hm = um1.getUserInfo(um1.detectLang(request),session.getId());
 
 %>
 <nav class="navbar navbar-dark bg-primary navbar-expand-lg  fixed-top">

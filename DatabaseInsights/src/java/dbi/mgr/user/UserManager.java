@@ -27,6 +27,7 @@ package dbi.mgr.user;
 
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
+import dbi.localization.lang;
 import dbi.utils.DBIResultSet;
 import dbi.utils.GlobeVar;
 import dbi.utils.stringTranslator;
@@ -35,6 +36,8 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -133,14 +136,14 @@ public class UserManager {
     /*
     * This function used to get user info, for render some part of console
      */
-    public HashMap<String, String> getUserInfo(String session) {
+    public HashMap<String, String> getUserInfo(lang local,String session) {
         HashMap<String, String> info = new HashMap<>();
         if (dbhelper.Connect()) {
             DBIResultSet rs = dbhelper.runSelect("USERID,USERNAME,STATUS,LASTLOGIN,EMAIL", "T_DI_USER", "USESSION='" + session + "'");
             ArrayList<Object> row = rs.getRow(1);
             info.put("USERID", (String) row.get(0));
             info.put("USERNAME", (String) row.get(1));
-            info.put("STATUS", stringTranslator.translateUserStatusCode(Integer.valueOf((String) row.get(2))));
+            info.put("STATUS", stringTranslator.translateUserStatusCode(local,Integer.valueOf((String) row.get(2))));
             info.put("LASTLOGIN", (String) row.get(3));
             info.put("EMAIL", (String) row.get(4));
         }
@@ -196,6 +199,20 @@ public class UserManager {
             System.out.println(DEBUG_PREFIX + "alterUser()|::ERROR=" + e);
         }
         return false;
+    }
+    
+    /*
+    * This function can detect user local then return corresponding localization language obj
+    * from GlobeVar
+    */
+    public lang detectLang(HttpServletRequest request){
+        String local = request.getLocale().toString();
+        if(local.equals("en_US")){
+            return GlobeVar.OBJ_LOCALIZATION_ENGLISH;
+        }else if(local.equals("zh_CN")){
+            return GlobeVar.OBJ_LOCALIZATION_CHINESE;
+        }
+        return null;
     }
 
     public static void main(String[] args) {

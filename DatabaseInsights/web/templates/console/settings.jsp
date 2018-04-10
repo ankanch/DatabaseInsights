@@ -9,14 +9,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     UserManager um1 = new UserManager();
-    HashMap<String, String> hm = um1.getUserInfo(session.getId());
+    HashMap<String, String> hm = um1.getUserInfo(um1.detectLang(request),session.getId());
     
 %>
 <div id="settings">
     <h2>Settings</h2>
     <div class="card mb-3 pl-5 pr-5">
         <div class="card-body pl-5 pr-5">
-            <p>Account Registed on: April 22 2017</p>
+            <p>Account Registed on: April 22 2017<%= request.getLocale() %></p>
             <p>Account Status: <%=hm.get("STATUS")%></p>
             <p>Last Login: <%=hm.get("LASTLOGIN")%></p>
         </div>

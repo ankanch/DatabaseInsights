@@ -58,7 +58,7 @@ public class servletLogin extends HttpServlet {
         String username = request.getParameter("username");
         String sid = request.getSession().getId();
 
-        UserManager um = new UserManager();
+        UserManager um = GlobeVar.OBJ_MANAGER_USER;
         if (um.loginInUser(username, password,sid)) {
             status = true;
             Cookie cookie = new Cookie("uname",username);

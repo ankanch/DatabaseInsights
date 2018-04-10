@@ -24,7 +24,7 @@
         <%@ include file="templates/console/console_nav.jsp" %>
         <div class="container-fluid">
             <div class="row">
-                <%@ include file="templates/console/console_nav_side.html" %>
+                <%@ include file="templates/console/console_nav_side.jsp" %>
 
                 <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3 bg-light">
                     <div id="dbimc" style="padding-bottom:70px;">

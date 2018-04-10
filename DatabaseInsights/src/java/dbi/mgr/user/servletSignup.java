@@ -58,7 +58,7 @@ public class servletSignup extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         
-        UserManager um = new UserManager();
+        UserManager um = GlobeVar.OBJ_MANAGER_USER;
         if( um.registerUser(username, password, email) ){
             status = true;
         }

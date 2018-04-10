@@ -23,43 +23,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package dbi.utils;
+package dbi.localization;
 
-import dbi.localization.lang;
-import dbi.localization.langChinese;
-import dbi.localization.langID;
-import dbi.mgr.user.UserManager;
-
-/**
- *
+/** <h3>Base Language Pack</h3>
+ * This class is used for localization
+ * There are two type of string here, one for debug, the other for user interface
  * @author kanch
  */
-public class stringTranslator {
-
-    private static lang localization = null;
-
-    /*
-    * convert user status to text based on status code
-     */
-    public static String translateUserStatusCode(lang local, int code) {
-        switch (code) {
-            case 1:
-                return local.getString(langID.USER_STATUS_UNVERFIED);//"Unverfied";
-            case 0:
-                return local.getString(langID.USER_STATUS_NORMAL);//"Normal";
-            case -1:
-                return local.getString(langID.USER_STATUS_RESTRICTED);//"Restricted";
-        }
-        return local.getString(langID.USER_STATUS_UNKNOW);//"Unknow";
-    }
+public class lang {
     
-
-    public static void main(String[] args) {
-        lang l = null;
-        l = GlobeVar.OBJ_LOCALIZATION_CHINESE;
-        System.out.println("base lang point Chinese=" + l.getString(langID.USER_STATUS_NORMAL));
-        l = GlobeVar.OBJ_LOCALIZATION_ENGLISH;
-        System.out.println("base lang point English=" + l.getString(langID.USER_STATUS_NORMAL));
-        //System.out.println(manager.validateUser("vicky", "123"));
+    /*
+    * function to get localization language by ID
+    */
+    public String getString(final int id){
+        return "Please Call From Subclass";
     }
 }
