@@ -194,7 +194,7 @@ public class DatabaseHelper {
             // 执行数据库语句
             System.out.println(DEBUG_PREFIX + "runSelect()|::SQL=" + sql);
             ResultSet rs = st.executeQuery(sql);
-            // 遍历获取结果
+            // 遍历获取结果z
             while (rs.next()) {
                 for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                     sqlResult.addToRow(rs.getString(i + 1));
@@ -204,6 +204,35 @@ public class DatabaseHelper {
             st.close();
         } catch (Exception e) {
             System.out.println(DEBUG_PREFIX + "runSelect()|::ERROR=" + e);
+        }
+
+        return sqlResult;
+    }
+    
+    public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions){
+        String table=tables[0];
+        for(int i=1;i<tables.length-1;i++){
+            table=table+",";
+        }
+        table=table+tables[tables.length-1];
+        String sql="select "+querys+" from "+table+" where "+joinconditions;
+        
+        DBIResultSet sqlResult = new DBIResultSet();
+        try {
+            Statement st = conn.createStatement();
+            // 执行数据库语句
+            System.out.println(DEBUG_PREFIX + "runJoinSelect()|::SQL=" + sql);
+            ResultSet rs = st.executeQuery(sql);
+            // 遍历获取结果
+            while (rs.next()) {
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    sqlResult.addToRow(rs.getString(i + 1));
+                }
+                sqlResult.finishRow();
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println(DEBUG_PREFIX + "runJoinSelect()|::ERROR=" + e);
         }
 
         return sqlResult;
