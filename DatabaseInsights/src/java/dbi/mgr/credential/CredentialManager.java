@@ -1,3 +1,4 @@
+
 /*
  * The MIT License
  *
@@ -24,6 +25,7 @@
  */
 package dbi.mgr.credential;
 
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import dbi.mgr.user.UserManager;
@@ -41,14 +43,6 @@ public class CredentialManager {
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
     public Boolean addCredential(String dbhost,String dbname,String dbuser,String dbpawd,String userid,String dbtype){
-        /*
-          DBHOSTS IN VARCHAR2 
-        , DBNAMES IN VARCHAR2 
-        , DBUSERS IN VARCHAR2 
-        , DBPAWDS IN VARCHAR2 
-        , USERIDS IN NUMBER 
-        , DBTYPES IN NUMBER
-        */
         if (dbhelper.Connect()) {
             
             try {
@@ -105,15 +99,19 @@ public class CredentialManager {
         return true;
     }
     
-    public DBIResultSet getCredential(){
+    public DBIResultSet getCredential(String sid){
         DBIResultSet result=null;
+        String id=null;
+        
         if (dbhelper.Connect()) {
             try {
-                result=dbhelper.runSelect("*", "T_DATABASE_CERTIFICATION", "");
+                result=dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
+                        "T_DATABASE_INFO.did=T_DATABASE_CERTIFICATION.did and T_DI_USER.USERID=T_DATABASE_INFO.USERID and usession='"+sid+"'");
             } catch (Exception e) {
                  System.out.println(e);
             }
         }
+        
         return result;
     }
     
@@ -133,13 +131,9 @@ public class CredentialManager {
     }
     
     public static void main(String[] args) {
-        CredentialManager manager = new CredentialManager();
-        //String crdid,String dbname,String dbhost,String password
-        DBIResultSet a=manager.getCredential();
-        for(int i=1;i<=a.rowCount();i++){
-            System.out.println(a.getRow(i));
-        }
-            
+        CredentialManager a=new CredentialManager();
+        DBIResultSet q=a.getCredential("130E766D6D8A3C937289C2222F78A795");
+        
     }
  
 }

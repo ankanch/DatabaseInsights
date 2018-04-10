@@ -4,14 +4,18 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.utils.DBIResultSet"%>
+<%@page import="dbi.mgr.credential.CredentialManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="credential" class="dbi.mgr.credential.CredentialBean" scope="page"/>
+<jsp:setProperty name="credential" property="sessionID" value="<%=request.getSession().getId()%>"/>
 <div id="credentials">
     <h2>Credentials</h2>
     <div class="card">
         <div class="progress-line" id="progressbar"></div>
         <div class="card-body" id="credentialscard">
             <div class="row">
-                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"> 1 </span> database credentials in total.</p></div>
+                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"> <jsp:getProperty name="credential" property="dbaccount" /> </span> database credentials in total.</p></div>
                 <div class="col-md-2">
                     <div class="bmd-form-group console-vc">
                         <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modal_add_credentials">Add Credentials</button>
@@ -26,7 +30,7 @@
                         <button type="submit" class="btn btn-primary">Search</button>
                     </span>
                 </form>
-            </div
+            </div>
             <%@ include file="../dialogs/console_add_credentials.html" %>
             <hr>
             <table class="table table-striped">
@@ -40,27 +44,8 @@
                         <th scope="col">Operations</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr id="credtable_row_1">
-                        <th scope="row" style="vertical-align: inherit;">1</th>
-                        <td style="vertical-align: inherit;padding: 0rem;">
-                            <input id="credtable_row_1_col_1" class="console-table-input" type="text" name="dbname" disabled="disabled">
-                        </td>
-                        <td style="vertical-align: inherit;padding: 0rem;">
-                            <input id="credtable_row_1_col_2" class="console-table-input" type="text" name="dbhost" disabled="disabled">
-                        </td>
-                        <td style="vertical-align: inherit;padding: 0rem;">
-                            <input id="credtable_row_1_col_3" class="console-table-input" type="text" name="dbaccount" disabled="disabled">
-                        </td>
-                        <td style="vertical-align: inherit;padding: 0rem;">
-                            <input id="credtable_row_1_col_4" class="console-table-input" type="password" name="dbpassword" disabled="disabled">
-                        </td>
-                        <td>
-                            <button id="credtable_row_1_edit" type="button" class="btn btn-secondary" onclick="edit(1)">Edit</button>
-                            <button id="credtable_row_1_save" type="button" class="btn btn-success" onclick="save(1)" style="display: none;">Save</button>
-                            <button type="button" class="btn btn-danger" onclick="del(1)">Delete</button>
-                        </td>
-                    </tr>
+                <tbody>                    
+                    <jsp:getProperty name="credential" property="certifications" />
                 </tbody>
             </table>
             <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert_no_credentials">
