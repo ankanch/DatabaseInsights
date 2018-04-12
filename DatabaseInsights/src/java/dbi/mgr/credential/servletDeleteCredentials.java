@@ -56,7 +56,12 @@ public class servletDeleteCredentials extends HttpServlet {
         Boolean status = false;
         String para = request.getParameter("paraname");
 
-       
+        String cid=request.getParameter("cid");
+        CredentialManager manager=new CredentialManager();
+        System.out.println(cid);
+        if(manager.deleteCredential(cid)){
+            status=true;
+        }
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */

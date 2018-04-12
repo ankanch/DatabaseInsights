@@ -40,6 +40,7 @@ public class CredentialBean {
     private String dbpassword = null;
     private String sessionID = null;
     private String certifications = null;
+    private DBIResultSet dbresult;
 
     public CredentialBean() {
     }
@@ -54,6 +55,16 @@ public class CredentialBean {
 
     public void setDbname(String dbname) {
         this.dbname = dbname;
+    }
+    
+    public void setDbresult(DBIResultSet dbresult){
+        this.dbresult=dbresult;
+    }
+    
+    public DBIResultSet getDbresult(){
+        DBIResultSet re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
+        dbresult=re;
+        return dbresult;
     }
 
     public String getCertifications() {
@@ -78,9 +89,9 @@ public class CredentialBean {
                 + "                        </td>"
                 + "                   </tr>";
         
-        DBIResultSet re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
-        for(int i=1;i<=re.rowCount();i++){
-            certifications += MessageFormat.format(rowtemp, i,i,re.getRow(i).get(0),re.getRow(i).get(1),"",re.getRow(i).get(2));
+        
+        for(int i=1;i<=dbresult.rowCount();i++){
+            certifications += MessageFormat.format(rowtemp, dbresult.getRow(i).get(3),i,dbresult.getRow(i).get(0),dbresult.getRow(i).get(1),"",dbresult.getRow(i).get(2));
         }
         return certifications;
     }
@@ -94,8 +105,7 @@ public class CredentialBean {
     }
     
     public int getDbaccount() {
-        DBIResultSet re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
-        return re.rowCount();
+        return dbresult.rowCount();
     }
 
     public void setDbpassword(String dbpassword) {

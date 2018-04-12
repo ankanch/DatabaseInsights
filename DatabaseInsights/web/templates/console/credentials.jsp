@@ -9,13 +9,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="credential" class="dbi.mgr.credential.CredentialBean" scope="page"/>
 <jsp:setProperty name="credential" property="sessionID" value="<%=request.getSession().getId()%>"/>
+<jsp:getProperty name="credential" property="dbresult" /> 
 <div id="credentials">
     <h2>Credentials</h2>
     <div class="card">
         <div class="progress-line" id="progressbar"></div>
         <div class="card-body" id="credentialscard">
             <div class="row">
-                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"> <jsp:getProperty name="credential" property="dbaccount" /> </span> database credentials in total.</p></div>
+                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"><jsp:getProperty name="credential" property="dbaccount" /> </span> database credentials in total.</p></div>
                 <div class="col-md-2">
                     <div class="bmd-form-group console-vc">
                         <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modal_add_credentials">Add Credentials</button>
@@ -64,8 +65,8 @@
 
     function edit(row) {
         var inputprefix = "credtable_row_" + row + "_col_";
-        $("#credtable_row_1_edit").hide();
-        $("#credtable_row_1_save").show();
+        $("#credtable_row_"+row+"_edit").hide();
+        $("#credtable_row_"+row+"_save").show();
         $("#" + inputprefix + "1").removeAttr('disabled');
         $("#" + inputprefix + "2").removeAttr('disabled');
         $("#" + inputprefix + "3").removeAttr('disabled');
@@ -74,9 +75,12 @@
 
     function save(row) {
         $("#progressbar").show();
-        var inputprefix = "credtable_row_" + row + "_col_";
+        
+        var dbhost = $("#credtable_row_" + row + "_col_2").val();
+        var dbname = $("#credtable_row_" + row + "_col_1").val();
+        var dbpwd = $("#credtable_row_" + row + "_col_4").val();
         //send updates to server
-        SubmitFormF("/api/updateCredential", {dbhost: "", dbname: "", dbuser: "", dbpwd: ""}, function error() {
+        SubmitFormKVF("/api/updateCredential", {cid:row,dbhost: dbhost, dbname: dbname,dbpwd: dbpwd}, function error() {
             showMsg("Failed to update,please try again later.");
         }, function success() {
             showMsg("Update successfully!");
@@ -93,7 +97,7 @@
     function del(row) {
         $("#progressbar").show();
         //send updates to server
-        SubmitFormF("/api/deleteCredentials", {dbhost: "", dbname: "", dbuser: ""}, function error() {
+        SubmitFormKVF("/api/deleteCredentials", {cid: row}, function error() {
             showMsg("Failed to delete,please try again later.");
         }, function success() {
             showMsg("Credential has been deleted.");

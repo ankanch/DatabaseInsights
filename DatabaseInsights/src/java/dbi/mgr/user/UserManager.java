@@ -143,6 +143,7 @@ public class UserManager {
             ArrayList<Object> row = rs.getRow(1);
             info.put("USERID", (String) row.get(0));
             info.put("USERNAME", (String) row.get(1));
+            System.out.println(DEBUG_PREFIX + "registerUser()|::INFO>>(String) row.get(2) =" + (String) row.get(2));
             info.put("STATUS", stringTranslator.translateUserStatusCode(local,Integer.valueOf((String) row.get(2))));
             info.put("LASTLOGIN", (String) row.get(3));
             info.put("EMAIL", (String) row.get(4));

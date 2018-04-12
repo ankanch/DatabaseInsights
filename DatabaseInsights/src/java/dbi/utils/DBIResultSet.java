@@ -34,7 +34,7 @@ public class DBIResultSet {
 
     private ArrayList<ArrayList<Object>> rs;
     private static ArrayList<Object> srow = new ArrayList<>();
-    private Boolean rowCompleted = false;
+    private static Boolean rowCompleted = false;
 
     public DBIResultSet() {
         rs = new ArrayList<>();
@@ -58,7 +58,7 @@ public class DBIResultSet {
     public ArrayList<Object> finishRow(){
         rowCompleted = true;
         rs.add(srow);
-        return (ArrayList<Object>) srow.clone();
+        return (ArrayList<Object>)srow;
     }
 
     public ArrayList<Object> makeRow(Object... row) {
@@ -66,7 +66,7 @@ public class DBIResultSet {
         for (Object obj : row) {
             srow.add(obj);
         }
-        return (ArrayList<Object>) srow.clone();
+        return new ArrayList(srow);
     }
 
     public ArrayList<ArrayList<Object>> addRow(ArrayList<Object> row) {

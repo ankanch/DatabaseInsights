@@ -194,7 +194,7 @@ public class DatabaseHelper {
             // 执行数据库语句
             System.out.println(DEBUG_PREFIX + "runSelect()|::SQL=" + sql);
             ResultSet rs = st.executeQuery(sql);
-            // 遍历获取结果z
+            // 遍历获取结果
             while (rs.next()) {
                 for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                     sqlResult.addToRow(rs.getString(i + 1));
@@ -306,9 +306,11 @@ public class DatabaseHelper {
         DatabaseHelper test = new DatabaseHelper(a);
         test.Connect();
         try {
-            Object rv = test.executeOracleFunction("F_CREATE_USER(?,?,?)", "'TEST_P'", "'TEST_P'", "'TEST_P'");
-            System.out.println((int) rv);
-        } catch (SQLException e) {
+            DBIResultSet result=test.runSelect("*", "T_DI_USER", "");
+            System.out.println(result.getRow(1));
+             System.out.println(result.getRow(2));
+              System.out.println(result.getRow(3));
+        } catch (Exception e) {
             System.out.println(e);
         }
     }

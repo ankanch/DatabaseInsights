@@ -39,6 +39,7 @@ import java.sql.SQLException;
  * @author Miss Zhang
  */
 public class CredentialManager {
+    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>CredentialManager>>";
      private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
@@ -82,6 +83,7 @@ public class CredentialManager {
         return true;
     }
     public Boolean alterCredential(String crdid,String dbname,String dbhost,String password){
+        System.out.println(DEBUG_PREFIX + "alterCredential()|::INFO>>crdid:"+crdid+",dbname:"+dbname+",dbhost:"+dbhost+",password:"+password);
         if (dbhelper.Connect()) {
             try {
                 Object rv = dbhelper.executeOracleFunction("F_ALTER_CREDENTIAL(?,?,?,?)", crdid,dbname,dbhost,password);
@@ -105,10 +107,14 @@ public class CredentialManager {
         
         if (dbhelper.Connect()) {
             try {
-                result=dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
+                result=dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password,cid", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
                         "T_DATABASE_INFO.did=T_DATABASE_CERTIFICATION.did and T_DI_USER.USERID=T_DATABASE_INFO.USERID and usession='"+sid+"'");
+                System.out.println(DEBUG_PREFIX + "getCredential()|::INFO>>result.rowCount():"+result.rowCount()); 
+                for(int i=0;i<result.rowCount();i++){
+                    System.out.println(DEBUG_PREFIX + "getCredential()|::INFO>>reslt:"+result.getRow(i)); 
+                }
             } catch (Exception e) {
-                 System.out.println(e);
+                 System.out.println(DEBUG_PREFIX + "getCredential()|::ERROR>>error:"+e);
             }
         }
         
@@ -132,8 +138,9 @@ public class CredentialManager {
     
     public static void main(String[] args) {
         CredentialManager a=new CredentialManager();
-        DBIResultSet q=a.getCredential("130E766D6D8A3C937289C2222F78A795");
-        
+        DBIResultSet q=a.getCredential("8844239157E89865A7F20DC17323C441");
+        System.out.println(q.getRow(1));
+        System.out.println(q.getRow(2));
     }
  
 }

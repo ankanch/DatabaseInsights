@@ -55,8 +55,16 @@ public class servletUpdateCredential extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         Boolean status = false;
         String para = request.getParameter("paraname");
-
-       
+        
+        CredentialManager manager=new CredentialManager();
+        String crdid=request.getParameter("cid");
+        String dbhost = request.getParameter("dbhost");
+        String dbname = request.getParameter("dbname");
+        String password = request.getParameter("dbpwd");
+        
+        if(manager.alterCredential(crdid,dbname,dbhost,password)){
+                 status=true;
+         }
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
