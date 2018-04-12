@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * *** Copyright © ChengShiyi (Miss Zhang)
+ * *** Copyright © Long Zhang(kanch) , ChengShiyi (Miss Zhang) 
  * *** Code created on  三月 11 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,10 +34,8 @@ import java.util.ArrayList;
  */
 public class DBIResultSet {
 
-    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>DBIResultSet>>";
     private ArrayList<ArrayList<Object>> rs;
     private ArrayList<Object> srow = new ArrayList<>();
-    private Boolean rowCompleted = false;
 
     public DBIResultSet() {
         rs = new ArrayList<>();
@@ -56,7 +54,7 @@ public class DBIResultSet {
                 finishRow();
             }
         } catch (SQLException e) {
-            System.out.println(DEBUG_PREFIX + "DBIResultSet(ResultSet rs)|::ERROR=" + e);
+            Debug.error(e.getMessage());
         }
     }
 
@@ -64,10 +62,6 @@ public class DBIResultSet {
     * add current data to one temporery row
      */
     public final void addToRow(Object data) {
-        if (rowCompleted) {
-            srow.clear();
-            rowCompleted = false;
-        }
         srow.add(data);
     }
 
@@ -76,9 +70,9 @@ public class DBIResultSet {
     * then add it to the table rs
      */
     public final ArrayList<Object> finishRow() {
-        rowCompleted = true;
-        ArrayList<Object> newrow =  new  ArrayList<>(srow);
-        rs.add( newrow );
+        ArrayList<Object> newrow = new ArrayList<>(srow);
+        rs.add(newrow);
+        srow.clear();
         return newrow;
     }
 

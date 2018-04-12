@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * **** Copyright © ChengShiyi.
+ * **** Copyright © Long Zhang(kanch) , ChengShiyi.
  * **** Code created on Mar 01 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@
 package dbi.db.adaptor;
 
 import dbi.utils.DBIResultSet;
-import dbi.utils.GlobeVar;
+import dbi.utils.Debug;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,7 +43,6 @@ import java.util.HashMap;
  */
 public class DatabaseHelper {
 
-    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>DatabaseHelper>>";
     private DatabaseAdaptor DBAdaptor;
     private DatabaseConfig databaseConfig;
     private Connection conn;
@@ -66,7 +65,7 @@ public class DatabaseHelper {
                 Class.forName(databaseConfig.getDriver());
                 conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
             } catch (Exception e) {
-                System.err.println(DEBUG_PREFIX + "Connect()|::ERROR=" + e);
+                Debug.error(e);
                 return false;
             }
         }
@@ -79,7 +78,7 @@ public class DatabaseHelper {
                 return false;
             }
         } catch (Exception e) {
-            //System.out.println(DEBUG_PREFIX + "checkConnection()|::ERROR=" + e);
+            //Debug.error(e);
             return false;
         }
         return true;
@@ -89,7 +88,7 @@ public class DatabaseHelper {
         try {
             conn.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "Disconnect()|::ERROR=" + e);
+            Debug.error(e);
         }
     }
 
@@ -110,7 +109,7 @@ public class DatabaseHelper {
 
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "getTables()|::ERROR=" + e);
+            Debug.error(e);
         }
         return tables;
     }
@@ -132,7 +131,7 @@ public class DatabaseHelper {
 
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "getColumns()|::ERROR=" + e);
+            Debug.error(e);
         }
         return columns;
     }
@@ -174,7 +173,7 @@ public class DatabaseHelper {
             }
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "getAllColumnSpecies()|::ERROR=" + e);
+            Debug.error(e);
         }
         return species;
     }
@@ -192,29 +191,29 @@ public class DatabaseHelper {
             Statement st = conn.createStatement();
             String sql = DBAdaptor.generateSelect(querys, table, condition);
             // 执行数据库语句
-            System.out.println(DEBUG_PREFIX + "runSelect()|::SQL=" + sql);
+            Debug.log("SQL=", sql);
             sqlResult = new DBIResultSet(st.executeQuery(sql));
             st.close();
         } catch (SQLException e) {
-            System.out.println(DEBUG_PREFIX + "runSelect()|::ERROR=" + e);
+            Debug.error(e);
         }
 
         return sqlResult;
     }
-    
-    public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions){
-        String table=tables[0];
-        for(int i=1;i<tables.length-1;i++){
-            table=table+",";
+
+    public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
+        String table = tables[0];
+        for (int i = 1; i < tables.length - 1; i++) {
+            table = table + ",";
         }
-        table=table+tables[tables.length-1];
-        String sql="select "+querys+" from "+table+" where "+joinconditions;
-        
+        table = table + tables[tables.length - 1];
+        String sql = "select " + querys + " from " + table + " where " + joinconditions;
+
         DBIResultSet sqlResult = new DBIResultSet();
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
-            System.out.println(DEBUG_PREFIX + "runJoinSelect()|::SQL=" + sql);
+            Debug.log("SQL=", sql);
             ResultSet rs = st.executeQuery(sql);
             // 遍历获取结果
             while (rs.next()) {
@@ -225,7 +224,7 @@ public class DatabaseHelper {
             }
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "runJoinSelect()|::ERROR=" + e);
+            Debug.error(e);
         }
 
         return sqlResult;
@@ -251,14 +250,14 @@ public class DatabaseHelper {
             condition = " true ";
         }
         SQL = MessageFormat.format(SQL, table, kvstr, condition);
-        System.out.println(DEBUG_PREFIX + "runUpdate()|::SQL=" + SQL);
+        Debug.log("SQL=", SQL);
         //Execute update statment
         try {
             Statement st = conn.createStatement();
             st.executeUpdate(SQL);
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "runUpdate()|::ERROR=" + e);
+            Debug.error(e);
             return false;
         }
         return true;
@@ -271,7 +270,7 @@ public class DatabaseHelper {
             //conn.commit();
             st.close();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "runSQL()|::ERROR=" + e);
+            Debug.error(e);
             return false;
         }
         return true;
@@ -281,7 +280,7 @@ public class DatabaseHelper {
      * INPUT Example: (myfunction(?,?,?),param_1,param_2,param_3) RETURNS: int
      */
     public int executeOracleFunction(String funcDef, String... params) throws SQLException {
-        
+
         String query = "{? = call @funcDef@}".replace("@funcDef@", funcDef);
         CallableStatement statement = conn.prepareCall(query);
         statement.registerOutParameter(1, Types.INTEGER);
@@ -299,10 +298,10 @@ public class DatabaseHelper {
         DatabaseHelper test = new DatabaseHelper(a);
         test.Connect();
         try {
-            DBIResultSet result=test.runSelect("*", "T_DI_USER", "");
+            DBIResultSet result = test.runSelect("*", "T_DI_USER", "");
             System.out.println(result.getRow(1));
-             System.out.println(result.getRow(2));
-              System.out.println(result.getRow(3));
+            System.out.println(result.getRow(2));
+            System.out.println(result.getRow(3));
         } catch (Exception e) {
             System.out.println(e);
         }

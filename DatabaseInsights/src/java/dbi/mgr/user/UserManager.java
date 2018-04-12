@@ -29,6 +29,7 @@ import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import dbi.localization.lang;
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import dbi.utils.stringTranslator;
 import java.sql.Connection;
@@ -36,7 +37,6 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class UserManager {
 
-    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>UserManager>>";
     private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
@@ -61,7 +60,7 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println(DEBUG_PREFIX + "validateSession()|::ERROR=" + e);
+                Debug.error(e.getMessage());
                 return false;
             }
         } else {
@@ -86,7 +85,7 @@ public class UserManager {
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "checkPassword()|::ERROR=" + e);
+            Debug.error(e.getMessage());
             return false;
         }
         return false;
@@ -104,7 +103,7 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println(DEBUG_PREFIX + "loginUser()|::ERROR=" + e);
+                Debug.error(e.getMessage());
                 return false;
             }
         } else {
@@ -124,7 +123,7 @@ public class UserManager {
                     return false;
                 }
             } catch (SQLException e) {
-                System.out.println(DEBUG_PREFIX + "registerUser()|::ERROR=" + e);
+                Debug.error(e.getMessage());
                 return false;
             }
         } else {
@@ -143,7 +142,7 @@ public class UserManager {
             ArrayList<Object> row = rs.getRow(1);
             info.put("USERID", (String) row.get(0));
             info.put("USERNAME", (String) row.get(1));
-            System.out.println(DEBUG_PREFIX + "registerUser()|::INFO>>(String) row.get(2) =" + (String) row.get(2));
+            Debug.log("(String) row.get(2) =",row.get(2));
             info.put("STATUS", stringTranslator.translateUserStatusCode(local,Integer.valueOf((String) row.get(2))));
             info.put("LASTLOGIN", (String) row.get(3));
             info.put("EMAIL", (String) row.get(4));
@@ -162,7 +161,7 @@ public class UserManager {
                 }
             }
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "signoutUser()|::ERROR=" + e);
+            Debug.error(e.getMessage());
         }
         return false;
     }
@@ -179,7 +178,7 @@ public class UserManager {
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "alterUser()|::ERROR=" + e);
+            Debug.error(e.getMessage());
         }
         return false;
     }
@@ -197,7 +196,7 @@ public class UserManager {
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
-            System.out.println(DEBUG_PREFIX + "alterUser()|::ERROR=" + e);
+            Debug.error(e.getMessage());
         }
         return false;
     }

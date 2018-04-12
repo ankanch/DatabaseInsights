@@ -26,9 +26,7 @@
 package dbi.utils;
 
 import dbi.localization.lang;
-import dbi.localization.langChinese;
 import dbi.localization.langID;
-import dbi.mgr.user.UserManager;
 
 /**
  *
