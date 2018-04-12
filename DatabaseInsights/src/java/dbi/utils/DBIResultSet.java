@@ -24,6 +24,8 @@
  */
 package dbi.utils;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -32,68 +34,72 @@ import java.util.ArrayList;
  */
 public class DBIResultSet {
 
+    private static String DEBUG_PREFIX = "DBI|DEBUG|:@>>DBIResultSet>>";
     private ArrayList<ArrayList<Object>> rs;
-    private static ArrayList<Object> srow = new ArrayList<>();
-    private static Boolean rowCompleted = false;
+    private ArrayList<Object> srow = new ArrayList<>();
+    private Boolean rowCompleted = false;
 
     public DBIResultSet() {
         rs = new ArrayList<>();
     }
 
     /*
+    * Convert ResultSet to DBIResultSet
+     */
+    public DBIResultSet(ResultSet rs) {
+        this.rs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    addToRow(rs.getString(i + 1));
+                }
+                finishRow();
+            }
+        } catch (SQLException e) {
+            System.out.println(DEBUG_PREFIX + "DBIResultSet(ResultSet rs)|::ERROR=" + e);
+        }
+    }
+
+    /*
     * add current data to one temporery row
      */
-    public void addToRow(Object data) {
-        if(rowCompleted){
+    public final void addToRow(Object data) {
+        if (rowCompleted) {
             srow.clear();
             rowCompleted = false;
         }
         srow.add(data);
     }
-    
+
     /*
     * finish the row created by addToRow function.
     * then add it to the table rs
-    */
-    public ArrayList<Object> finishRow(){
+     */
+    public final ArrayList<Object> finishRow() {
         rowCompleted = true;
-        rs.add(srow);
-        return (ArrayList<Object>)srow;
-    }
-
-    public ArrayList<Object> makeRow(Object... row) {
-        srow.clear();
-        for (Object obj : row) {
-            srow.add(obj);
-        }
-        return new ArrayList(srow);
-    }
-
-    public ArrayList<ArrayList<Object>> addRow(ArrayList<Object> row) {
-        rs.add(row);
-        return rs;
+        ArrayList<Object> newrow =  new  ArrayList<>(srow);
+        rs.add( newrow );
+        return newrow;
     }
 
     /*
     * get designed row by row number which row must no less than 1
-    */
-    public ArrayList<Object> getRow(int i) {
-        assert(i>0);
-        return rs.get(i-1);
+     */
+    public final ArrayList<Object> getRow(int i) {
+        assert (i > 0);
+        return rs.get(i - 1);
     }
 
-    public int rowCount() {
+    public final int rowCount() {
         return rs.size();
     }
 
     public static void main(String[] args) {
         String s[] = new String[]{"abc", "sss", "aaa", "zzz"};
         DBIResultSet a = new DBIResultSet();
-        a.addRow(a.makeRow(s));
-       a.addRow(a.makeRow(s));
-       a.getRow(1).add("111111111111111111");
-       System.out.println(a.getRow(1));
-       System.out.println(a.getRow(2));
+        a.getRow(1).add("111111111111111111");
+        System.out.println(a.getRow(1));
+        System.out.println(a.getRow(2));
     }
 
 }

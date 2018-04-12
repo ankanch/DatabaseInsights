@@ -34,13 +34,8 @@ import java.text.MessageFormat;
  */
 public class CredentialBean {
 
-    private String dbname = null;
-    private String dbhost = null;
-    private int dbaccount ;
-    private String dbpassword = null;
     private String sessionID = null;
-    private String certifications = null;
-    private DBIResultSet dbresult;
+    private  DBIResultSet re = null;
 
     public CredentialBean() {
     }
@@ -48,23 +43,10 @@ public class CredentialBean {
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
     }
-
-    public String getDbname() {
-        return dbname;
-    }
-
-    public void setDbname(String dbname) {
-        this.dbname = dbname;
-    }
     
-    public void setDbresult(DBIResultSet dbresult){
-        this.dbresult=dbresult;
-    }
-    
-    public DBIResultSet getDbresult(){
-        DBIResultSet re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
-        dbresult=re;
-        return dbresult;
+    public String getDBcount(){
+        re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
+        return String.valueOf(re.rowCount());
     }
 
     public String getCertifications() {
@@ -88,28 +70,12 @@ public class CredentialBean {
                 + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({0})\">Delete</button>"
                 + "                        </td>"
                 + "                   </tr>";
-        
-        
-        for(int i=1;i<=dbresult.rowCount();i++){
-            certifications += MessageFormat.format(rowtemp, dbresult.getRow(i).get(3),i,dbresult.getRow(i).get(0),dbresult.getRow(i).get(1),"",dbresult.getRow(i).get(2));
+
+        String certifications = "";
+        for (int i = 1; i <= re.rowCount(); i++) {
+            certifications += MessageFormat.format(rowtemp, re.getRow(i).get(3), i, re.getRow(i).get(0), re.getRow(i).get(1), "", re.getRow(i).get(2));
         }
         return certifications;
-    }
-
-    public void setDbhost(String dbhost) {
-        this.dbhost = dbhost;
-    }
-
-    public void setDbaccount(int dbaccount) {
-        this.dbaccount = dbaccount;
-    }
-    
-    public int getDbaccount() {
-        return dbresult.rowCount();
-    }
-
-    public void setDbpassword(String dbpassword) {
-        this.dbpassword = dbpassword;
     }
 
 }

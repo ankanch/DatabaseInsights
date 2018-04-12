@@ -187,22 +187,15 @@ public class DatabaseHelper {
     }
 
     public DBIResultSet runSelect(String querys, String table, String condition) {
-        DBIResultSet sqlResult = new DBIResultSet();
+        DBIResultSet sqlResult = null;
         try {
             Statement st = conn.createStatement();
             String sql = DBAdaptor.generateSelect(querys, table, condition);
             // 执行数据库语句
             System.out.println(DEBUG_PREFIX + "runSelect()|::SQL=" + sql);
-            ResultSet rs = st.executeQuery(sql);
-            // 遍历获取结果
-            while (rs.next()) {
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    sqlResult.addToRow(rs.getString(i + 1));
-                }
-                sqlResult.finishRow();
-            }
+            sqlResult = new DBIResultSet(st.executeQuery(sql));
             st.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(DEBUG_PREFIX + "runSelect()|::ERROR=" + e);
         }
 

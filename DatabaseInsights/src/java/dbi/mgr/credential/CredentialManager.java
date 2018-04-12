@@ -109,10 +109,7 @@ public class CredentialManager {
             try {
                 result=dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password,cid", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
                         "T_DATABASE_INFO.did=T_DATABASE_CERTIFICATION.did and T_DI_USER.USERID=T_DATABASE_INFO.USERID and usession='"+sid+"'");
-                System.out.println(DEBUG_PREFIX + "getCredential()|::INFO>>result.rowCount():"+result.rowCount()); 
-                for(int i=0;i<result.rowCount();i++){
-                    System.out.println(DEBUG_PREFIX + "getCredential()|::INFO>>reslt:"+result.getRow(i)); 
-                }
+                System.out.println(DEBUG_PREFIX + "getCredential()|::INFO>>credential result row count="+result.rowCount()); 
             } catch (Exception e) {
                  System.out.println(DEBUG_PREFIX + "getCredential()|::ERROR>>error:"+e);
             }

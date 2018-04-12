@@ -9,14 +9,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="credential" class="dbi.mgr.credential.CredentialBean" scope="page"/>
 <jsp:setProperty name="credential" property="sessionID" value="<%=request.getSession().getId()%>"/>
-<jsp:getProperty name="credential" property="dbresult" /> 
 <div id="credentials">
     <h2>Credentials</h2>
     <div class="card">
         <div class="progress-line" id="progressbar"></div>
         <div class="card-body" id="credentialscard">
             <div class="row">
-                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"><jsp:getProperty name="credential" property="dbaccount" /> </span> database credentials in total.</p></div>
+                <div class="col-md-4 console-div-text"><p class="console-vc bmd-form-group">You have <span class="" id="cre_count"><jsp:getProperty name="credential" property="DBcount" /> </span> database credentials in total.</p></div>
                 <div class="col-md-2">
                     <div class="bmd-form-group console-vc">
                         <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modal_add_credentials">Add Credentials</button>
