@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The MIT License
+
+*** Copyright © Long Zhang(kanch)
+*** Email: kanchisme@gmail.com
+*** Code created on Apr 12 2018
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-->
+
+
+<root>
+    <!-- User Interface Localization Start Here  |start from 1000 -->
+    <!-- console left nav panel (console_nav_side.jsp)  -->
+    <l id="JSP_NAV_SIDE_OVERVIEW"  value="Overview" />
+    <l id="JSP_NAV_SIDE_REPORTS"  value="Reports" />
+    <l id="JSP_NAV_SIDE_REALTIME"  value="Realtime" />
+    <l id="JSP_NAV_SIDE_ANALYTICS"  value="Analytics" />
+    <l id="JSP_NAV_SIDE_AUTO"  value="Auto" />
+    <l id="JSP_NAV_SIDE_CROSSTABLE"  value="Cross-table" />
+    <l id="JSP_NAV_SIDE_CUSTOMIZE"  value="Customize" />
+    <l id="JSP_NAV_SIDE_OTHERS"  value="Others" />
+    <l id="JSP_NAV_SIDE_CREDENTIALS"  value="Credentials" />
+    <l id="JSP_NAV_SIDE_LOGS"  value="Logs" />
+    <l id="JSP_NAV_SIDE_SETTINGS"  value="Settings" />
+    <l id="JSP_NAV_SIDE_TITLE_ANALYTICS"  value="Analytics" />
+    <l id="JSP_NAV_SIDE_TITLE_DATABASE"  value="Database" />
+    <l id="JSP_NAV_SIDE_TITLE_ACCOUNT"  value="Account" />
+
+    
+    <!-- dbi.mgr.user |start from 2000 -->
+
+    <l id="USER_STATUS_UNKNOW"  value="Unknow" />
+    <l id="USER_STATUS_UNVERFIED"  value="Unverfied" />
+    <l id="USER_STATUS_NORMAL"  value="Normal" />
+    <l id="USER_STATUS_RESTRICTED"  value="Restricted" />
+
+    <!-- dbi.mgr.credential  |start from 3000 -->
+    <!-- dbi.db.adaptor  |start from 4000 -->
+    <!-- dbi.utils  |start from 5000 -->
+    <!-- web pages  |start from 6000 -->
+</root>
