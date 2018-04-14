@@ -27,7 +27,62 @@ THE SOFTWARE.
 
 
 <root>
-    <!-- User Interface Localization Start Here  |start from 1000 -->
+    <!-- User Interface Localization Start Here   -->
+    <!-- credential.jsp -->
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TITLE" value="Credentials" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_CSUM_PRE" value="You have " />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_CSUM_SUF" value=" database credentials in total." />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_BUTTON_ADD" value="Add Credentials" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SEARCH" value="Search" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_BUTTON_SEARCH" value="Search" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_DBNAME" value="Database" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_HOST" value="Host" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_ACCOUNT" value="Account" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_PASSWORD" value="Password" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATIONS" value="Operations" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_SAVE" value="Save" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_Edit" value="Edit" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_DELETE" value="Delete" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_DELETE" value="Failed to delete,please try again later." />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_DELETE" value="Credential has been deleted." />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_UPDATE" value="Failed to update,please try again later." />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_UPDATE" value="Update successfully!" />
+
+    <!-- console_add_credentials.jsp -->
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_TITLE" value="Add database credential"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_SELECT" value="Select your database"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_HOST" value="Database Host"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_DBNAME" value="Database Name"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_USERNAME" value="Username"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_PASSWORD" value="Password"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_IAGREE_PRE" value="I agree with the"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_IAGREE_SUF" value="End User Agreement"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_BUTTON_ADD" value="Add Database"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_BUTTON_CANCEL" value="Cancel"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_HOST_TIP" value="Enter the database host address."/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_DBNAME_TIP" value="Enter the database instance name."/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_USERNAME_TIP" value="Enter login account name of the database."/>    
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_PASSWORD_TIP" value="Enter the password corresponding to the account."/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_TIP_AGREEMENT" value="Please agree our aggrement to continue!"/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_TIP_CHECKING" value="Checking information provided..."/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_TIP_FAILED" value="Failed to added! Please check your database information again."/>
+    <l id="JSP_CONSOLE_CREDENTIAL_ADD_TIP_SUCCESS" value="Successfully added!"/>
+
+    <!-- console footer.jsp -->
+    <l id="JSP_CONSOLE_FOOTER_HOME" value="Analytics Home" />
+    <l id="JSP_CONSOLE_FOOTER_SERVICE" value="Terms of Service" />
+    <l id="JSP_CONSOLE_FOOTER_POLICY" value="Privacy Policy" />
+    <!-- signin.jsp -->
+    <l id="JSP_SIGNIN_PAGE_TITLE"  value="Signin - Database Insights Console" />
+    <l id="JSP_SIGNIN_FORM_TITLE"  value="Signin" />
+    <l id="JSP_SIGNIN_LABEL_EMAIL"  value="Email address" />
+    <l id="JSP_SIGNIN_LABEL_PASSWORD"  value="Password" />
+    <l id="JSP_SIGNIN_LABEL_REMEMBERME"  value="Remember me" />
+    <l id="JSP_SIGNIN_LABEL_LOGIN"  value="Login" />
+    <l id="JSP_SIGNIN_LABEL_PROBLEMLOGIN"  value="Problem in login?" />
+    <l id="JSP_SIGNIN_JS_NAVTITLE"  value="Console" />
+    <!-- signup.jsp -->
+    
     <!-- console left nav panel (console_nav_side.jsp)  -->
     <l id="JSP_NAV_SIDE_OVERVIEW"  value="Overview" />
     <l id="JSP_NAV_SIDE_REPORTS"  value="Reports" />
@@ -45,15 +100,15 @@ THE SOFTWARE.
     <l id="JSP_NAV_SIDE_TITLE_ACCOUNT"  value="Account" />
 
     
-    <!-- dbi.mgr.user |start from 2000 -->
+    <!-- dbi.mgr.user -->
 
     <l id="USER_STATUS_UNKNOW"  value="Unknow" />
     <l id="USER_STATUS_UNVERFIED"  value="Unverfied" />
     <l id="USER_STATUS_NORMAL"  value="Normal" />
     <l id="USER_STATUS_RESTRICTED"  value="Restricted" />
 
-    <!-- dbi.mgr.credential  |start from 3000 -->
-    <!-- dbi.db.adaptor  |start from 4000 -->
-    <!-- dbi.utils  |start from 5000 -->
-    <!-- web pages  |start from 6000 -->
+    <!-- dbi.mgr.credential  -->
+    <!-- dbi.db.adaptor   -->
+    <!-- dbi.utils   -->
+    <!-- web pages   -->
 </root>

@@ -24,6 +24,7 @@
  */
 package dbi.mgr.credential;
 
+import dbi.localization.lang;
 import dbi.utils.DBIResultSet;
 import dbi.utils.GlobeVar;
 import java.text.MessageFormat;
@@ -36,12 +37,17 @@ public class CredentialBean {
 
     private String sessionID = null;
     private  DBIResultSet re = null;
+    private lang local = null;
 
     public CredentialBean() {
     }
 
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
+    }
+    
+    public void setLang(lang local){
+        this.local = local;
     }
     
     public String getDBcount(){

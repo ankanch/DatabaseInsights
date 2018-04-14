@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+<%-- 
+    Document   : console_footer
+    Created on : Apr 12, 2018, 5:44:21 PM
+    Author     : kanch
+--%>
+
+<%@page import="dbi.localization.langID"%>
+<%@page import="dbi.localization.lang"%>
+<%@page import="dbi.utils.GlobeVar"%>
+<%@page import="dbi.utils.GlobeVar"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!--
 The MIT License
 
@@ -24,11 +34,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
+<%
+    //lang local = GlobeVar.OBJ_MANAGER_USER.detectLang(request); variable already exist
+%>
 <div class="console-footer-text" > &copy; 2018 Database Insights
     <span > | 
-        <a href="/" target="_blank">Analytics Home</a> 
-        | <a href="tos.jsp" target="_blank">Terms of Service</a> 
-        | <a href="/privacy.jsp" target="_blank">Privacy Policy</a> 
+        <a href="/" target="_blank"><%=local.getString(langID.JSP_CONSOLE_FOOTER_HOME)%></a> 
+        | <a href="tos.jsp" target="_blank"><%=local.getString(langID.JSP_CONSOLE_FOOTER_SERVICE)%></a> 
+        | <a href="/privacy.jsp" target="_blank"><%=local.getString(langID.JSP_CONSOLE_FOOTER_POLICY)%></a> 
     </span>
 </div>
 <script>

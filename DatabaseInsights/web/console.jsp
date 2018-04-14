@@ -31,7 +31,7 @@
                     </div>
                     <footer class="sticky-footer">
                         <div class="effects">
-                            <%@ include file="templates/console/console_footer.html" %>
+                            <%@ include file="templates/console/console_footer.jsp" %>
                         </div>
                     </footer>
                 </main>
