@@ -9,7 +9,7 @@
 <%@page import="dbi.localization.lang"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    lang local = GlobeVar.OBJ_MANAGER_USER.detectLang(request);
+    lang local = lang.detectLang(request);
 %>
 <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar" style="box-shadow: 0 0 5px 0 rgba(0,0,0,.35);">
     <span class="console-nav-split-text"><%=local.getString(langID.JSP_NAV_SIDE_TITLE_ANALYTICS) %></span>

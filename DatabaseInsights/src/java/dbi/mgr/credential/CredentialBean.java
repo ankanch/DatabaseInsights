@@ -25,6 +25,7 @@
 package dbi.mgr.credential;
 
 import dbi.localization.lang;
+import dbi.localization.langID;
 import dbi.utils.DBIResultSet;
 import dbi.utils.GlobeVar;
 import java.text.MessageFormat;
@@ -36,7 +37,7 @@ import java.text.MessageFormat;
 public class CredentialBean {
 
     private String sessionID = null;
-    private  DBIResultSet re = null;
+    private DBIResultSet re = null;
     private lang local = null;
 
     public CredentialBean() {
@@ -45,17 +46,46 @@ public class CredentialBean {
     public void setSessionID(String sessionID) {
         this.sessionID = sessionID;
     }
-    
-    public void setLang(lang local){
-        this.local = local;
+
+    public void setLang(String langcode) {
+        this.local = lang.detectLang(langcode);
     }
-    
-    public String getDBcount(){
+
+    public String getDBcount() {
         re = GlobeVar.OBJ_MANAGER_CREDENTIAL.getCredential(sessionID);
         return String.valueOf(re.rowCount());
     }
 
     public String getCertifications() {
+        String table_content = "<table class=\"table table-striped\">"
+                + "                <thead>"
+                + "                    <tr>"
+                + "                        <th scope=\"col\">#</th>"
+                + "                        <th scope=\"col\">{0}</th>"
+                + "                        <th scope=\"col\">{1}</th>"
+                + "                        <th scope=\"col\">{2}</th>"
+                + "                        <th scope=\"col\">{3}</th>"
+                + "                        <th scope=\"col\">{4}</th>"
+                + "                    </tr>"
+                + "                </thead>"
+                + "                <tbody>                    "
+                + "                    @ROWDATA"
+                + "                </tbody>"
+                + "            </table>";
+        table_content = MessageFormat.format(table_content, local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_DBNAME),
+                local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_HOST),
+                local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_ACCOUNT),
+                local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_PASSWORD),
+                local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATIONS));
+
+        String no_data = "<div class=\"alert alert-warning alert-dismissible fade show\" role=\"alert\" id=\"alert_no_credentials\">"
+                + "                @MESSAGE"
+                + "                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">"
+                + "                    <span aria-hidden=\"true\">×</span>"
+                + "                </button>"
+                + "            </div>";
+        no_data = no_data.replace("@MESSAGE", local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_NO_DATA));
+
         String rowtemp = "<tr id=\"credtable_row_{0}\">"
                 + "                        <th scope=\"row\" style=\"vertical-align: inherit;\">{1}</th>"
                 + "                        <td style=\"vertical-align: inherit;padding: 0rem;\">"
@@ -71,17 +101,23 @@ public class CredentialBean {
                 + "                            <input id=\"credtable_row_{0}_col_4\" class=\"console-table-input\"  value=\"{5}\" type=\"password\" name=\"dbpassword\" disabled=\"disabled\">"
                 + "                        </td>"
                 + "                        <td>"
-                + "                            <button id=\"credtable_row_{0}_edit\" type=\"button\" class=\"btn btn-secondary\" onclick=\"edit({0})\">Edit</button>"
-                + "                            <button id=\"credtable_row_{0}_save\" type=\"button\" class=\"btn btn-success\" onclick=\"save({0})\" style=\"display: none;\">Save</button>"
-                + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({0})\">Delete</button>"
+                + "                            <button id=\"credtable_row_{0}_edit\" type=\"button\" class=\"btn btn-secondary\" onclick=\"edit({0})\">@EDIT</button>"
+                + "                            <button id=\"credtable_row_{0}_save\" type=\"button\" class=\"btn btn-success\" onclick=\"save({0})\" style=\"display: none;\">@SAVE</button>"
+                + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({0})\">@DELETE</button>"
                 + "                        </td>"
                 + "                   </tr>";
+        rowtemp = rowtemp.replace("@EDIT", local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_EDIT))
+                .replace("@SAVE", local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_SAVE))
+                .replace("@DELETE", local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_DELETE));
 
-        String certifications = "";
-        for (int i = 1; i <= re.rowCount(); i++) {
-            certifications += MessageFormat.format(rowtemp, re.getRow(i).get(3), i, re.getRow(i).get(0), re.getRow(i).get(1), "", re.getRow(i).get(2));
+        if (re.rowCount() > 0) {
+            String certifications = "";
+            for (int i = 1; i <= re.rowCount(); i++) {
+                certifications += MessageFormat.format(rowtemp, re.getRow(i).get(3), i, re.getRow(i).get(0), re.getRow(i).get(1), "", re.getRow(i).get(2));
+            }
+            return table_content.replace("@ROWDATA", certifications);
         }
-        return certifications;
+        return no_data;
     }
 
 }

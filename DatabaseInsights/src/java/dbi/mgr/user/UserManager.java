@@ -200,20 +200,6 @@ public class UserManager {
         }
         return false;
     }
-    
-    /*
-    * This function can detect user local then return corresponding localization language obj
-    * from GlobeVar
-    */
-    public lang detectLang(HttpServletRequest request){
-        String local = request.getLocale().toString();
-        if(local.equals("en_US")){
-            return GlobeVar.OBJ_LOCALIZATION_ENGLISH;
-        }else if(local.equals("zh_CN")){
-            return GlobeVar.OBJ_LOCALIZATION_CHINESE;
-        }
-        return null;
-    }
 
     public static void main(String[] args) {
         UserManager manager = new UserManager();

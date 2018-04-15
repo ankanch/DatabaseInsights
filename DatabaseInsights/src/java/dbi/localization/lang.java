@@ -25,17 +25,48 @@
  */
 package dbi.localization;
 
+import dbi.utils.GlobeVar;
+import javax.servlet.http.HttpServletRequest;
+
 /** <h3>Base Language Pack</h3>
- * This class is used for localization
- * There are two type of string here, one for debug, the other for user interface
+ * This class is used for localization There are two type of string here, one
+ * for debug, the other for user interface
+ *
  * @author kanch
  */
 public class lang {
-    
+
     /*
     * function to get localization language by ID
-    */
-    public String getString(final int id){
+     */
+    public String getString(final int id) {
         return "Please Call From Subclass";
+    }
+
+    /*
+    * This function can detect user local then return corresponding localization language obj
+    * from GlobeVar
+     */
+    public static lang detectLang(HttpServletRequest request) {
+        String local = request.getLocale().toString();
+        if (local.equals("en_US")) {
+            return GlobeVar.OBJ_LOCALIZATION_ENGLISH;
+        } else if (local.equals("zh_CN")) {
+            return GlobeVar.OBJ_LOCALIZATION_CHINESE;
+        }
+        return null;
+    }
+
+    /*
+    * This function can detect user local then return corresponding localization language obj
+    * from GlobeVar
+     */
+    public static lang detectLang(String langcode) {
+        if (langcode.equals("en_US")) {
+            return GlobeVar.OBJ_LOCALIZATION_ENGLISH;
+        } else if (langcode.equals("zh_CN")) {
+            return GlobeVar.OBJ_LOCALIZATION_CHINESE;
+        }
+        return null;
     }
 }

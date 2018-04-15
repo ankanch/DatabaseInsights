@@ -41,12 +41,13 @@ THE SOFTWARE.
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_PASSWORD" value="帐户密码" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATIONS" value="操作" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_SAVE" value="保存" />
-    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_Edit" value="编辑" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_EDIT" value="编辑" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_DELETE" value="删除" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_DELETE" value="数据库信息删除失败！请稍后再试。" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_DELETE" value="数据库信息已删除。" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_UPDATE" value="数据库信息更新失败！请稍后再试。" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_UPDATE" value="数据库信息更新成功！" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_NO_DATA" value="&lt;strong&gt;糟糕!&lt;/strong&gt; 您还没有添加任何数据库. &lt;br&gt;您可以点击顶部的添加数据库按钮进行添加." />
     
     <!-- console_add_credentials.jsp -->
     <l id="JSP_CONSOLE_CREDENTIAL_ADD_TITLE" value="添加数据库"/>

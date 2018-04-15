@@ -8,9 +8,10 @@
 <%@page import="dbi.utils.DBIResultSet"%>
 <%@page import="dbi.mgr.credential.CredentialManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% lang local = GlobeVar.OBJ_MANAGER_USER.detectLang(request);%>
+<% lang local = lang.detectLang(request);%>
 <jsp:useBean id="credential" class="dbi.mgr.credential.CredentialBean" scope="page"/>
 <jsp:setProperty name="credential" property="sessionID" value="<%=request.getSession().getId()%>"/>
+<jsp:setProperty name="credential" property="lang" value="<%=request.getLocale().toString()%>"/>
 <div id="credentials">
     <h2><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TITLE)%></h2>
     <div class="card">
@@ -39,28 +40,7 @@
             </div>
             <%@ include file="../dialogs/console_add_credentials.jsp" %>
             <hr>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_DBNAME)%></th>
-                        <th scope="col"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_HOST)%></th>
-                        <th scope="col"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_ACCOUNT)%></th>
-                        <th scope="col"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_PASSWORD)%></th>
-                        <th scope="col"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATIONS)%></th>
-                    </tr>
-                </thead>
-                <tbody>                    
-                    <jsp:getProperty name="credential" property="certifications" />
-                </tbody>
-            </table>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" id="alert_no_credentials">
-                <strong>Holy guacamole!</strong> You do not have any database credentials added yet.
-                <br>Let's start by click ADD CREDENTIALS button on the top.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+            <jsp:getProperty name="credential" property="certifications" />
         </div>
     </div>
 </div>
