@@ -41,12 +41,13 @@ THE SOFTWARE.
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_PASSWORD" value="Password" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATIONS" value="Operations" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_SAVE" value="Save" />
-    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_Edit" value="Edit" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_EDIT" value="Edit" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TABLE_OPERATION_DELETE" value="Delete" />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_DELETE" value="Failed to delete,please try again later." />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_DELETE" value="Credential has been deleted." />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_UPDATE" value="Failed to update,please try again later." />
     <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_UPDATE" value="Update successfully!" />
+    <l id="JSP_CONSOLE_CREDENTIAL_MGR_TIP_NO_DATA" value="&lt;strong&gt;Holy guacamole!&lt;/strong&gt; You do not have any database added yet. &lt;br&gt;Let's start by click ADD CREDENTIALS button on the top." />
 
     <!-- console_add_credentials.jsp -->
     <l id="JSP_CONSOLE_CREDENTIAL_ADD_TITLE" value="Add database credential"/>

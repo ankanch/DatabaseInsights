@@ -14,7 +14,7 @@
     if (um.validateSession(session.getId())) {
 %><jsp:forward page="console.jsp" /> <%
     }
-    lang local = GlobeVar.OBJ_MANAGER_USER.detectLang(request);
+    lang local = lang.detectLang(request);
 %>
 <!DOCTYPE html>
 <html>
