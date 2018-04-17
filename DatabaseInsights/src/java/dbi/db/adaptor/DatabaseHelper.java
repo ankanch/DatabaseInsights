@@ -196,10 +196,10 @@ public class DatabaseHelper {
 
     public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
         String table = tables[0];
-        for (int i = 1; i < tables.length - 1; i++) {
-            table = table + ",";
+        for (int i = 1; i <= tables.length - 1; i++) {
+            table = table+","+tables[i];
+            System.out.println(table);
         }
-        table = table + tables[tables.length - 1];
         String sql = "select " + querys + " from " + table + " where " + joinconditions;
 
         DBIResultSet sqlResult = new DBIResultSet();
@@ -318,6 +318,14 @@ public class DatabaseHelper {
         DatabaseHelper test = new DatabaseHelper(a);
         DBIResultSet columns = new DBIResultSet();
         test.Connect();
-
+        try {
+            String table[]={"T_DATABASE_INFO","T_DATABASE_CERTIFICATION"};
+            DBIResultSet result=test.runJoinSelect("*", table, "T_DATABASE_INFO.DID=T_DATABASE_CERTIFICATION.DID");
+            for(int i=0;i<result.rowCount();i++){
+                System.out.println(result.getRow(i+1));
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

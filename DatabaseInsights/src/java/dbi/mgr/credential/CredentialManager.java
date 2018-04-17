@@ -51,7 +51,7 @@ public class CredentialManager {
         if (dbhelper.Connect()) {
             
             try {
-                /*
+                
                 int rv = (int) dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost, dbname, dbuser, dbpawd, userid, dbtype);
                 switch (rv) {
                     case 1:
@@ -66,7 +66,7 @@ public class CredentialManager {
                     default:
                         break;
                 }
-*/
+
             String driver = "";
             if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
                 driver = DatabaseConfig.DatabaseDriver.MYSQL;
@@ -79,17 +79,17 @@ public class CredentialManager {
             DatabaseHelper userdbhelper = new DatabaseHelper(userdbconfig);
             DBIResultSet column=null;
             if(userdbhelper.Connect()){        
-                //ArrayList<String> table = userdbhelper.getTables();
-                //DBIResultSet did = userdbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
-                //System.out.println(did.getRow(1).get(0));
-                //int dids=Integer.valueOf((String)did.getRow(1).get(0));
-                //for(int i=0;i<table.size();i++){
-                //    userdbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.get(i)+"')");
-                //}
-                //DBIResultSet usid=userdbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
-                //for(int i=0;i<table.size();i++){
-                //    userdbhelper.getAllColumnSpecies(table.get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),dids);
-                //}
+                ArrayList<String> table = userdbhelper.getTables();
+                DBIResultSet did = userdbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
+                System.out.println(did.getRow(1).get(0));
+                int dids=Integer.valueOf((String)did.getRow(1).get(0));
+                for(int i=0;i<table.size();i++){
+                    userdbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.get(i)+"')");
+                }
+                DBIResultSet usid=userdbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
+                for(int i=0;i<table.size();i++){
+                    userdbhelper.getAllColumnSpecies(table.get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),dids);
+                }
                   DBIResultSet selectforeign=userdbhelper.runSQLForResult("select columnname,colid from T_DATABASE_COLUMN where isforeignkey=1");
                   System.out.println(selectforeign.getRow(1));
                   for(int jj=0;jj<selectforeign.rowCount();jj++){
