@@ -76,4 +76,22 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     public String findForeignKey(String table){
         return "select REFERENCED_COLUMN_NAME refColumn ,REFERENCED_TABLE_NAME refTable from INFORMATION_SCHEMA.KEY_COLUMN_USAGE  where TABLE_NAME='"+table+"'";
     }
+    
+    public String findTablecolspe(String table){
+        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE\n" +
+                "from user_tab_columns  t,user_col_comments  c\n" +
+                " where t.table_name = c.table_name"
+                + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
+    }
+    
+    public String findDid(String dbname){
+        String str="select did from T_DATABASE_INFO where name='"+dbname+"'";
+        return str;
+    }
+    
+    public String findRefid(String columnname){
+        String str="select colid from T_DATABASE_COLUMN "
+                + "where columnname='"+columnname+"' and isPrimary=1";
+        return "";
+    }
 }

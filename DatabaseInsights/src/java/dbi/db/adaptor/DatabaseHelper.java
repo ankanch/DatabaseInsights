@@ -137,45 +137,38 @@ public class DatabaseHelper {
     }
 
     /* get column name and species of a given table */
-    public ArrayList<String> getAllColumnSpecies(String table) {
-        ArrayList<String> species = new ArrayList<>();//第一个参数放置表的主键，第二个放置外键名称，第三个放置参照的表的名称
-
-        String columnName = "";
-        String refColumn = "";
-        String refTable = "";
-
-        try {
-            Statement st = conn.createStatement();
-            // 执行数据库语句
-            ResultSet rs = st.executeQuery(DBAdaptor.findPrimaryKey(table));
-            // 遍历获取结果
-
-            while (rs.next()) {
-                columnName = rs.getString("column_name");
-                species.add(columnName);
+    public void getAllColumnSpecies(String table, int userid, int did) {
+        DBIResultSet getresult = runSQLForResult(DBAdaptor.findTablecolspe(table));
+        DBIResultSet primary = runSQLForResult(DBAdaptor.findPrimaryKey(table));
+        DBIResultSet foreign = runSQLForResult(DBAdaptor.findForeignKey(table));
+        DBIResultSet tid=new DBIResultSet();
+        tid=runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='"+getresult.getRow(1).get(0)+"'");
+        int isPrimary = 0;
+        int isRef = 0;
+        for (int i = 1; i <= getresult.rowCount(); i++) {
+            if (!primary.getRow(1).isEmpty()) {
+                if (getresult.getRow(i).get(1).equals(primary.getRow(1).get(0))) {
+                    isPrimary = 1;
+                } else {
+                    isPrimary = 0;
+                }
             }
-            st.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
 
-        try {
-            Statement st = conn.createStatement();
-            // 执行数据库语句
-            ResultSet bs = st.executeQuery(DBAdaptor.findForeignKey(table));
-            // 遍历获取结果
-
-            while (bs.next()) {
-                refColumn = bs.getString("refColumn");//查找到外键名称
-                refTable = bs.getString("refTable");//查找到外键参照的表
-                species.add(refColumn);
-                species.add(refTable);
+            if (!foreign.getRow(1).isEmpty()) {
+                for (int j = 0; j < foreign.rowCount(); j++) {
+                    if (getresult.getRow(i).get(1).equals(foreign.getRow(j + 1).get(0))) {
+                        isRef = 1;
+                    }
+                }
             }
-            st.close();
-        } catch (Exception e) {
-            Debug.error(e);
+            runSQL("insert into T_DATABASE_COLUMN(TID,DID,USERID,COLUMNNAME,DATATYPE,ISPRIMARY,ISFOREIGNKEY) \n"
+                    + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did + "," + userid + ",'" + getresult.getRow(i).get(1) + "','" + getresult.getRow(i).get(2) + "'," + isPrimary + "," + isRef + ")");
+            isRef = 0;
         }
-        return species;
+    }
+
+    public void addUserref(String table) {
+
     }
 
     /* get column names of a given table */
@@ -265,15 +258,42 @@ public class DatabaseHelper {
 
     public boolean runSQL(String sql) {
         try {
+            Debug.log(sql);
             Statement st = conn.createStatement();
             st.executeUpdate(sql);
-            //conn.commit();
             st.close();
         } catch (Exception e) {
             Debug.error(e);
             return false;
         }
         return true;
+    }
+
+    public DBIResultSet runSQLForResult(String sql) {
+        DBIResultSet sqlResult = new DBIResultSet();
+        int p = 0;
+        try {
+            Statement st = conn.createStatement();
+            // 执行数据库语句
+            Debug.log("SQL=", sql);
+
+            ResultSet rs = st.executeQuery(sql);
+            // 遍历获取结果
+            while (rs.next()) {
+                p = 1;
+                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
+                    sqlResult.addToRow(rs.getString(i + 1));
+                }
+                sqlResult.finishRow();
+            }
+            st.close();
+        } catch (Exception e) {
+            Debug.error(e);
+        }
+        if (p == 0) {
+            sqlResult.finishRow();
+        }
+        return sqlResult;
     }
 
     /**
@@ -296,14 +316,8 @@ public class DatabaseHelper {
         DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
         //DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_MYSQL, "org.gjt.mm.mysql.Driver", "jdbc:mysql://115.159.197.66:3306/IncidentsReport", "ir", "2yvaVjSNVYHwWwcR");
         DatabaseHelper test = new DatabaseHelper(a);
+        DBIResultSet columns = new DBIResultSet();
         test.Connect();
-        try {
-            DBIResultSet result = test.runSelect("*", "T_DI_USER", "");
-            System.out.println(result.getRow(1));
-            System.out.println(result.getRow(2));
-            System.out.println(result.getRow(3));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+
     }
 }

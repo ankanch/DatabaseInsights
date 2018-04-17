@@ -29,38 +29,62 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class DatabaseAdaptor {
-    public String getColumnNamesByTable(String Table){
+
+    public String getColumnNamesByTable(String Table) {
         return "";
     }
-    public String getColumnNames(String[] Tables){
+
+    public String getColumnNames(String[] Tables) {
         return "";
     }
-     
-    public String getAllColumnsNameByName(String TableName){
+
+    public String getAllColumnsNameByName(String TableName) {
         return "";
-    }    
-   
+    }
+
+    public String getTableList() {
+        return "";
+    }
+
+    public String getColumnSpecies(String Table) {
+        return "";
+    }
+
+    public String getColumnSpeciesByName(String Column, String table) {
+        return "";
+    }
+
+    public String generateSelect(String querys, String table, String condition) {
+        return "";
+    }
+
+    public String findPrimaryKey(String table) {
+        return "";
+    }
+
+    public String findForeignKey(String table) {
+        return "";
+    }
     
-    public String getTableList(){
-        return "";
-    }
-    public String getColumnSpecies(String Table){
+    public String findTablecolspe(String table){
         return "";
     }
     
-    public String getColumnSpeciesByName(String Column,String table){
+    public String findDid(String dbname){
         return "";
     }
     
-    public String generateSelect(String querys,String table,String condition){
+    public String findRefid(String columnname){
         return "";
     }
     
-    public String findPrimaryKey(String table){
-        return "";
+    public static DatabaseAdaptor detectDatabase(int databaseCode) {
+        if (databaseCode == DatabaseConfig.DatabaseCode.DATABASE_MYSQL) {
+            return new MySQLAdaptor();
+        } else if (databaseCode == DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C) {
+            return new OracleAdaptor();
+        }
+        return null;
     }
-    
-    public String findForeignKey(String table){
-        return "";
-    }
+
 }
