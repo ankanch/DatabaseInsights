@@ -4,12 +4,13 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.lang"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="dbi.mgr.user.UserManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     UserManager um1 = new UserManager();
-    HashMap<String, String> hm = um1.getUserInfo(um1.detectLang(request),session.getId());
+    HashMap<String, String> hm = um1.getUserInfo(lang.detectLang(request),session.getId());
     
 %>
 <div id="settings">

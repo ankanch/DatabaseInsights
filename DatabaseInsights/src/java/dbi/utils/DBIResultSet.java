@@ -83,6 +83,11 @@ public class DBIResultSet {
         assert (i > 0);
         return rs.get(i - 1);
     }
+    
+    // get all rows of current DBIResultSet
+    public final ArrayList<ArrayList<Object>> getRows(){
+        return rs;
+    }
 
     public final int rowCount() {
         return rs.size();

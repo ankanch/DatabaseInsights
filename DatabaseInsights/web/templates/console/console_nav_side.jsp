@@ -37,7 +37,7 @@
         </li>
         <ul class="sub-menu collapse console-sidebar-collapse" id="moreAnalytics" style="height: 0px;">
             <li class="nav-item console-sidebar-subnav">
-                <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                <a class="nav-link console-siderbar" data-url="/templates/console/analytics/autoanalytics" href="javascript:">
                     <i class="material-icons console-sidebar-icon-text">lightbulb_outline</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_AUTO) %></span>
                 </a>
             </li>
