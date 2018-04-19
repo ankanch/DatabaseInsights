@@ -94,11 +94,29 @@ public class DBIResultSet {
     }
 
     public static void main(String[] args) {
-        String s[] = new String[]{"abc", "sss", "aaa", "zzz"};
+        /*
         DBIResultSet a = new DBIResultSet();
-        a.getRow(1).add("111111111111111111");
-        System.out.println(a.getRow(1));
-        System.out.println(a.getRow(2));
-    }
+        for(int i=0;i<5;i++){
+            a.addToRow(i);
+            a.addToRow(i+1);
+            a.addToRow(i+2);
+            a.addToRow(i+3);
+            a.finishRow();
+        }
+        for(int i=1;i<6;i++){
+            System.out.println(a.getRow(i));
+        }
+        for(int i=1;i<6;i++){
+            a.getRow(i).add(99);
+            a.finishRow();
+        }
+        for(int i=1;i<6;i++){
+            System.out.println(a.getRow(i));
+        }
+*/
+        DBIResultSet b = new DBIResultSet();
 
+        b.finishRow();
+        System.out.println(b.getRow(1));
+    }
 }

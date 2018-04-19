@@ -70,11 +70,25 @@ public class OracleAdaptor extends DatabaseAdaptor{
     }
     
     public String findForeignKey(String table){
-        String findForeignKey="select b.column_name refColumn,c.table_name as refTable\n" +
+        String findForeignKey="select b.column_name refColumn\n" +
             "from user_constraints a\n" +
             "left  join user_cons_columns b on a.constraint_name = b.constraint_name\n" +
             "left  join user_cons_columns c on a.r_constraint_name = c.constraint_name\n" +
             "where a.constraint_type = 'R' and a.table_name = '"+table+"' ";
         return findForeignKey;
+    }
+    
+    public String findTablecolspe(String table){
+        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE\n" +
+                "from user_tab_columns  t,user_col_comments  c\n" +
+                " where t.table_name = c.table_name"
+                + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
+    }
+    
+
+    public String findRefid(String columnname){
+        String str="select colid from T_DATABASE_COLUMN "
+                + "where columnname='"+columnname+"' and isPrimary=1";
+        return "";
     }
 }
