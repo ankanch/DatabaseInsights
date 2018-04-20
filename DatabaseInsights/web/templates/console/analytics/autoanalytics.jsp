@@ -11,9 +11,27 @@
     <h2>Auto Analytics</h2>
     <div class="card">
         <div class="card-body">
-            <button type="button" class="btn btn-primary">Create Auto Analytics</button>
-            <button type="button" class="btn btn-primary">Suggest Auto Analytics</button>
-            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn" disabled style="color:#4e4e52;">Select your database and table to start</button>
+            <div class="btn-group">
+                <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Database
+                </button>
+                <div class="dropdown-menu" aria-labelledby="buttonMenu1">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Table
+                </button>
+                <div class="dropdown-menu" aria-labelledby="buttonMenu1">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row mt-2">
@@ -67,4 +85,21 @@
 
 <script>
     $('#analytics_auto').bootstrapMaterialDesign();
+
+    function getDatabases() {
+        GetDataF("/api/getDatabases", function error() {
+            showMsg("Failed to load database list.");
+        }, function success() {
+
+        });
+    }
+
+    function getTables() {
+        GetDataF("/api/getTables", function error() {
+            showMsg("Failed to load table list.");
+        }, function success() {
+
+        });
+    }
+
 </script>

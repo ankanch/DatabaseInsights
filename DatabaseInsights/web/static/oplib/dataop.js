@@ -88,3 +88,23 @@ function SubmitFormKVF(url, keyvalue, error_func, success_func) {
         }
     });
 }
+
+function GetData(url, error_msg, success_msg) {
+    $.get(url, function (data) {
+        if (data.indexOf(error_identifier) > -1) {
+            showMsg(error_msg);
+        } else {
+            showMsg(success_msg);
+        }
+    });
+}
+
+function GetDataF(url, error_func, success_func) {
+    $.get(url, function (data) {
+        if (data.indexOf(error_identifier) > -1) {
+            error_func();
+        } else {
+            success_func();
+        }
+    });
+}
