@@ -55,13 +55,13 @@ public class CredentialManager {
                 int rv = (int) dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost, dbname, dbuser, dbpawd, userid, dbtype);
                 switch (rv) {
                     case 1:
-                        System.out.println("成功创建credential");
+                        Debug.log("成功创建credential");
                         break;
                     case -3:
-                        System.out.println("未找到数据");
+                        Debug.log("未找到数据");
                         return false;
                     case -1:
-                        System.out.println("创建失败");
+                        Debug.log("创建失败");
                         break;
                     default:
                         break;
@@ -79,23 +79,23 @@ public class CredentialManager {
             DatabaseHelper userdbhelper = new DatabaseHelper(userdbconfig);
             DBIResultSet column=null;
             if(userdbhelper.Connect()){        
-                ArrayList<String> table = userdbhelper.getTables();
+                DBIResultSet table = userdbhelper.getTables();
                 DBIResultSet did = userdbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
-                System.out.println(did.getRow(1).get(0));
+                Debug.log(did.getRow(1).get(0));
                 int dids=Integer.valueOf((String)did.getRow(1).get(0));
-                for(int i=0;i<table.size();i++){
-                    userdbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.get(i)+"')");
+                for(int i=0;i<table.getRow(1).size();i++){
+                    userdbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.getRow(1).get(i)+"')");
                 }
                 DBIResultSet usid=userdbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
-                for(int i=0;i<table.size();i++){
-                    userdbhelper.getAllColumnSpecies(table.get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),dids);
+                for(int i=0;i<table.getRow(1).size();i++){
+                    userdbhelper.getAllColumnSpecies((String)table.getRow(1).get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),dids);
                 }
                   DBIResultSet selectforeign=userdbhelper.runSQLForResult("select columnname,colid from T_DATABASE_COLUMN where isforeignkey=1");
-                  System.out.println(selectforeign.getRow(1));
+                  Debug.log(selectforeign.getRow(1));
                   for(int jj=0;jj<selectforeign.rowCount();jj++){
                       DBIResultSet pri=userdbhelper.runSQLForResult("select colid from T_DATABASE_COLUMN where isPrimary=1 and columnname='"
                               +selectforeign.getRow(jj+1).get(0)+"'");
-                      System.out.println("pri.getRow(1).get(0):"+pri.getRow(1).get(0));
+                      Debug.log("pri.getRow(1).get(0):"+pri.getRow(1).get(0));
                       userdbhelper.runSQL("update T_DATABASE_COLUMN set foreignkeyref="+
                               Integer.valueOf(String.valueOf(pri.getRow(1).get(0)))
                               +" where colid="+Integer.valueOf(String.valueOf(selectforeign.getRow(jj+1).get(1))));
@@ -116,9 +116,9 @@ public class CredentialManager {
             try {
                 Object rv = dbhelper.executeOracleFunction("F_DELETE_CREDENTIAL(?)", crdid);
                 if ((int) rv == 1) {
-                    System.out.println("成功删除凭证");
+                    Debug.log("成功删除凭证");
                 } else if ((int) rv == -1) {
-                    System.out.println("凭证不存在，无法删除");
+                    Debug.log("凭证不存在，无法删除");
                     return false;
                 }
             } catch (SQLException e) {
@@ -136,9 +136,9 @@ public class CredentialManager {
             try {
                 Object rv = dbhelper.executeOracleFunction("F_ALTER_CREDENTIAL(?,?,?,?)", crdid, dbname, dbhost, password);
                 if ((int) rv == 1) {
-                    System.out.println("成功更改凭证");
+                    Debug.log("成功更改凭证");
                 } else if ((int) rv == -1) {
-                    System.out.println("凭证不存在，无法修改");
+                    Debug.log("凭证不存在，无法修改");
                     return false;
                 }
             } catch (SQLException e) {
@@ -155,7 +155,7 @@ public class CredentialManager {
 
         if (dbhelper.Connect()) {
             try {
-                result = dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password,cid", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
+                result = dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password,cid,username,datatype ", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
                         "T_DATABASE_INFO.did=T_DATABASE_CERTIFICATION.did and T_DI_USER.USERID=T_DATABASE_INFO.USERID and usession='" + sid + "'");
                 Debug.log("credential result row count=",result.rowCount());
             } catch (Exception e) {
@@ -184,8 +184,8 @@ public class CredentialManager {
     public static void main(String[] args) {
         CredentialManager a = new CredentialManager();
         Boolean q = a.addCredential(GlobeVar.CONFIG_DATABASE_HOST, "DatabaseInsights", GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD,
-                "486DF73164078C62E93314326863DCC1", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
-        System.out.println(q);
+                "30975E7ADB577CD3CD051823729AED26", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
+        Debug.log(q);
     }
 
 }

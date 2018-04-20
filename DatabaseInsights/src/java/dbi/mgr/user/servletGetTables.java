@@ -66,6 +66,7 @@ public class servletGetTables extends HttpServlet {
         }
 
         // add your code here
+        
         try (PrintWriter out = response.getWriter()) {
             if (status) {
                 out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);

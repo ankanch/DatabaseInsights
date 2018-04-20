@@ -26,6 +26,7 @@ package dbi.db.adaptor;
 
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
+import dbi.utils.GlobeVar;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,6 +36,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -71,7 +73,7 @@ public class DatabaseHelper {
         }
         return true;
     }
-
+    
     private Boolean checkConnection() {
         try {
             if (conn.isClosed()) {
@@ -93,8 +95,8 @@ public class DatabaseHelper {
     }
 
     /* get all table names of a given database */
-    public ArrayList<String> getTables() {
-        ArrayList<String> tables = new ArrayList<>();
+    public DBIResultSet getTables() {
+        DBIResultSet tables = new DBIResultSet();
         String table_name = "";
         try {
             Statement st = conn.createStatement();
@@ -104,9 +106,9 @@ public class DatabaseHelper {
 
             while (rs.next()) {
                 table_name = rs.getString("table_name");
-                tables.add(table_name);
+                tables.addToRow(table_name);
             }
-
+            tables.finishRow();
             st.close();
         } catch (Exception e) {
             Debug.error(e);
@@ -115,8 +117,8 @@ public class DatabaseHelper {
     }
 
     /* get column names of a given table */
-    public ArrayList<String> getColumns(String table) {
-        ArrayList<String> columns = new ArrayList<>();
+    public DBIResultSet getColumns(String table) {
+        DBIResultSet columns = new DBIResultSet();
         String column_name = "";
         try {
             Statement st = conn.createStatement();
@@ -126,9 +128,9 @@ public class DatabaseHelper {
 
             while (rs.next()) {
                 column_name = rs.getString("column_name");
-                columns.add(column_name);
+                columns.addToRow(column_name);
             }
-
+            columns.finishRow();
             st.close();
         } catch (Exception e) {
             Debug.error(e);
@@ -137,11 +139,12 @@ public class DatabaseHelper {
     }
 
     /* get column name and species of a given table */
-    public void getAllColumnSpecies(String table, int userid, int did) {
+    public DBIResultSet getAllColumnSpecies(String table, int userid, int did) {
         DBIResultSet getresult = runSQLForResult(DBAdaptor.findTablecolspe(table));
         DBIResultSet primary = runSQLForResult(DBAdaptor.findPrimaryKey(table));
         DBIResultSet foreign = runSQLForResult(DBAdaptor.findForeignKey(table));
         DBIResultSet tid=new DBIResultSet();
+        DBIResultSet species=new DBIResultSet();
         tid=runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='"+getresult.getRow(1).get(0)+"'");
         int isPrimary = 0;
         int isRef = 0;
@@ -161,15 +164,24 @@ public class DatabaseHelper {
                     }
                 }
             }
+            species.addToRow(tid.getRow(tid.rowCount()).get(0));
+            species.addToRow(did);
+            species.addToRow(userid);
+            species.addToRow(getresult.getRow(i).get(1));
+            species.addToRow(getresult.getRow(i).get(2));
+            species.addToRow(isPrimary);
+            species.addToRow(isRef);
+            species.finishRow();
             runSQL("insert into T_DATABASE_COLUMN(TID,DID,USERID,COLUMNNAME,DATATYPE,ISPRIMARY,ISFOREIGNKEY) \n"
-                    + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did + "," + userid + ",'" + getresult.getRow(i).get(1) + "','" + getresult.getRow(i).get(2) + "'," + isPrimary + "," + isRef + ")");
+                    + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did 
+                    + "," + userid + ",'" + getresult.getRow(i).get(1) + "','" 
+                    + getresult.getRow(i).get(2) + "'," + isPrimary + "," + isRef + ")");
             isRef = 0;
         }
+        return species;
     }
 
-    public void addUserref(String table) {
 
-    }
 
     /* get column names of a given table */
     public ArrayList<String> getColumnSpecies(String column) {
@@ -193,6 +205,7 @@ public class DatabaseHelper {
 
         return sqlResult;
     }
+    
 
     public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
         String table = tables[0];
@@ -296,6 +309,7 @@ public class DatabaseHelper {
         return sqlResult;
     }
 
+
     /**
      * INPUT Example: (myfunction(?,?,?),param_1,param_2,param_3) RETURNS: int
      */
@@ -309,6 +323,41 @@ public class DatabaseHelper {
         }
         statement.execute();
         return statement.getInt(1);
+    }
+    
+    
+    public DBIResultSet isNum(int uid,String table){//每一行返回列名和它的性质，如果是数字，为1，如果不是，为0
+        DBIResultSet tables = new DBIResultSet();
+        String numberType[]=DBAdaptor.numberType();
+        try {
+            DBIResultSet res=runSQLForResult("select distinct columnname,datatype,colid from T_DATABASE_COLUMN where userid='"+uid+"' and TID in\n" +
+                                            "(select tid from T_DATABASE_TABLE where tname='"+table+"') and isprimary=0\n" +
+                                            "order by colid");
+            for(int i=0;i<res.rowCount();i++){
+                tables.addToRow(res.getRow(i+1).get(0));
+                if(Arrays.asList(numberType).contains((String)res.getRow(i+1).get(1))){
+                    tables.addToRow("1");
+                }else{
+                    tables.addToRow("0");
+                }
+                tables.finishRow();
+            }
+        } catch (Exception e) {
+            Debug.error(e);
+        }
+        return tables;
+    }
+    
+    public DatabaseHelper getUserdbhelper(int uid){
+        DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD from "
+                + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid"
+                + " and a.userid="+uid);
+        String dbtype=(String)result.getRow(1).get(1);
+        String host=(String)result.getRow(1).get(2);
+        String username=(String)result.getRow(1).get(3);
+        String password=(String)result.getRow(1).get(4);
+        DatabaseConfig config=new DatabaseConfig(Integer.valueOf(dbtype),GlobeVar.CONFIG_DATABASE_DRIVER,host,username,password);
+        return new DatabaseHelper(config);
     }
 
     public static void main(String[] args) {

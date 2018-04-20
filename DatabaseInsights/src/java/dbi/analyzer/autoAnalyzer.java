@@ -41,12 +41,12 @@ public class autoAnalyzer {
     private DBIResultSet minVals = new DBIResultSet();
     private DBIResultSet avgVals = new DBIResultSet();
 
-    public autoAnalyzer(String table) {
-        colSpecies = analyzerUtils.getAllColumnSpecies(table);
-        distinctVals = analyzerUtils.findDistinctValues(table);
-        maxVals = analyzerUtils.getMaxiumValues(table);
-        minVals = analyzerUtils.getMiniumValues(table);
-        avgVals = analyzerUtils.getAverangeValues(table);
+    public autoAnalyzer(int uid,String table) {
+        colSpecies = analyzerUtils.getAllColumnSpecies(uid,table);
+        distinctVals = analyzerUtils.findDistinctValues(uid,table);
+        maxVals = analyzerUtils.getMaxiumValues(uid,table);
+        minVals = analyzerUtils.getMiniumValues(uid,table);
+        avgVals = analyzerUtils.getAverangeValues(uid,table);
 
         //check columns to draw piecharts
         // here is how we dectect:

@@ -29,6 +29,9 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class DatabaseAdaptor {
+    public String[] numberType(){
+        return new String[]{};
+    }
 
     public String getColumnNamesByTable(String Table) {
         return "";

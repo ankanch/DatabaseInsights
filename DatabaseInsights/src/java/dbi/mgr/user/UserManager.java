@@ -200,10 +200,11 @@ public class UserManager {
         }
         return false;
     }
+    
+    
 
     public static void main(String[] args) {
         UserManager manager = new UserManager();
-        //System.out.println(manager.validateUser("vicky", "123"));
     }
 
 }

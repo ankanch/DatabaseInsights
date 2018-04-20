@@ -92,6 +92,8 @@ public class DBIResultSet {
     public final int rowCount() {
         return rs.size();
     }
+    
+    //public final DBIResultSet map(func)
 
     public static void main(String[] args) {
         /*
@@ -104,19 +106,19 @@ public class DBIResultSet {
             a.finishRow();
         }
         for(int i=1;i<6;i++){
-            System.out.println(a.getRow(i));
+            Debug.log(a.getRow(i));
         }
         for(int i=1;i<6;i++){
             a.getRow(i).add(99);
             a.finishRow();
         }
         for(int i=1;i<6;i++){
-            System.out.println(a.getRow(i));
+            Debug.log(a.getRow(i));
         }
 */
         DBIResultSet b = new DBIResultSet();
 
         b.finishRow();
-        System.out.println(b.getRow(1));
+        Debug.log(b.getRow(1));
     }
 }

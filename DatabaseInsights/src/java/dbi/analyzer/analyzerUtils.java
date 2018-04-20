@@ -25,7 +25,13 @@
  */
 package dbi.analyzer;
 
+import dbi.db.adaptor.DatabaseConfig;
+import dbi.db.adaptor.DatabaseHelper;
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
+import dbi.utils.GlobeVar;
+import java.math.BigDecimal;
+import java.util.Arrays;
 
 /**
  *
@@ -33,12 +39,25 @@ import dbi.utils.DBIResultSet;
  */
 public class analyzerUtils {
 
+    private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
+    private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
     /*
     * get all column species from T_DI_COLUMNS 
      */
-    public static DBIResultSet getAllColumnSpecies(String table) {
+    public static DBIResultSet getAllColumnSpecies(int uid,String table) {
         DBIResultSet dbire = new DBIResultSet();
-
+        String sql="select * from T_DATABASE_COLUMN\n" +
+        "where TID in (select tid from T_DATABASE_TABLE where tname='"+table+"')\n" +
+        "and userid="+uid;
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        if(user.Connect()){
+            dbire=user.runSQLForResult(sql);
+        }
+        user.Disconnect();
         return dbire;
     }
 
@@ -47,9 +66,30 @@ public class analyzerUtils {
     * find distinct values of every columns in a given table.
     * the order of the result keeps the order of columns
      */
-    public static DBIResultSet findDistinctValues(String table) {
+    public static DBIResultSet findDistinctValues(int uid,String table) {
         DBIResultSet dbire = new DBIResultSet();
-
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        
+        if (user.Connect()){
+            String column="";
+            DBIResultSet tablename=user.runSQLForResult("select distinct columnname  from t_database_column where userid="+uid+" and\n" +
+            "tid in(select tid from T_DATABASE_TABLE where tname='"+table+"')");
+            
+            for(int i=0;i<tablename.rowCount()-1;i++){
+                column=column+"count(distinct "+tablename.getRow(i+1).get(0)+"),";
+            }
+            column=column+" count(distinct "+tablename.getRow(tablename.rowCount()).get(0)+")";
+            Debug.log(column);
+            String sql="select "+column+" from "+table+
+                       " where userid="+uid;
+            Debug.log(sql);
+            dbire=user.runSQLForResult(sql);
+        }
+        user.Disconnect();
         return dbire;
     }
 
@@ -57,9 +97,30 @@ public class analyzerUtils {
     * get maxium value of every column (if comparable). 
     * keep the original column order of the table
      */
-    public static DBIResultSet getMaxiumValues(String table) {
-        DBIResultSet dbire = new DBIResultSet();
-
+    public static DBIResultSet getMaxiumValues(int uid,String table) {
+        DBIResultSet dbire=new DBIResultSet();
+        DBIResultSet result=new DBIResultSet();
+        DBIResultSet max=new DBIResultSet();
+        
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        
+        if(user.Connect()){
+            result=user.isNum(uid, table);
+            for(int i=0;i<result.rowCount();i++){
+                if(result.getRow(i+1).get(1).equals("1")){
+                    max=user.runSQLForResult("select max("+result.getRow(i+1).get(0)+") from "+table);
+                    dbire.addToRow(max.getRow(1).get(0));
+                }else{
+                    dbire.addToRow(null);
+                }
+            }
+            dbire.finishRow();
+        }
+        user.Disconnect();
         return dbire;
     }
 
@@ -67,28 +128,109 @@ public class analyzerUtils {
     * get miniium value of every column (if comparable). 
     * keep the original column order of the table
      */
-    public static DBIResultSet getMiniumValues(String table) {
-        DBIResultSet dbire = new DBIResultSet();
-
+    public static DBIResultSet getMiniumValues(int uid,String table) {
+        DBIResultSet dbire=new DBIResultSet();
+        DBIResultSet result=new DBIResultSet();
+        DBIResultSet min=new DBIResultSet();
+        
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        
+        if(user.Connect()){
+            result=user.isNum(uid, table);
+            for(int i=0;i<result.rowCount();i++){
+                if(result.getRow(i+1).get(1).equals("1")){
+                    min=user.runSQLForResult("select min("+result.getRow(i+1).get(0)+") from "+table);
+                    dbire.addToRow(min.getRow(1).get(0));
+                }else{
+                    dbire.addToRow(null);
+                }
+            }
+            dbire.finishRow();
+        }
+        user.Disconnect();
         return dbire;
     }
 
     /*
     * get average of every columns, ignored if not number
      */
-    public static DBIResultSet getAverangeValues(String table) {
-        DBIResultSet dbire = new DBIResultSet();
-
+    public static DBIResultSet getAverangeValues(int uid,String table) {
+        DBIResultSet dbire=new DBIResultSet();
+        DBIResultSet result=new DBIResultSet();
+        DBIResultSet avg=new DBIResultSet();
+        
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        
+        if(user.Connect()){
+            result=user.isNum(uid, table);
+            for(int i=0;i<result.rowCount();i++){
+                if(result.getRow(i+1).get(1).equals("1")){
+                    avg=user.runSQLForResult("select avg("+result.getRow(i+1).get(0)+") from "+table);
+                    dbire.addToRow(avg.getRow(1).get(0));
+                }else{
+                    dbire.addToRow(null);
+                }
+            }
+            dbire.finishRow();
+        }
+        user.Disconnect();
         return dbire;
     }
 
     /*
     * get sum of every column in the order of column
      */
-    public static DBIResultSet getAllColumnSum(String table) {
-        DBIResultSet dbire = new DBIResultSet();
-
+    public static DBIResultSet getAllColumnSum(int uid,String table) {
+        DBIResultSet dbire=new DBIResultSet();
+        DBIResultSet result=new DBIResultSet();
+        DBIResultSet sum=new DBIResultSet();
+        
+        DatabaseHelper user=null;
+        if(dbhelper.Connect()){
+            user=dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
+        
+        if(user.Connect()){
+            result=user.isNum(uid, table);
+            for(int i=0;i<result.rowCount();i++){
+                if(result.getRow(i+1).get(1).equals("1")){
+                    sum=user.runSQLForResult("select sum("+result.getRow(i+1).get(0)+") from "+table);
+                    dbire.addToRow(sum.getRow(1).get(0));
+                }else{
+                    dbire.addToRow(null);
+                }
+            }
+            dbire.finishRow();
+        }
+        user.Disconnect();
         return dbire;
+    }
+    
+    public static void main(String args[]){
+        analyzerUtils test=new analyzerUtils();
+        DBIResultSet result=test.getAllColumnSpecies(43,"T_DI_USER");
+        DBIResultSet result1=test.findDistinctValues(43,"T_DI_USER");
+        DBIResultSet result2=test.getMaxiumValues(43,"T_DI_USER");
+        DBIResultSet result3=test.getMiniumValues(43,"T_DI_USER");
+        DBIResultSet result4=test.getAverangeValues(43,"T_DI_USER");
+        DBIResultSet result5=test.getAllColumnSum(43,"T_DI_USER"); 
+        for(int i=0;i<result.rowCount();i++){
+            Debug.log(result.getRow(i+1));
+        }    
+        Debug.log(result1.getRow(1));
+        Debug.log(result2.getRow(1));
+        Debug.log(result3.getRow(1));
+        Debug.log(result4.getRow(1));
+        Debug.log(result5.getRow(1));
     }
 
 }
