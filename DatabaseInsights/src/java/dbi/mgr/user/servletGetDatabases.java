@@ -26,6 +26,7 @@
 
 package dbi.mgr.user;
 
+import dbi.utils.DBIDataExchange;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -65,14 +66,10 @@ public class servletGetDatabases extends HttpServlet {
         }
 
         // add your code here
-
+        String result=DBIDataExchange.makeupReturnData(status, "", um.getUserDatabases(sid).getRows());
 
         try (PrintWriter out = response.getWriter()) {
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println(result);
         }
     } 
 

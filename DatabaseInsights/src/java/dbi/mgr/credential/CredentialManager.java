@@ -155,7 +155,8 @@ public class CredentialManager {
 
         if (dbhelper.Connect()) {
             try {
-                result = dbhelper.runSelect("name,host,T_DATABASE_CERTIFICATION.password,cid,username,datatype ", "T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER ",
+                String table[]={"T_DATABASE_INFO,T_DATABASE_CERTIFICATION,T_DI_USER "};
+                result = dbhelper.runJoinSelect("name,host,T_DATABASE_CERTIFICATION.password,cid,T_DATABASE_CERTIFICATION.username ",table ,
                         "T_DATABASE_INFO.did=T_DATABASE_CERTIFICATION.did and T_DI_USER.USERID=T_DATABASE_INFO.USERID and usession='" + sid + "'");
                 Debug.log("credential result row count=",result.rowCount());
             } catch (Exception e) {
