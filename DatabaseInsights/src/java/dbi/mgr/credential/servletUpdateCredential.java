@@ -25,6 +25,7 @@
  */
 package dbi.mgr.credential;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,24 +56,19 @@ public class servletUpdateCredential extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         Boolean status = false;
         String para = request.getParameter("paraname");
-        
-        CredentialManager manager=new CredentialManager();
-        String crdid=request.getParameter("cid");
+
+        CredentialManager manager = new CredentialManager();
+        String crdid = request.getParameter("cid");
         String dbhost = request.getParameter("dbhost");
         String dbname = request.getParameter("dbname");
         String password = request.getParameter("dbpwd");
-        
-        if(manager.alterCredential(crdid,dbname,dbhost,password)){
-                 status=true;
-         }
+
+        if (manager.alterCredential(crdid, dbname, dbhost, password)) {
+            status = true;
+        }
 
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 
@@ -88,7 +84,7 @@ public class servletUpdateCredential extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       // processRequest(request, response);
+        // processRequest(request, response);
     }
 
     /**

@@ -40,9 +40,9 @@
 </nav>
 <script>
     function signout() {
-        SubmitFormKVF("/urlmap", {target : "console-user-signout" }, function error() {
+        SubmitFormKVF("/urlmap", {target : "console-user-signout" }, function error(data) {
             showMsg("Failed to signout, network error!");
-        }, function success() {
+        }, function success(data) {
             showMsg("You are signed out now!");
             window.location = "signin.jsp";
         });

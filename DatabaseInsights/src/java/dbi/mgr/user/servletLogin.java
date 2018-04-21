@@ -25,6 +25,7 @@
  */
 package dbi.mgr.user;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,21 +60,16 @@ public class servletLogin extends HttpServlet {
         String sid = request.getSession().getId();
 
         UserManager um = GlobeVar.OBJ_MANAGER_USER;
-        if (um.loginInUser(username, password,sid)) {
+        if (um.loginInUser(username, password, sid)) {
             status = true;
-            Cookie cookie = new Cookie("uname",username);
-            cookie.setMaxAge(60 * 60 * 48); 
+            Cookie cookie = new Cookie("uname", username);
+            cookie.setMaxAge(60 * 60 * 48);
             response.addCookie(cookie);
         }
         response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 

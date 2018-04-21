@@ -27,6 +27,7 @@ package dbi.mgr.credential;
 
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,24 +64,19 @@ public class servletAddCredentials extends HttpServlet {
         String dbuser = request.getParameter("dbusername");
         String dbpwd = request.getParameter("dbpass");
         String sid = request.getSession().getId();
-        String dbtype=request.getParameter("dbtype");
+        String dbtype = request.getParameter("dbtype");
         Boolean status = false;
-        
+
         int dbcode = Integer.parseInt(dbscode);
-        CredentialManager use=new CredentialManager();
-        if(use.validiateCreditial(dbscode, dbhost, dbname, dbuser, dbpwd, dbcode)){
-            if(use.addCredential(dbhost,dbname,dbuser,dbpwd,sid,dbtype)){
-                 status=true;
+        CredentialManager use = new CredentialManager();
+        if (use.validiateCreditial(dbscode, dbhost, dbname, dbuser, dbpwd, dbcode)) {
+            if (use.addCredential(dbhost, dbname, dbuser, dbpwd, sid, dbtype)) {
+                status = true;
             }
         }
 
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 

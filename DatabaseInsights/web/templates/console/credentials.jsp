@@ -60,14 +60,15 @@
 
     function save(row) {
         $("#progressbar").show();
-
+        var inputprefix = "credtable_row_" + row + "_col_";
+        
         var dbhost = $("#credtable_row_" + row + "_col_2").val();
         var dbname = $("#credtable_row_" + row + "_col_1").val();
         var dbpwd = $("#credtable_row_" + row + "_col_4").val();
         //send updates to server
-        SubmitFormKVF("/api/updateCredential", {cid: row, dbhost: dbhost, dbname: dbname, dbpwd: dbpwd}, function error() {
+        SubmitFormKVF("/api/updateCredential", {cid: row, dbhost: dbhost, dbname: dbname, dbpwd: dbpwd}, function error(data) {
             showMsg("<%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_UPDATE)%>");
-        }, function success() {
+        }, function success(data) {
             showMsg("<%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_UPDATE)%>");
             $("#progressbar").hide();
             $("#credtable_row_1_edit").show();
@@ -82,9 +83,9 @@
     function del(row) {
         $("#progressbar").show();
         //send updates to server
-        SubmitFormKVF("/api/deleteCredentials", {cid: row}, function error() {
+        SubmitFormKVF("/api/deleteCredentials", {cid: row}, function error(data) {
             showMsg("<%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_FAILED_DELETE)%>");
-        }, function success() {
+        }, function success(data) {
             showMsg("<%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_SUCCESS_DELETE)%>");
             $("#progressbar").hide();
             $("#credtable_row_" + row).remove();

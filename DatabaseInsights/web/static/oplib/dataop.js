@@ -64,10 +64,11 @@ function SubmitFormFF(url, formid, error_func, success_func) {
         type: 'post',
         data: $('#' + formid).serialize(),
         success: function (data) {
-            if (data.indexOf(error_identifier) > -1) {
-                error_func();
+            var ret = new DBIEX(data);
+            if (ret.status === false) {
+                error_func(ret);
             } else {
-                success_func();
+                success_func(ret);
             }
         }
     });
@@ -80,10 +81,11 @@ function SubmitFormKVF(url, keyvalue, error_func, success_func) {
         type: 'post',
         data: keyvalue,
         success: function (data) {
-            if (data.indexOf(error_identifier) > -1) {
-                error_func();
+            var ret = new DBIEX(data);
+            if (ret.status === false) {
+                error_func(ret);
             } else {
-                success_func();
+                success_func(ret);
             }
         }
     });
@@ -91,7 +93,8 @@ function SubmitFormKVF(url, keyvalue, error_func, success_func) {
 
 function GetData(url, error_msg, success_msg) {
     $.get(url, function (data) {
-        if (data.indexOf(error_identifier) > -1) {
+        var ret = new DBIEX(data);
+        if (ret.status === false) {
             showMsg(error_msg);
         } else {
             showMsg(success_msg);
@@ -101,10 +104,11 @@ function GetData(url, error_msg, success_msg) {
 
 function GetDataF(url, error_func, success_func) {
     $.get(url, function (data) {
-        if (data.indexOf(error_identifier) > -1) {
-            error_func();
+        var ret = new DBIEX(data);
+        if (ret.status === false) {
+            error_func(ret);
         } else {
-            success_func();
+            success_func(ret);
         }
     });
 }

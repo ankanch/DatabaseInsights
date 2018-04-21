@@ -82,9 +82,9 @@
         if (typex == true) {
             // change email
             var nemail = $("#settings_email").val();
-            SubmitFormKVF("/api/UpdateUserinfo", {typex: "email", email:nemail}, function error() {
+            SubmitFormKVF("/api/UpdateUserinfo", {typex: "email", email:nemail}, function error(data) {
                 showMsg("Failed to change email,please try again later!");
-            }, function success() {
+            }, function success(data) {
                 showMsg("Your email now has been changed!");
             });
         } else {
@@ -95,9 +95,9 @@
             if(newpwd != comfirmpwd || newpwd.length <3){
                 showMsg("Password does not match!");return;
             }
-            SubmitFormKVF("/api/UpdateUserinfo", {typex: "pwd", npwd:newpwd ,opwd:oldpwd}, function error() {
+            SubmitFormKVF("/api/UpdateUserinfo", {typex: "pwd", npwd:newpwd ,opwd:oldpwd}, function error(data) {
                 showMsg("Failed to change password, please try again later(You may enter a wrong old password)!");
-            }, function success() {
+            }, function success(data) {
                 showMsg("Your password now has been changed!");
             });
         }

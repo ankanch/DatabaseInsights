@@ -81,11 +81,11 @@ THE SOFTWARE.
             // Form is valid, then we submit form
             $("#progressbar").show();
             btn.disabled = true;
-            SubmitFormFF("/api/RegisteUser", "form_signup", function error() {
+            SubmitFormFF("/api/RegisteUser", "form_signup", function error(data) {
                 showMsg("Failed to registe! Please try again later.Username may already in use.");
                 $("#progressbar").hide();
                 btn.disabled = false;
-            }, function success() {
+            }, function success(data) {
                 showMsg("Successfully registed!Redirecting you to the login page...");
                 $("#progressbar").hide();
                 window.location = "signin.jsp";

@@ -45,6 +45,22 @@ public class DBIDataExchange {
     public DBIDataExchange() {
     }
 
+    public static String makeupStatusCode(boolean status) {
+        String result = String.valueOf(status) + SP_STATUS + "no message" + SP_MESSAGE + "no data";
+        return result;
+    }
+
+    public static String makeupStatusCode(boolean status, String message) {
+        String result = String.valueOf(status) + SP_STATUS + message + SP_MESSAGE + "no data";
+        return result;
+    }
+
+    public static String makeupReturnData(boolean status, String message, Object data) {
+        String result = String.valueOf(status) + SP_STATUS + message + SP_MESSAGE;
+        result += String.valueOf(data);
+        return result;
+    }
+
     public static String makeupReturnData(boolean status, String message, Object[] data) {
         String result = String.valueOf(status) + SP_STATUS + message + SP_MESSAGE;
         for (Object obj : data) {
@@ -65,9 +81,7 @@ public class DBIDataExchange {
         return result;
     }
 
-
-    
-        public static String makeupReturnData(boolean status, String message, ArrayList<ArrayList<Object>> data) {
+    public static String makeupReturnData(boolean status, String message, ArrayList<ArrayList<Object>> data) {
         String result = String.valueOf(status) + SP_STATUS + message + SP_MESSAGE;
         for (ArrayList<Object> objlist : data) {
             String row = "";
@@ -79,17 +93,17 @@ public class DBIDataExchange {
         return result;
     }
 
-
-
     public static void main(String[] args) {
         String[] a = {"test1", "test2", "test3"};
-        String[][] c = {{"test1","text11"}, {"test2","text22"}, {"test3","text33"}};
+        String[][] c = {{"test1", "text11"}, {"test2", "text22"}, {"test3", "text33"}};
         ArrayList<ArrayList<Object>> b = new ArrayList<>();
-        ArrayList<Object> b1 = new ArrayList<>();b1.add("1");
-        ArrayList<Object> b2 = new ArrayList<>();b2.add("2");
+        ArrayList<Object> b1 = new ArrayList<>();
+        b1.add("1");
+        ArrayList<Object> b2 = new ArrayList<>();
+        b2.add("2");
         b.add(b1);
         b.add(b2);
-        Debug.log("Arraylist b=",b);
+        Debug.log("Arraylist b=", b);
         String xa = DBIDataExchange.makeupReturnData(true, "this is a test message", a);
         String xb = DBIDataExchange.makeupReturnData(true, "this is a test message", c);
         String xc = DBIDataExchange.makeupReturnData(true, "this is a test message", b);

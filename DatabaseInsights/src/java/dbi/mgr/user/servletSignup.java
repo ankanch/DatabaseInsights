@@ -25,6 +25,7 @@
  */
 package dbi.mgr.user;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,13 +63,9 @@ public class servletSignup extends HttpServlet {
         if( um.registerUser(username, password, email) ){
             status = true;
         }
+        
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 

@@ -36,9 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author kanch This servlet is used to process some server-end operations,
- * by pass session id and only requires return a status code.
- * 
+ * @author kanch This servlet is used to process some server-end operations, by
+ * pass session id and only requires return a status code.
+ *
  */
 @WebServlet(name = "servletConsoleURLMapping", urlPatterns = {"/urlmap"}, initParams = {
     @WebInitParam(name = "target", value = "notarget")})
@@ -66,15 +66,11 @@ public class servletURLMapping extends HttpServlet {
         if (target == null || target.equalsIgnoreCase("notarget") || target.length() < 1) {
             status = false;
         } else if (target.equalsIgnoreCase("console-user-signout")) {
-            status =  GlobeVar.OBJ_MANAGER_USER.signoutUser(sid);
+            status = GlobeVar.OBJ_MANAGER_USER.signoutUser(sid);
         }
 
         try (PrintWriter out = response.getWriter()) {
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 

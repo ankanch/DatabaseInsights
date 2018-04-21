@@ -39,7 +39,9 @@ class DBIEX {
         // str like below:
         // true<@SUS>this is a test message<@MSG>test1<@C>text11<@C><@R>test2<@C>text22<@C><@R>test3<@C>text33<@C><@R> 
         var res = exstr.split(SP_STATUS);
-        this.status = (res[0] === "true");
+        if(res[0] === "true"){
+            this.status = true;
+        }
         var res = res[1].split(SP_MESSAGE);
         this.message = res[0];
         var rows = res[1].split(SP_ROW);
@@ -51,7 +53,7 @@ class DBIEX {
                 this.data.push(rowx);
             }
         }
-        console.log(this.data);
+        console.log(this);
     }
 }
 

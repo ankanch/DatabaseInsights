@@ -27,6 +27,7 @@
 package dbi.mgr.user;
 
 import dbi.utils.DBIDataExchange;
+import dbi.utils.DBIResultSet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -60,16 +61,16 @@ public class servletGetDatabases extends HttpServlet {
         // check if user login first, if not, return error
         if(!um.validateSession(sid)){
             try (PrintWriter out = response.getWriter()) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR + "<br/> No authentication.");
+                out.println(DBIDataExchange.makeupStatusCode(false, "No authentication."));
             }
             return;
         }
 
         // add your code here
-        String result=DBIDataExchange.makeupReturnData(status, "", um.getUserDatabases(sid).getRows());
+        DBIResultSet ret = um.getUserDatabases(sid);
 
         try (PrintWriter out = response.getWriter()) {
-            out.println(result);
+            out.println( DBIDataExchange.makeupReturnData(status, "", ret.getRows()) );
         }
     } 
 

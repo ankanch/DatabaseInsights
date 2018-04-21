@@ -58,12 +58,12 @@
 
                         function login() {
                             btn.disabled = true;
-                            SubmitFormFF("/api/login", "form_login", function error() {
+                            SubmitFormFF("/api/login", "form_login", function error(data) {
                                 showMsg("Failed to log you in! Either the user isn't exists or password in correct!");
                                 $("#progressbar").hide();
                                 btn.disabled = false;
-                            }, function success() {
-                                showMsg("Successfully logged in!Redirecting you to console...");
+                            }, function success(data) {
+                                showMsg("Successfully logged in! Redirecting you to console...");
                                 $("#progressbar").hide();
                                 window.location = "console.jsp";
                             });

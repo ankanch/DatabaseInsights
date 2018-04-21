@@ -25,6 +25,7 @@
  */
 package dbi.mgr.user;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,7 +61,7 @@ public class servletUpdateUserinfo extends HttpServlet {
         String oldpwd = request.getParameter("opwd");
         String newpwd = request.getParameter("npwd");
         String sid = request.getSession().getId();
-        HashMap<String,Object> changelist = new HashMap<>();
+        HashMap<String, Object> changelist = new HashMap<>();
 
         if (typex.equals("email")) {
             changelist.put("EMAIL", email);
@@ -70,19 +71,14 @@ public class servletUpdateUserinfo extends HttpServlet {
         } else if (typex.equals("pwd")) {
             if (GlobeVar.OBJ_MANAGER_USER.checkPassword(sid, oldpwd)) {
                 changelist.put("PASSWORD", newpwd);
-                if (GlobeVar.OBJ_MANAGER_USER.alterUser( sid, changelist)) {
+                if (GlobeVar.OBJ_MANAGER_USER.alterUser(sid, changelist)) {
                     status = true;
                 }
             }
         }
 
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 

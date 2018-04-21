@@ -25,6 +25,7 @@
  */
 package dbi.mgr.credential;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,20 +57,15 @@ public class servletDeleteCredentials extends HttpServlet {
         Boolean status = false;
         String para = request.getParameter("paraname");
 
-        String cid=request.getParameter("cid");
-        CredentialManager manager=new CredentialManager();
+        String cid = request.getParameter("cid");
+        CredentialManager manager = new CredentialManager();
         System.out.println(cid);
-        if(manager.deleteCredential(cid)){
-            status=true;
+        if (manager.deleteCredential(cid)) {
+            status = true;
         }
 
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            if (status) {
-                out.println(GlobeVar.SERVLET_IDENTIFIER_SUCCESS);
-            } else { // ERROR
-                out.println(GlobeVar.SERVLET_IDENTIFIER_ERROR);
-            }
+            out.println( DBIDataExchange.makeupStatusCode(status) );
         }
     }
 
@@ -85,7 +81,7 @@ public class servletDeleteCredentials extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      //  processRequest(request, response);
+        //  processRequest(request, response);
     }
 
     /**
