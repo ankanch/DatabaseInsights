@@ -41,27 +41,39 @@ public class autoAnalyzer {
     private DBIResultSet minVals = new DBIResultSet();
     private DBIResultSet avgVals = new DBIResultSet();
 
-    public autoAnalyzer(int uid,String table) {
-        colSpecies = analyzerUtils.getAllColumnSpecies(uid,table);
-        distinctVals = analyzerUtils.findDistinctValues(uid,table);
-        maxVals = analyzerUtils.getMaxiumValues(uid,table);
-        minVals = analyzerUtils.getMiniumValues(uid,table);
-        avgVals = analyzerUtils.getAverangeValues(uid,table);
+    public autoAnalyzer(int uid, String table) {
+        colSpecies = analyzerUtils.getAllColumnSpecies(uid, table);
+        distinctVals = analyzerUtils.findDistinctValues(uid, table);
+        maxVals = analyzerUtils.getMaxiumValues(uid, table);
+        minVals = analyzerUtils.getMiniumValues(uid, table);
+        avgVals = analyzerUtils.getAverangeValues(uid, table);
 
         //check columns to draw piecharts
         // here is how we dectect:
         //        less than 5 distinct values column will be rendered to piecharts
         for (int i = 1; i <= distinctVals.rowCount(); i++) {
             if ((Integer) distinctVals.getRow(i).get(0) < 5) {
-
                 Chart cht = chartsHelper.generateBarchart(new DBIResultSet());
                 charts_list.add(cht);
             }
         }
 
-        //check columns to draw barcharts
-        //methodlogy: 
-        
+        //check columns to draw linecharts
+        //methodlogy: draw linecharts for every numberic columns excluding primary keys
+        //            then draw statistics of the values for every column which is not numberic
+        for (int i = 1; i <= colSpecies.rowCount(); i++) {
+            if (colSpecies.getRow(i).get(6).equals("NUMBER")) {
+                Chart cht = chartsHelper.generateBarchart(new DBIResultSet());
+                charts_list.add(cht);
+            }
+        }
+
+        //check columns to draw histogramcharts
+        //methodlogy: draw linecharts for every numberic columns excluding primary keys
+    }
+
+    public ArrayList<Chart> getAutoCharts() {
+        return charts_list;
     }
 
 }

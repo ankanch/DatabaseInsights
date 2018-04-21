@@ -109,7 +109,7 @@ public class analyzerUtils {
         dbhelper.Disconnect();
         
         if(user.Connect()){
-            result=user.isNum(uid, table);
+            result=user.getIsNumberColumns(uid, table);
             for(int i=0;i<result.rowCount();i++){
                 if(result.getRow(i+1).get(1).equals("1")){
                     max=user.runSQLForResult("select max("+result.getRow(i+1).get(0)+") from "+table);
@@ -140,7 +140,7 @@ public class analyzerUtils {
         dbhelper.Disconnect();
         
         if(user.Connect()){
-            result=user.isNum(uid, table);
+            result=user.getIsNumberColumns(uid, table);
             for(int i=0;i<result.rowCount();i++){
                 if(result.getRow(i+1).get(1).equals("1")){
                     min=user.runSQLForResult("select min("+result.getRow(i+1).get(0)+") from "+table);
@@ -170,7 +170,7 @@ public class analyzerUtils {
         dbhelper.Disconnect();
         
         if(user.Connect()){
-            result=user.isNum(uid, table);
+            result=user.getIsNumberColumns(uid, table);
             for(int i=0;i<result.rowCount();i++){
                 if(result.getRow(i+1).get(1).equals("1")){
                     avg=user.runSQLForResult("select avg("+result.getRow(i+1).get(0)+") from "+table);
@@ -200,7 +200,7 @@ public class analyzerUtils {
         dbhelper.Disconnect();
         
         if(user.Connect()){
-            result=user.isNum(uid, table);
+            result=user.getIsNumberColumns(uid, table);
             for(int i=0;i<result.rowCount();i++){
                 if(result.getRow(i+1).get(1).equals("1")){
                     sum=user.runSQLForResult("select sum("+result.getRow(i+1).get(0)+") from "+table);

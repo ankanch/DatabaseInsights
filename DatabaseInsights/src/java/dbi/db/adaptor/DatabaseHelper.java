@@ -325,8 +325,11 @@ public class DatabaseHelper {
         return statement.getInt(1);
     }
     
-    
-    public DBIResultSet isNum(int uid,String table){//每一行返回列名和它的性质，如果是数字，为1，如果不是，为0
+    /**
+    * 检查给定用户表的每一列是否为数字或非数字。如果是数字，为1，如果不是，为0<br/>
+    * 返回值：DBIResultSet，每一行包含列名和是否为数字列
+    */
+    public DBIResultSet getIsNumberColumns(int uid,String table){
         DBIResultSet tables = new DBIResultSet();
         String numberType[]=DBAdaptor.numberType();
         try {
