@@ -49,15 +49,38 @@ public class Chart {
 
     @Override
     public String toString() {
+        String chartops = "";
         switch (type) {
             case CHART_PIRCHART:
+                chartops = ChartOption.OPTION_PIE.replace("@TITLE", title)
+                        .replace("@SUBTITLE", sub_title)
+                        .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
+                        .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
                 break;
             case CHART_LINECHART:
+                chartops = ChartOption.OPTION_LINE.replace("@TITLE", title)
+                        .replace("@SUBTITLE", sub_title)
+                        .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
+                        .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
                 break;
             case CHART_HISTOGRAM:
+                chartops = ChartOption.OPTION_HISTOGRAM.replace("@TITLE", title)
+                        .replace("@SUBTITLE", sub_title)
+                        .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
+                        .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
                 break;
         }
-        return "";
+        return chartops;
     }
+
+    private String CHART_CONTAINER = "<div class=\"card\">"
+            + "	<div class=\"card-body\">"
+            + "		<div id=\"@ID\" style=\"width: 600px;height:400px;\"></div>"
+            + "		<script type=\"text/javascript\">"
+            + "			var myChart = echarts.init(document.getElementById('@ID'));"
+            + "			myChart.setOption(@OPTION);"
+            + "		</script>"
+            + "	</div>"
+            + "</div>";
 
 }

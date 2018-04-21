@@ -32,11 +32,23 @@ import dbi.utils.DBIResultSet;
  * @author kanch
  */
 public class chartsHelper {
-    
-    public static Chart generateBarchart(DBIResultSet xyvalues){
+
+    public static Chart generateBarchart(DBIResultSet xyvalues) {
         Chart cht = new Chart();
-        
+
         return cht;
     }
-    
+
+    public static Chart generateLinechart(DBIResultSet xyvalues) {
+        Chart cht = new Chart();
+
+        return cht;
+    }
+
+    public static Chart generateHistogramchart(DBIResultSet xyvalues) {
+        Chart cht = new Chart();
+
+        return cht;
+    }
+
 }
