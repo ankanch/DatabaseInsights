@@ -4,6 +4,8 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.lang"%>
+<%@page import="dbi.localization.langID"%>
 <%@page import="dbi.mgr.user.UserManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% // check if user are authorized to visit this page
@@ -11,6 +13,7 @@
     if (um.validateSession(session.getId())) {
 %><jsp:forward page="console.jsp" /> <%
     }
+    lang local = lang.detectLang(request);
 %>
 <!DOCTYPE html>
 <html>

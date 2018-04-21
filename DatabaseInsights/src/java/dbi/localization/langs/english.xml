@@ -82,8 +82,36 @@ THE SOFTWARE.
     <l id="JSP_SIGNIN_LABEL_LOGIN"  value="Login" />
     <l id="JSP_SIGNIN_LABEL_PROBLEMLOGIN"  value="Problem in login?" />
     <l id="JSP_SIGNIN_JS_NAVTITLE"  value="Console" />
+    <l id="JSP_SIGNIN_TIP_FAILED" value="Failed to log you in! Either the user isn't exists or password incorrect!" />
+    <l id="JSP_SIGNIN_TIP_SUCCESS" value="Successfully logged in! Redirecting you to console..." />
     <!-- signup.jsp -->
-    
+    <l id="JSP_SIGNUP_LABEL_USERNAME" value="Username" />
+    <l id="JSP_SIGNUP_LABEL_EMAIL" value="Email address" />
+    <l id="JSP_SIGNUP_LABEL_PASSWORD" value="Password" />
+    <l id="JSP_SIGNUP_LABEL_CONFIRMPASSWORD" value="Confirm Password" />
+    <l id="JSP_SIGNUP_BUTTON_SIGNUP" value="Register" />
+    <l id="JSP_SIGNUP_BUTTON_LOGIN" value="Login" />
+    <l id="JSP_SIGNUP_INFO_USERNAME" value="Start with alphberts, only alphberts and numbers allowed." />
+    <l id="JSP_SIGNUP_INFO_EMAIL" value="We'll never share your email with anyone else." />
+    <l id="JSP_SIGNUP_INFO_PASSWORD" value="Including symbol,lowercase,uppercase and number." />
+    <l id="JSP_SIGNUP_INFO_AGGREMENT" value="I agree with the [End User Agreement]" />
+    <!-- settings.jsp -->
+    <l id="JSP_CONSOLE_SETTINGS_TITLE" value="Settings" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_REGISTEDON" value="Account Registed on" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_STATUS" value="Account Status" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_LASTLOGIN" value="Last Login" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_USERNAME" value="Username" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_EMAIL" value="Email address" />
+    <l id="JSP_CONSOLE_SETTINGS_BUTTON_SAVE" value="Save Change" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_OLDPASSWORD" value="Old Password" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_NEWPASSWORD" value="New Password" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_COMFIRM_NEWPASSWORD" value="Confirm New Password" />
+    <l id="JSP_CONSOLE_SETTINGS_TIP_USERNAME" value="You can't change your username." />
+    <l id="JSP_CONSOLE_SETTINGS_TIP_EMAIL" value="We'll never share your email with anyone else." />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_WARNING" value="Delete Account&lt;/button&gt; &lt;small&gt;Watch out, it can not be reversed&lt;/small&gt;" />
+
+
+
     <!-- console left nav panel (console_nav_side.jsp)  -->
     <l id="JSP_NAV_SIDE_OVERVIEW"  value="Overview" />
     <l id="JSP_NAV_SIDE_REPORTS"  value="Reports" />

@@ -4,7 +4,10 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.lang"%>
+<%@page import="dbi.localization.langID"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%  lang local = lang.detectLang(request); %>
 <!DOCTYPE html>
 <!--
 The MIT License

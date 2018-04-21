@@ -26,33 +26,33 @@ THE SOFTWARE.
 -->
 <form action="api/RegisteUser" method="post" id="form_signup">
     <div class="form-group">
-        <label for="signup_name" class="bmd-label-floating">Username</label>
+        <label for="signup_name" class="bmd-label-floating"><%=local.getString(langID.JSP_SIGNUP_LABEL_USERNAME)%></label>
         <input type="text" required="required" class="form-control" id="signup_name" name="name">
-        <span class="bmd-help">We'll never share your email with anyone else.</span>
+        <span class="bmd-help"><%=local.getString(langID.JSP_SIGNUP_INFO_USERNAME)%></span>
     </div>
     <div class="form-group">
-        <label for="signup_email" class="bmd-label-floating">Email address</label>
+        <label for="signup_email" class="bmd-label-floating"><%=local.getString(langID.JSP_SIGNUP_LABEL_EMAIL)%></label>
         <input type="email" required="required" class="form-control" id="signup_email" name="email">
-        <span class="bmd-help">We'll never share your email with anyone else.</span>
+        <span class="bmd-help"><%=local.getString(langID.JSP_SIGNUP_INFO_EMAIL)%></span>
     </div>
     <div class="form-group">
-        <label for="signup_password" class="bmd-label-floating">Password</label>
+        <label for="signup_password" class="bmd-label-floating"><%=local.getString(langID.JSP_SIGNUP_LABEL_PASSWORD)%></label>
         <input type="password" required="required" class="form-control" id="signup_password" name="password">
-        <span class="bmd-help">Including symbol,lowercase,uppercase and number.</span>
+        <span class="bmd-help"><%=local.getString(langID.JSP_SIGNUP_INFO_PASSWORD)%></span>
     </div>
     <div class="form-group">
-        <label for="signup_confirmpassword" class="bmd-label-floating">Confirm Password</label>
+        <label for="signup_confirmpassword" class="bmd-label-floating"><%=local.getString(langID.JSP_SIGNUP_LABEL_CONFIRMPASSWORD)%></label>
         <input type="password" required="required" class="form-control" id="signup_confirmpassword" oninput="checkpassword(this)">
     </div>
     <div class="checkbox pt-md-5 pb-md-4">
         <label>
             <input type="checkbox" name="optionsRadios" id="agreement" value="option1">
-            I agree with the <a href="#" target="_blank">End User Agreement</a> 
+            <%=local.getString(langID.JSP_SIGNUP_INFO_AGGREMENT)%>
         </label>
     </div>
 
-    <button type="button" class="btn btn-raised btn-success btn-lg btn-block" onclick="signup(this)">Register</button>
-    <button type="button" class="btn btn-link btn-block"><small>Login</small></button>
+    <button type="button" class="btn btn-raised btn-success btn-lg btn-block" onclick="signup(this)"><%=local.getString(langID.JSP_SIGNUP_BUTTON_SIGNUP)%></button>
+    <button type="button" class="btn btn-link btn-block"><small><%=local.getString(langID.JSP_SIGNUP_BUTTON_LOGIN)%></small></button>
 </form>
 <script>
     function checkpassword(input) {

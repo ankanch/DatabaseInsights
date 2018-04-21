@@ -59,11 +59,11 @@
                         function login() {
                             btn.disabled = true;
                             SubmitFormFF("/api/login", "form_login", function error(data) {
-                                showMsg("Failed to log you in! Either the user isn't exists or password in correct!");
+                                showMsg("<%=local.getString(langID.JSP_SIGNIN_TIP_FAILED)%>");
                                 $("#progressbar").hide();
                                 btn.disabled = false;
                             }, function success(data) {
-                                showMsg("Successfully logged in! Redirecting you to console...");
+                                showMsg("<%=local.getString(langID.JSP_SIGNIN_TIP_SUCCESS)%>");
                                 $("#progressbar").hide();
                                 window.location = "console.jsp";
                             });

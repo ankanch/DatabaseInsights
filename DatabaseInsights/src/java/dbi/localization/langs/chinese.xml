@@ -81,7 +81,33 @@ THE SOFTWARE.
     <l id="JSP_SIGNIN_LABEL_LOGIN"  value="登陆" />
     <l id="JSP_SIGNIN_LABEL_PROBLEMLOGIN"  value="登陆遇到问题?" />
     <l id="JSP_SIGNIN_JS_NAVTITLE"  value="控制台" />
+    <l id="JSP_SIGNIN_TIP_FAILED" value="登陆失败！用户名或密码不正确。" />
+    <l id="JSP_SIGNIN_TIP_SUCCESS" value="登陆成功！重定向至控制台..." />
     <!-- signup.jsp -->
+    <l id="JSP_SIGNUP_LABEL_USERNAME" value="用户名" />
+    <l id="JSP_SIGNUP_LABEL_EMAIL" value="邮箱地址" />
+    <l id="JSP_SIGNUP_LABEL_PASSWORD" value="密码" />
+    <l id="JSP_SIGNUP_LABEL_CONFIRMPASSWORD" value="确认密码" />
+    <l id="JSP_SIGNUP_BUTTON_SIGNUP" value="注册" />
+    <l id="JSP_SIGNUP_BUTTON_LOGIN" value="登陆" />
+    <l id="JSP_SIGNUP_INFO_USERNAME" value="仅允许字母开头，由字母和数字组成" />
+    <l id="JSP_SIGNUP_INFO_EMAIL" value="我们不会像任何人泄露您的邮箱地址" />
+    <l id="JSP_SIGNUP_INFO_PASSWORD" value="请输入强密码，包含数字，大小写字母和符号" />
+    <l id="JSP_SIGNUP_INFO_AGGREMENT" value="我同意 《Database Insights 用户服务协议》" />
+    <!-- settings.jsp -->
+    <l id="JSP_CONSOLE_SETTINGS_TITLE" value="用户设置" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_REGISTEDON" value="帐户注册时间" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_STATUS" value="账户状态" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_LASTLOGIN" value="上次登录时间" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_USERNAME" value="用户名" />    
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_EMAIL" value="邮箱地址" />
+    <l id="JSP_CONSOLE_SETTINGS_BUTTON_SAVE" value="保存更改" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_OLDPASSWORD" value="旧密码" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_NEWPASSWORD" value="新密码" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_COMFIRM_NEWPASSWORD" value="确认新密码" />
+    <l id="JSP_CONSOLE_SETTINGS_TIP_USERNAME" value="用户名无法更改。" />
+    <l id="JSP_CONSOLE_SETTINGS_TIP_EMAIL" value="我们不会与任何人分享您的邮箱地址。" />
+    <l id="JSP_CONSOLE_SETTINGS_LABEL_WARNING" value="删除帐户&lt;/button&gt; &lt;small&gt;注意，此操作不可逆转！&lt;/small&gt;" />
     
     <!-- console left nav panel (console_nav_side.jsp)  -->
     <l id="JSP_NAV_SIDE_OVERVIEW"  value="总览" />
