@@ -113,7 +113,7 @@ public class CredentialBean {
         if (re.rowCount() > 0) {
             String certifications = "";
             for (int i = 1; i <= re.rowCount(); i++) {
-                certifications += MessageFormat.format(rowtemp, re.getRow(i).get(3), i, re.getRow(i).get(0), re.getRow(i).get(1), "", re.getRow(i).get(2));
+                certifications += MessageFormat.format(rowtemp, re.getRow(i).get(3), i, re.getRow(i).get(0), re.getRow(i).get(1),re.getRow(i).get(4) , re.getRow(i).get(2));
             }
             return table_content.replace("@ROWDATA", certifications);
         }

@@ -29,6 +29,9 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class MySQLAdaptor extends DatabaseAdaptor{
+    public String[] numberType(){
+        return new String[]{};
+    }
     
     public String getColumnNamesByTable(String Table){
         return "select column_name from information_schema.columns  where table_name='"+ Table +"';";

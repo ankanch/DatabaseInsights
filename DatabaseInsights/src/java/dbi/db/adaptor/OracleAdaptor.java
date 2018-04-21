@@ -29,6 +29,11 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class OracleAdaptor extends DatabaseAdaptor{
+    public String[] numberType(){
+        String num[]={"NUMBER","BINARY_FLOAT","BINARY_DOUBLE"};
+        return num;
+    }
+    
     public String getColumnNamesByTable(String TableName){
         return "select column_name\n" +
                 "from all_tab_columns \n" +
