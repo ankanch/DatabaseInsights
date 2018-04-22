@@ -53,7 +53,12 @@ public class CredentialManager {
      */
     public Boolean addCredential(String dbhost, String dbname, String dbuser, String dbpawd, String userid, String dbtype) {
         if (dbhelper.Connect()) {
-            
+            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.ORACLE_THIN, dbhost, dbname);
+            }
+            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.MYSQL, dbhost, dbname);
+            }
             try {
                 
                 int rv = (int) dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost, dbname, dbuser, dbpawd, userid, dbtype);
@@ -78,11 +83,11 @@ public class CredentialManager {
                 driver = DatabaseConfig.DatabaseDriver.ORACLE_12C;
         }
             
-            Boolean status = true;
+            
             DatabaseConfig userdbconfig = new DatabaseConfig(Integer.valueOf(dbtype),driver, dbhost,dbuser, dbpawd);
             DatabaseHelper userdbhelper = new DatabaseHelper(userdbconfig);
-            DBIResultSet column=null;
-            if(userdbhelper.Connect()){        
+            DBIResultSet column=null;            
+            if(userdbhelper.Connect()){
                 DBIResultSet table = userdbhelper.getTables();
                 DBIResultSet did = userdbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
                 Debug.log(did.getRow(1).get(0));
@@ -200,8 +205,8 @@ public class CredentialManager {
 
     public static void main(String[] args) {
         CredentialManager a = new CredentialManager();
-        Boolean q = a.addCredential(GlobeVar.CONFIG_DATABASE_HOST, "DatabaseInsights", GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD,
-                "30975E7ADB577CD3CD051823729AED26", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
+        Boolean q = a.addCredential("cd.kcs.akakanch.com", "DatabaseInsights", GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD,
+                "11DAD71A91396AAEE1B8D19DE406FDBD", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
         Debug.log(q);
     }
 
