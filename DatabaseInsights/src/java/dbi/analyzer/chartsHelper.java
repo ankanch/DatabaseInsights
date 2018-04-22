@@ -26,6 +26,9 @@
 package dbi.analyzer;
 
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,8 +36,22 @@ import dbi.utils.DBIResultSet;
  */
 public class chartsHelper {
 
+    /**
+     * 生成饼状图。<br/>
+     * 参数格式： 多行，每行包括2列，分别为列名（显示名），值
+     */
     public static Chart generateBarchart(DBIResultSet xyvalues) {
         Chart cht = new Chart();
+        cht.type = Chart.CHART_PIRCHART;
+
+        ArrayList<Object> x_values = new ArrayList<>();
+        ArrayList<Object> y_values = new ArrayList<>();
+        for (int i = 1; i <= xyvalues.rowCount(); i++) {
+            x_values.add(xyvalues.getData(i, 1));
+            y_values.add(xyvalues.getData(i, 2));
+        }
+        cht.x_values = x_values;
+        cht.y_values = y_values;
 
         return cht;
     }

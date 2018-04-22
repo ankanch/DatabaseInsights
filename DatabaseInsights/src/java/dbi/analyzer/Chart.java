@@ -45,7 +45,6 @@ public class Chart {
     public ArrayList<String> legends = new ArrayList<>();
     public ArrayList<Object> x_values = new ArrayList<>();
     public ArrayList<Object> y_values = new ArrayList<>();
-    public ArrayList<Object> z_values = new ArrayList<>();
 
     @Override
     public String toString() {

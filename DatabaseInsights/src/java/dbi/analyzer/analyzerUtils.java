@@ -31,6 +31,7 @@ import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -41,77 +42,82 @@ public class analyzerUtils {
 
     private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
+
     /**
-    * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
-    * 返回值：DBIResultSet，每一行包含表的一列的全部信息
+     * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
+     * 返回值：DBIResultSet，每一行包含表的一列的全部信息
      */
-    public static DBIResultSet getAllColumnSpecies(int uid,String table) {
+    public static DBIResultSet getAllColumnSpecies(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        String sql="select * from T_DATABASE_COLUMN\n" +
-        "where TID in (select tid from T_DATABASE_TABLE where tname='"+table+"')\n" +
-        "and userid="+uid;
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            dbire=dbhelper.runSQLForResult(sql);
+        String sql = "select * from T_DATABASE_COLUMN\n"
+                + "where TID in (select tid from T_DATABASE_TABLE where tname='" + table + "') "
+                + "and userid=" + uid;
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            dbire = dbhelper.runSQLForResult(sql);
         }
         dbhelper.Disconnect();
         return dbire;
     }
 
-
     /**
-    * 得到指定用户的指定表每一列不重复的值的数量<br/>
-    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列不同值的个数
+     * 得到指定用户的指定表每一列不重复的值的数量<br/>
+     * 返回值：DBIResultSet，多行，每行由2列组成，分别存放列名，列不重复值个数
      */
-    public static DBIResultSet findDistinctValues(int uid,String table) {
-        DBIResultSet dbire = new DBIResultSet();
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+    public static DBIResultSet findDistinctValues(int uid, String table) {
+        DBIResultSet ret = new DBIResultSet();
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
         }
         dbhelper.Disconnect();
-        
-        if (user.Connect()){
-            String column="";
-            DBIResultSet tablename=user.runSQLForResult("select distinct columnname  from t_database_column where userid="+uid+" and\n" +
-            "tid in(select tid from T_DATABASE_TABLE where tname='"+table+"')");
-            
-            for(int i=0;i<tablename.rowCount()-1;i++){
-                column=column+"count(distinct "+tablename.getRow(i+1).get(0)+"),";
+
+        if (user.Connect()) {
+            String column = "";
+            DBIResultSet tablename = user.runSQLForResult("select distinct columnname  from t_database_column where userid=" + uid + " and "
+                    + "tid in(select tid from T_DATABASE_TABLE where tname='" + table + "')");
+            for (int i = 0; i < tablename.rowCount() - 1; i++) {
+                column = column + "count(distinct " + tablename.getRow(i + 1).get(0) + "),";
             }
-            column=column+" count(distinct "+tablename.getRow(tablename.rowCount()).get(0)+")";
+            column = column + " count(distinct " + tablename.getRow(tablename.rowCount()).get(0) + ")";
             Debug.log(column);
-            String sql="select "+column+" from "+table+
-                       " where userid="+uid;
+            String sql = "select " + column + " from " + table;
             Debug.log(sql);
-            dbire=user.runSQLForResult(sql);
+            DBIResultSet dbire = user.runSQLForResult(sql);
+            //拼凑结果集 ---格式： 多行，每一行为 [列名,列不重复值个数]
+            for (int i = 1; i <= tablename.rowCount(); i++) {
+                ArrayList<Object> row = new ArrayList<>();
+                row.add(tablename.getData(i, 1));
+                row.add(dbire.getData(1, i));
+                ret.addRow(row);
+            }
         }
         user.Disconnect();
-        return dbire;
+        return ret;
     }
 
     /**
-    * 得到指定用户的指定表每一列最大的值<br/>
-    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最大的值
+     * 得到指定用户的指定表每一列最大的值<br/>
+     * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最大的值
      */
-    public static DBIResultSet getMaxiumValues(int uid,String table) {
-        DBIResultSet dbire=new DBIResultSet();
-        DBIResultSet result=new DBIResultSet();
-        DBIResultSet max=new DBIResultSet();
-        
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+    public static DBIResultSet getMaxiumValues(int uid, String table) {
+        DBIResultSet dbire = new DBIResultSet();
+        DBIResultSet result = new DBIResultSet();
+        DBIResultSet max = new DBIResultSet();
+
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
         }
         dbhelper.Disconnect();
-        
-        if(user.Connect()){
-            result=user.getIsNumberColumns(uid, table);
-            for(int i=0;i<result.rowCount();i++){
-                if(result.getRow(i+1).get(1).equals("1")){
-                    max=user.runSQLForResult("select max("+result.getRow(i+1).get(0)+") from "+table);
+
+        if (user.Connect()) {
+            result = user.getIsNumberColumns(uid, table);
+            for (int i = 0; i < result.rowCount(); i++) {
+                if (result.getRow(i + 1).get(1).equals("1")) {
+                    max = user.runSQLForResult("select max(" + result.getRow(i + 1).get(0) + ") from " + table);
                     dbire.addToRow(max.getRow(1).get(0));
-                }else{
+                } else {
                     dbire.addToRow(null);
                 }
             }
@@ -120,29 +126,29 @@ public class analyzerUtils {
         user.Disconnect();
         return dbire;
     }
-    
+
     /**
-    * 得到指定用户的指定表每一列最小的值<br/>
-    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最小的值
+     * 得到指定用户的指定表每一列最小的值<br/>
+     * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最小的值
      */
-    public static DBIResultSet getMiniumValues(int uid,String table) {
-        DBIResultSet dbire=new DBIResultSet();
-        DBIResultSet result=new DBIResultSet();
-        DBIResultSet min=new DBIResultSet();
-        
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+    public static DBIResultSet getMiniumValues(int uid, String table) {
+        DBIResultSet dbire = new DBIResultSet();
+        DBIResultSet result = new DBIResultSet();
+        DBIResultSet min = new DBIResultSet();
+
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
         }
         dbhelper.Disconnect();
-        
-        if(user.Connect()){
-            result=user.getIsNumberColumns(uid, table);
-            for(int i=0;i<result.rowCount();i++){
-                if(result.getRow(i+1).get(1).equals("1")){
-                    min=user.runSQLForResult("select min("+result.getRow(i+1).get(0)+") from "+table);
+
+        if (user.Connect()) {
+            result = user.getIsNumberColumns(uid, table);
+            for (int i = 0; i < result.rowCount(); i++) {
+                if (result.getRow(i + 1).get(1).equals("1")) {
+                    min = user.runSQLForResult("select min(" + result.getRow(i + 1).get(0) + ") from " + table);
                     dbire.addToRow(min.getRow(1).get(0));
-                }else{
+                } else {
                     dbire.addToRow(null);
                 }
             }
@@ -153,27 +159,27 @@ public class analyzerUtils {
     }
 
     /**
-    * 得到指定用户的指定表每一列的平均值<br/>
-    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的平均值
+     * 得到指定用户的指定表每一列的平均值<br/>
+     * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的平均值
      */
-    public static DBIResultSet getAverangeValues(int uid,String table) {
-        DBIResultSet dbire=new DBIResultSet();
-        DBIResultSet result=new DBIResultSet();
-        DBIResultSet avg=new DBIResultSet();
-        
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+    public static DBIResultSet getAverangeValues(int uid, String table) {
+        DBIResultSet dbire = new DBIResultSet();
+        DBIResultSet result = new DBIResultSet();
+        DBIResultSet avg = new DBIResultSet();
+
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
         }
         dbhelper.Disconnect();
-        
-        if(user.Connect()){
-            result=user.getIsNumberColumns(uid, table);
-            for(int i=0;i<result.rowCount();i++){
-                if(result.getRow(i+1).get(1).equals("1")){
-                    avg=user.runSQLForResult("select avg("+result.getRow(i+1).get(0)+") from "+table);
+
+        if (user.Connect()) {
+            result = user.getIsNumberColumns(uid, table);
+            for (int i = 0; i < result.rowCount(); i++) {
+                if (result.getRow(i + 1).get(1).equals("1")) {
+                    avg = user.runSQLForResult("select avg(" + result.getRow(i + 1).get(0) + ") from " + table);
                     dbire.addToRow(avg.getRow(1).get(0));
-                }else{
+                } else {
                     dbire.addToRow(null);
                 }
             }
@@ -184,27 +190,27 @@ public class analyzerUtils {
     }
 
     /**
-    * 得到指定用户的指定表每一列的和<br/>
-    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的和
+     * 得到指定用户的指定表每一列的和<br/>
+     * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的和
      */
-    public static DBIResultSet getAllColumnSum(int uid,String table) {
-        DBIResultSet dbire=new DBIResultSet();
-        DBIResultSet result=new DBIResultSet();
-        DBIResultSet sum=new DBIResultSet();
-        
-        DatabaseHelper user=null;
-        if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+    public static DBIResultSet getAllColumnSum(int uid, String table) {
+        DBIResultSet dbire = new DBIResultSet();
+        DBIResultSet result = new DBIResultSet();
+        DBIResultSet sum = new DBIResultSet();
+
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
         }
         dbhelper.Disconnect();
-        
-        if(user.Connect()){
-            result=user.getIsNumberColumns(uid, table);
-            for(int i=0;i<result.rowCount();i++){
-                if(result.getRow(i+1).get(1).equals("1")){
-                    sum=user.runSQLForResult("select sum("+result.getRow(i+1).get(0)+") from "+table);
+
+        if (user.Connect()) {
+            result = user.getIsNumberColumns(uid, table);
+            for (int i = 0; i < result.rowCount(); i++) {
+                if (result.getRow(i + 1).get(1).equals("1")) {
+                    sum = user.runSQLForResult("select sum(" + result.getRow(i + 1).get(0) + ") from " + table);
                     dbire.addToRow(sum.getRow(1).get(0));
-                }else{
+                } else {
                     dbire.addToRow(null);
                 }
             }
@@ -213,23 +219,24 @@ public class analyzerUtils {
         user.Disconnect();
         return dbire;
     }
-    
-    public static void main(String args[]){
-        analyzerUtils test=new analyzerUtils();
-        DBIResultSet result=test.getAllColumnSpecies(43,"T_DI_USER");
-        DBIResultSet result1=test.findDistinctValues(43,"T_DI_USER");
-        DBIResultSet result2=test.getMaxiumValues(43,"T_DI_USER");
-        DBIResultSet result3=test.getMiniumValues(43,"T_DI_USER");
-        DBIResultSet result4=test.getAverangeValues(43,"T_DI_USER");
-        DBIResultSet result5=test.getAllColumnSum(43,"T_DI_USER"); 
-        for(int i=0;i<result.rowCount();i++){
-            Debug.log(result.getRow(i+1));
-        }    
-        Debug.log(result1.getRow(1));
-        Debug.log(result2.getRow(1));
-        Debug.log(result3.getRow(1));
-        Debug.log(result4.getRow(1));
-        Debug.log(result5.getRow(1));
+
+    /**
+     * 获取给定表的给定列的所有不同值以及其个数<br/>
+     * 返回值：DBIResultSet，多行，每行由3列组成，分别存放列名字，不同值，值出现次数
+     */
+    public static DBIResultSet getDistinctValuesCount(int uid, String table,String[] columns) {
+        DBIResultSet ret = new DBIResultSet();
+
+        return ret;
+    }
+
+    public static void main(String args[]) {
+        Debug.log("getAllColumnSpecies=", analyzerUtils.getAllColumnSpecies(43, "T_DI_USER"));
+        Debug.log("findDistinctValues=", analyzerUtils.findDistinctValues(43, "T_DI_USER"));
+        Debug.log("getMaxiumValues=", analyzerUtils.getMaxiumValues(43, "T_DI_USER"));
+        Debug.log("getMiniumValues=", analyzerUtils.getMiniumValues(43, "T_DI_USER"));
+        Debug.log("getAverangeValues=", analyzerUtils.getAverangeValues(43, "T_DI_USER"));
+        Debug.log("getAllColumnSum=", analyzerUtils.getAllColumnSum(43, "T_DI_USER"));
     }
 
 }
