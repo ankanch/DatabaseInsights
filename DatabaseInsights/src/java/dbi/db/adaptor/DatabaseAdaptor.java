@@ -29,54 +29,98 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class DatabaseAdaptor {
+    /**
+    * 得到某种数据库的数字的全部类型<br/>
+    * 返回值：String[]，返回带有全部类型字符串的字符数组
+     */
     public String[] numberType(){
         return new String[]{};
     }
 
+    /**
+    * 返回根据指定的表名得到该表的全部列名的sql语句<br/>
+    * 返回值：String，返回根据指定的表名得到该表的全部列名的sql语句
+     */
     public String getColumnNamesByTable(String Table) {
         return "";
     }
 
+    /**
+    * 返回根据指定的若干个表名得到所有表的全部列名的sql语句<br/>
+    * 返回值：String，返回根据指定的若干个表名得到所有表的全部列名的sql语句
+     */
     public String getColumnNames(String[] Tables) {
         return "";
     }
 
-    public String getAllColumnsNameByName(String TableName) {
-        return "";
-    }
-
+    /**
+    * 返回数据库的全部表的列表的sql语句<br/>
+    * 返回值：String，返回数据库的全部表的列表的sql语句
+     */
     public String getTableList() {
         return "";
     }
 
+    /**
+    * 返回指定表的所有列的全部性质的sql语句<br/>
+    * 返回值：String，返回指定表的所有列的全部性质的sql语句
+     */    
     public String getColumnSpecies(String Table) {
         return "";
     }
 
+    /**
+    * 返回指定表的指定列的全部性质的sql语句<br/>
+    * 返回值：String，返回指定表的所有列的全部性质的sql语句
+     */    
     public String getColumnSpeciesByName(String Column, String table) {
         return "";
     }
 
+    /**
+    * 返回一个查询的sql语句<br/>
+    * 返回值：String，返回一个查询的sql语句
+     */ 
     public String generateSelect(String querys, String table, String condition) {
         return "";
     }
 
+    /**
+    * 返回查找主键的sql语句<br/>
+    * 返回值：String，返回查找主键的sql语句
+     */ 
     public String findPrimaryKey(String table) {
         return "";
     }
 
+    /**
+    * 返回查找外键的sql语句<br/>
+    * 返回值：String，返回查找外键的sql语句
+     */    
     public String findForeignKey(String table) {
         return "";
     }
-    
+
+    /**
+    * 返回查找外键的sql语句<br/>
+    * 返回值：String，返回查找外键的sql语句
+     */    
     public String findTablecolspe(String table){
         return "";
     }
     
+    /**
+    * 根据数据库名返回数据库id<br/>
+    * 返回值：String，返回根据数据库名返回数据库id的sql语句
+     */   
     public String findDid(String dbname){
         return "";
     }
     
+    /**
+    * 根据列名返回引用列的id<br/>
+    * 返回值：String，返回根据列名返回引用列的id的sql语句
+     */   
     public String findRefid(String columnname){
         return "";
     }

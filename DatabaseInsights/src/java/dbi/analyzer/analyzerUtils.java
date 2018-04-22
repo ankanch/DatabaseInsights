@@ -41,8 +41,9 @@ public class analyzerUtils {
 
     private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    /*
-    * get all column species from T_DI_COLUMNS 
+    /**
+    * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
+    * 返回值：DBIResultSet，每一行包含表的一列的全部信息
      */
     public static DBIResultSet getAllColumnSpecies(int uid,String table) {
         DBIResultSet dbire = new DBIResultSet();
@@ -51,20 +52,16 @@ public class analyzerUtils {
         "and userid="+uid;
         DatabaseHelper user=null;
         if(dbhelper.Connect()){
-            user=dbhelper.getUserdbhelper(uid);
+            dbire=dbhelper.runSQLForResult(sql);
         }
         dbhelper.Disconnect();
-        if(user.Connect()){
-            dbire=user.runSQLForResult(sql);
-        }
-        user.Disconnect();
         return dbire;
     }
 
 
-    /*
-    * find distinct values of every columns in a given table.
-    * the order of the result keeps the order of columns
+    /**
+    * 得到指定用户的指定表每一列不重复的值的数量<br/>
+    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列不同值的个数
      */
     public static DBIResultSet findDistinctValues(int uid,String table) {
         DBIResultSet dbire = new DBIResultSet();
@@ -93,9 +90,9 @@ public class analyzerUtils {
         return dbire;
     }
 
-    /*
-    * get maxium value of every column (if comparable). 
-    * keep the original column order of the table
+    /**
+    * 得到指定用户的指定表每一列最大的值<br/>
+    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最大的值
      */
     public static DBIResultSet getMaxiumValues(int uid,String table) {
         DBIResultSet dbire=new DBIResultSet();
@@ -123,10 +120,10 @@ public class analyzerUtils {
         user.Disconnect();
         return dbire;
     }
-
-    /*
-    * get miniium value of every column (if comparable). 
-    * keep the original column order of the table
+    
+    /**
+    * 得到指定用户的指定表每一列最小的值<br/>
+    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列最小的值
      */
     public static DBIResultSet getMiniumValues(int uid,String table) {
         DBIResultSet dbire=new DBIResultSet();
@@ -155,8 +152,9 @@ public class analyzerUtils {
         return dbire;
     }
 
-    /*
-    * get average of every columns, ignored if not number
+    /**
+    * 得到指定用户的指定表每一列的平均值<br/>
+    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的平均值
      */
     public static DBIResultSet getAverangeValues(int uid,String table) {
         DBIResultSet dbire=new DBIResultSet();
@@ -185,8 +183,9 @@ public class analyzerUtils {
         return dbire;
     }
 
-    /*
-    * get sum of every column in the order of column
+    /**
+    * 得到指定用户的指定表每一列的和<br/>
+    * 返回值：DBIResultSet，只有一行，按照在表中列的顺序依次展示每一列的和
      */
     public static DBIResultSet getAllColumnSum(int uid,String table) {
         DBIResultSet dbire=new DBIResultSet();

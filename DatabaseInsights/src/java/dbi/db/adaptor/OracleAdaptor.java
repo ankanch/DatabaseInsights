@@ -1,3 +1,4 @@
+
 /*
  * The MIT License
  *
@@ -29,34 +30,60 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class OracleAdaptor extends DatabaseAdaptor{
+    /**
+    * 得到某种数据库的数字的全部类型<br/>
+    * 返回值：String[]，返回带有全部类型字符串的字符数组
+     */
     public String[] numberType(){
         String num[]={"NUMBER","BINARY_FLOAT","BINARY_DOUBLE"};
         return num;
     }
-    
+    /**
+    * 返回根据指定的表名得到该表的全部列名的sql语句<br/>
+    * 返回值：String，返回根据指定的表名得到该表的全部列名的sql语句
+     */
     public String getColumnNamesByTable(String TableName){
         return "select column_name\n" +
                 "from all_tab_columns \n" +
                 "where table_name = '" + TableName + "'";
     }
-    
+    /**
+    * 返回根据指定的若干个表名得到所有表的全部列名的sql语句<br/>
+    * 返回值：String，返回根据指定的若干个表名得到所有表的全部列名的sql语句
+     */    
     public String getColumnNames(String[] Tables){
         return "select column_name from all_tab_columns where table_name in ('"+  String.join("','", Tables) +"')";
     }
-    
+    /**
+    * 返回数据库的全部表的列表的sql语句<br/>
+    * 返回值：String，返回数据库的全部表的列表的sql语句
+     */    
     public String getTableList(){
         return "select table_name from user_tables";
     }
+    
+    /**
+    * 返回指定表的所有列的全部性质的sql语句<br/>
+    * 返回值：String，返回指定表的所有列的全部性质的sql语句
+     */     
     public String getColumnSpecies(String Table){
         return "SELECT * FROM user_tab_columns WHERE TABLE_NAME='"+Table+"'";
     }
     
+    /**
+    * 返回指定表的指定列的全部性质的sql语句<br/>
+    * 返回值：String，返回指定表的所有列的全部性质的sql语句
+     */ 
     public String getColumnSpeciesByName(String Column,String table){
         return "SELECT * \n" +
                 "FROM all_tab_columns\n" +
                 " WHERE column_name  =  '"+ Column +"' and table_name = '"+table+"'";
     }
-    
+
+    /**
+    * 返回一个查询的sql语句<br/>
+    * 返回值：String，返回一个查询的sql语句
+     */     
     public String generateSelect(String querys,String table,String condition){
         String sql="select "+ querys+" from "+table+" where "+condition;
         if(condition == ""){
@@ -65,6 +92,10 @@ public class OracleAdaptor extends DatabaseAdaptor{
         return sql;
     }
     
+    /**
+    * 返回查找主键的sql语句<br/>
+    * 返回值：String，返回查找主键的sql语句
+     */     
     public String findPrimaryKey(String table){
         String findPrimaryKey="select  column_name\n" +
             "from user_constraints con,user_cons_columns col\n" +
@@ -74,6 +105,10 @@ public class OracleAdaptor extends DatabaseAdaptor{
         return findPrimaryKey;
     }
     
+    /**
+    * 返回查找外键的sql语句<br/>
+    * 返回值：String，返回查找外键的sql语句
+     */      
     public String findForeignKey(String table){
         String findForeignKey="select b.column_name refColumn\n" +
             "from user_constraints a\n" +
@@ -83,6 +118,10 @@ public class OracleAdaptor extends DatabaseAdaptor{
         return findForeignKey;
     }
     
+    /**
+    * 返回查找外键的sql语句<br/>
+    * 返回值：String，返回查找外键的sql语句
+     */    
     public String findTablecolspe(String table){
         return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE\n" +
                 "from user_tab_columns  t,user_col_comments  c\n" +
@@ -90,7 +129,20 @@ public class OracleAdaptor extends DatabaseAdaptor{
                 + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
     }
     
-
+    /**
+    * 根据数据库名返回数据库id<br/>
+    * 返回值：String，返回根据数据库名返回数据库id的sql语句
+     */ 
+    public String findDid(String dbname){
+        String str="select did from T_DATABASE_INFO where name='"+dbname+"'";
+        return str;
+    }
+    
+    
+    /**
+    * 根据列名返回引用列的id<br/>
+    * 返回值：String，返回根据列名返回引用列的id的sql语句
+     */   
     public String findRefid(String columnname){
         String str="select colid from T_DATABASE_COLUMN "
                 + "where columnname='"+columnname+"' and isPrimary=1";

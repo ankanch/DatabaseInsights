@@ -47,6 +47,10 @@ public class CredentialManager {
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
 
+    /**
+     * 在数据库里添加凭证
+     * 返回值：boolean，成功返回true，失败返回false
+     */
     public Boolean addCredential(String dbhost, String dbname, String dbuser, String dbpawd, String userid, String dbtype) {
         if (dbhelper.Connect()) {
             
@@ -110,7 +114,10 @@ public class CredentialManager {
     }
     
   
-
+    /**
+     * 删除凭证
+     * 返回值：boolean，成功返回true，失败返回false
+     */
     public Boolean deleteCredential(String crdid) {
         if (dbhelper.Connect()) {
             try {
@@ -129,7 +136,10 @@ public class CredentialManager {
         return true;
     }
 
-
+    /**
+     * 在数据库里修改凭证
+     * 返回值：boolean，成功返回true，失败返回false
+     */
     public Boolean alterCredential(String crdid, String dbname, String dbhost, String password) {
         Debug.log("crdid=",crdid,"dbname:",dbname,"dbhost:",dbhost,"password:",password);
         if (dbhelper.Connect()) {
@@ -148,7 +158,10 @@ public class CredentialManager {
         }
         return true;
     }
-
+    /**
+     * 得到指定用户的凭证信息
+     * 返回值：DBIResultSet，返回所有凭证信息
+     */
     public DBIResultSet getCredential(String sid) {
         DBIResultSet result = null;
         String id = null;
@@ -166,7 +179,10 @@ public class CredentialManager {
 
         return result;
     }
-
+    /**
+     * 检验凭证
+     * 返回值：boolean，成功返回true，失败返回false
+     */
     public Boolean validiateCreditial(String dbscode, String dbhost, String dbname, String dbuser, String dbpwd, int dbcode) {
         Boolean status = false;
         //check wether the infomation provaided is correct

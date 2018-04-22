@@ -1,3 +1,4 @@
+
 /*
  * The MIT License
  *
@@ -49,6 +50,7 @@ public class DatabaseHelper {
     private DatabaseConfig databaseConfig;
     private Connection conn;
 
+    
     public DatabaseHelper(DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
         int dbcode = this.databaseConfig.getDatabase();
@@ -60,6 +62,10 @@ public class DatabaseHelper {
         }
     }
 
+    /**
+    * 连接数据库<br/>
+    * 返回值：Boolean，连接数据库是否成功
+     */
     public Boolean Connect() {
         if (!checkConnection()) {
             try {
@@ -74,6 +80,10 @@ public class DatabaseHelper {
         return true;
     }
     
+    /**
+    * 检查数据库是否连接<br/>
+    * 返回值：Boolean，若成功连接返回true，不成功返回false
+     */    
     private Boolean checkConnection() {
         try {
             if (conn.isClosed()) {
@@ -86,6 +96,10 @@ public class DatabaseHelper {
         return true;
     }
 
+    /**
+    * 解除数据库连接<br/>
+    * 返回值：无
+     */    
     public void Disconnect() {
         try {
             conn.close();
@@ -94,7 +108,10 @@ public class DatabaseHelper {
         }
     }
 
-    /* get all table names of a given database */
+    /**
+    * 得到一个给定数据库的全部表的名字<br/>
+    * 返回值：DBIResultSet，每一行是一个表名
+     */
     public DBIResultSet getTables() {
         DBIResultSet tables = new DBIResultSet();
         String table_name = "";
@@ -116,7 +133,10 @@ public class DatabaseHelper {
         return tables;
     }
 
-    /* get column names of a given table */
+    /**
+    * 得到给定表的全部列名<br/>
+    * 返回值：DBIResultSet，每一行是一个列名
+     */
     public DBIResultSet getColumns(String table) {
         DBIResultSet columns = new DBIResultSet();
         String column_name = "";
@@ -138,7 +158,10 @@ public class DatabaseHelper {
         return columns;
     }
 
-    /* get column name and species of a given table */
+    /**
+    * 得到一个给定表的全部列的性质，并存入T_DATABASE_COLUMN表中<br/>
+    * 返回值：DBIResultSet，每一行是一个列的全部性质
+     */
     public DBIResultSet getAllColumnSpecies(String table, int userid, int did) {
         DBIResultSet getresult = runSQLForResult(DBAdaptor.findTablecolspe(table));
         DBIResultSet primary = runSQLForResult(DBAdaptor.findPrimaryKey(table));
@@ -181,15 +204,10 @@ public class DatabaseHelper {
         return species;
     }
 
-
-
-    /* get column names of a given table */
-    public ArrayList<String> getColumnSpecies(String column) {
-        ArrayList<String> species = new ArrayList<>();
-
-        return species;
-    }
-
+    /**
+    * 运行select语句<br/>
+    * 返回值：DBIResultSet，返回select操作后的全部结果
+     */
     public DBIResultSet runSelect(String querys, String table, String condition) {
         DBIResultSet sqlResult = null;
         try {
@@ -206,7 +224,10 @@ public class DatabaseHelper {
         return sqlResult;
     }
     
-
+    /**
+    * 运行含有多个表的select语句<br/>
+    * 返回值：DBIResultSet，返回select操作后的全部结果
+     */
     public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
         String table = tables[0];
         for (int i = 1; i <= tables.length - 1; i++) {
@@ -235,7 +256,10 @@ public class DatabaseHelper {
 
         return sqlResult;
     }
-
+    /**
+    * 运行update语句<br/>
+    * 返回值：boolean，返回update是否成功
+     */
     public boolean runUpdate(String table, HashMap<String, Object> keyValues, String condition) {
         // make up SQL UPDATE statment
         String SQL = "UPDATE {0} SET {1} WHERE {2}";
@@ -269,6 +293,10 @@ public class DatabaseHelper {
         return true;
     }
 
+    /**
+    * 运行sql语句<br/>
+    * 返回值：boolean，返回sql执行是否成功，成功返回true，不成功返回false
+     */
     public boolean runSQL(String sql) {
         try {
             Debug.log(sql);
@@ -282,6 +310,10 @@ public class DatabaseHelper {
         return true;
     }
 
+    /**
+    * 运行sql语句<br/>
+    * 返回值：boolean，返回sql执行结果
+     */    
     public DBIResultSet runSQLForResult(String sql) {
         DBIResultSet sqlResult = new DBIResultSet();
         int p = 0;
@@ -311,7 +343,8 @@ public class DatabaseHelper {
 
 
     /**
-     * INPUT Example: (myfunction(?,?,?),param_1,param_2,param_3) RETURNS: int
+     * 运行oracle函数
+     * 返回值：int，返回执行结果（成功与否）
      */
     public int executeOracleFunction(String funcDef, String... params) throws SQLException {
 
@@ -351,6 +384,10 @@ public class DatabaseHelper {
         return tables;
     }
     
+    /**
+    * 得到指定uid的DatabaseHelper对象<br/>
+    * 返回值：boolean，返回指定uid的DatabaseHelper对象
+     */
     public DatabaseHelper getUserdbhelper(int uid){
         DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD from "
                 + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid"

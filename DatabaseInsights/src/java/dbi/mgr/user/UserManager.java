@@ -49,8 +49,9 @@ public class UserManager {
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
 
-    /*
-    * This functio nused for check if current session is valid, by which, means if user logged in.
+    /**
+    * 当用户登陆后检验usersession是否正确<br/>
+    * 返回值：boolean，正确为true，错误为false
      */
     public Boolean validateSession(String sid) {
         if (dbhelper.Connect()) {
@@ -69,8 +70,9 @@ public class UserManager {
         return true;
     }
 
-    /*
-    * Check if password is correct for given user
+    /**
+    * 检验给定用户的密码是否正确<br/>
+    * 返回值：boolean，正确为true，错误为false
      */
     public Boolean checkPassword(String sid, String oldpass) {
         try {
@@ -91,9 +93,9 @@ public class UserManager {
         return false;
     }
 
-    /*
-    * This function is used to log you in to the console.
-    * function will add current session id to the Usession column of user table
+    /**
+    * 登陆<br/>
+    * 返回值：boolean，成功为true，失败为false
      */
     public Boolean loginInUser(String username, String password, String session_id) {
         if (dbhelper.Connect()) {
@@ -112,8 +114,9 @@ public class UserManager {
         return true;
     }
 
-    /*
-    * Give username,password, email to registe
+    /**
+    * 根据用户名，密码，邮件来注册用户<br/>
+    * 返回值：boolean，成功为true，失败为false
      */
     public Boolean registerUser(String username, String password, String email) {
         if (dbhelper.Connect()) {
@@ -132,8 +135,9 @@ public class UserManager {
         return true;
     }
 
-    /*
-    * This function used to get user info, for render some part of console
+    /**
+    * This function used to get user info, for render some part of console<br/>
+    * 返回值HashMap，返回用户信息键值对
      */
     public HashMap<String, String> getUserInfo(lang local, String session) {
         HashMap<String, String> info = new HashMap<>();
@@ -150,8 +154,9 @@ public class UserManager {
         return info;
     }
 
-    /*
-    * sign out a user by clear current session id of the user.
+    /**
+    * sign out a user by clear current session id of the user.<br/>
+    * 返回值：boolean，成功为true，失败为false
      */
     public Boolean signoutUser(String session) {
         try {
@@ -166,6 +171,10 @@ public class UserManager {
         return false;
     }
 
+    /**
+    * sign out a user by clear current session id of the user.<br/>
+    * 返回值：boolean，成功为true，失败为false
+     */    
     public Boolean disableUser(int usession) {
         try {
             if (dbhelper.Connect()) {
@@ -183,8 +192,9 @@ public class UserManager {
         return false;
     }
 
-    /*
-    * We only allow user to change his email and password
+    /**
+    * We only allow user to change his email and password<br/>
+    * 返回值：boolean，成功为true，失败为false
      */
     public Boolean alterUser(String usession, HashMap<String, Object> changed_key_value) {
         String condition = " USESSION='" + usession + "'";
@@ -200,7 +210,10 @@ public class UserManager {
         }
         return false;
     }
-
+    /**
+    * 根据指定usession返回该用户的全部数据库名称<br/>
+    * 返回值：DBIResultSet，每一列是一个数据路名称
+     */
     public final DBIResultSet getUserDatabases(String usession) {
         DBIResultSet re = new DBIResultSet();
         try {
@@ -217,7 +230,10 @@ public class UserManager {
         }
         return re;
     }
-
+    /**
+    * 查找指定用户指定数据库的全部表名<br/>
+    * 返回值：DBIResultSet，每一行是一个表名
+     */
     public final DBIResultSet getUserTables(String usession, String database) {
         DBIResultSet re = new DBIResultSet();
         try {
