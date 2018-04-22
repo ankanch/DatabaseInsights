@@ -70,6 +70,7 @@ public class servletGetTables extends HttpServlet {
         // add your code here
         String database=request.getParameter("dbname");
         DBIResultSet ret = um.getUserTables(sid,database);
+        status=true;
         
         try (PrintWriter out = response.getWriter()) {
             out.println( DBIDataExchange.makeupReturnData(status, "", ret.getRows()) );

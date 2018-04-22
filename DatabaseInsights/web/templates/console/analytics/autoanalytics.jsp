@@ -13,23 +13,21 @@
         <div class="card-body">
             <button type="button" class="btn" disabled style="color:#4e4e52;">Select your database and table to start</button>
             <div class="btn-group">
-                <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        onclick="getDatabases()">
                     Select Database
                 </button>
-                <div class="dropdown-menu" aria-labelledby="buttonMenu1">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-menu" aria-labelledby="buttonMenu1" id="showDatabase">
+
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn dropdown-toggle" type="button" id="buttonMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       >
                     Select Table
                 </button>
-                <div class="dropdown-menu" aria-labelledby="buttonMenu1">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-menu" aria-labelledby="buttonMenu2" id="showTables">
+                    
                 </div>
             </div>
         </div>
@@ -87,18 +85,33 @@
     $('#analytics_auto').bootstrapMaterialDesign();
 
     function getDatabases() {
-        GetDataF("/api/getDatabases", function error() {
+        GetDataF("/api/getDatabases", function error(data) {
             showMsg("Failed to load database list.");
-        }, function success() {
-
+        }, function success(data) {
+            var list=data.data;
+            var element=document.getElementById("showDatabase");
+            var st="<a class=\"dropdown-item\" onclick=\"getTables(this)\" id=\"iddb\">dbname</a>";
+            var str=""
+            for(var i=0;i<list.length;i++){
+               str=str+st.replace("iddb",list[i]).replace("dbname",list[i]);
+            }
+            element.innerHTML=str;
         });
     }
 
-    function getTables() {
-        GetDataF("/api/getTables", function error() {
+    function getTables(v) {
+        var dbname= document.getElementById(v.id).innerText;
+        SubmitFormKVF("/api/getTables",{dbname:dbname}, function error(data) {
             showMsg("Failed to load table list.");
-        }, function success() {
-
+        }, function success(data) {
+            var list=data.data;
+            var element=document.getElementById("showTables");
+            var st="<a class=\"dropdown-item\" href=\"#\" id=\"idcolumn\">dbname</a>";
+            var str=""
+            for(var i=0;i<list.length;i++){
+               str=str+st.replace("idcolumn","dbc"+i).replace("dbname",list[i]);
+            }
+            element.innerHTML=str;
         });
     }
 

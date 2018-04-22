@@ -68,6 +68,7 @@ public class servletGetDatabases extends HttpServlet {
 
         // add your code here
         DBIResultSet ret = um.getUserDatabases(sid);
+        status=true;
 
         try (PrintWriter out = response.getWriter()) {
             out.println( DBIDataExchange.makeupReturnData(status, "", ret.getRows()) );
