@@ -219,10 +219,10 @@ public class UserManager {
         try {
             String condition = "T_DATABASE_INFO.userid=T_DI_USER.userid and usession=''{0}''";
             if (dbhelper.Connect()) {
-                String table[]={"T_DATABASE_INFO","T_DI_USER"};
+                String table[] = {"T_DATABASE_INFO", "T_DI_USER"};
                 re = dbhelper.runJoinSelect("NAME",
-                            table,
-                        MessageFormat.format(condition,usession));
+                        table,
+                        MessageFormat.format(condition, usession));
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
@@ -237,13 +237,13 @@ public class UserManager {
     public final DBIResultSet getUserTables(String usession, String database) {
         DBIResultSet re = new DBIResultSet();
         try {
-            String condition = "T_DATABASE_TABLE.DID=T_DATABASE_INFO.DID and T_DI_USER.USERID=T_DATABASE_INFO.USERID\n" +
-                                "and usession=''{0}'' and name=''{1}''";
+            String condition = "T_DATABASE_TABLE.DID=T_DATABASE_INFO.DID and T_DI_USER.USERID=T_DATABASE_INFO.USERID\n"
+                    + "and usession=''{0}'' and name=''{1}''";
             if (dbhelper.Connect()) {
-                String table[]={"T_DATABASE_TABLE","T_DI_USER","T_DATABASE_INFO"};
+                String table[] = {"T_DATABASE_TABLE", "T_DI_USER", "T_DATABASE_INFO"};
                 re = dbhelper.runJoinSelect("tname",
-                            table,
-                        MessageFormat.format(condition,usession,database));
+                        table,
+                        MessageFormat.format(condition, usession, database));
             }
             dbhelper.Disconnect();
         } catch (Exception e) {
@@ -252,16 +252,37 @@ public class UserManager {
         return re;
     }
 
+    /**
+     * get user id (UID) by session id. 
+     * if session is invalid, return -1
+     */
+    public final int getUIDbySessionID(String usession) {
+        try {
+            String condition = "USESSION=''{0}''";
+            if (dbhelper.Connect()) {
+                DBIResultSet re = dbhelper.runSelect("USERID","T_DI_USER",MessageFormat.format(condition,usession));
+                dbhelper.Disconnect();
+                if(re.rowCount() > 0){
+                    return  Integer.valueOf((String)re.getRow(1).get(0));
+                }
+            }
+        } catch (Exception e) {
+            Debug.error(e.getMessage());
+        }
+        return -1;
+    }
+
     public static void main(String[] args) {
         UserManager manager = new UserManager();
-        DBIResultSet result=manager.getUserDatabases("30975E7ADB577CD3CD051823729AED26");
-        for(int i=0;i<result.rowCount();i++){
-            Debug.log(result.getRow(i+1));
+        DBIResultSet result = manager.getUserDatabases("30975E7ADB577CD3CD051823729AED26");
+        for (int i = 0; i < result.rowCount(); i++) {
+            Debug.log(result.getRow(i + 1));
         }
-        result=manager.getUserTables("30975E7ADB577CD3CD051823729AED26","DatabaseInsights");
-        for(int i=0;i<result.rowCount();i++){
-            Debug.log(result.getRow(i+1));
+        result = manager.getUserTables("30975E7ADB577CD3CD051823729AED26", "DatabaseInsights");
+        for (int i = 0; i < result.rowCount(); i++) {
+            Debug.log(result.getRow(i + 1));
         }
+        Debug.log("userid=",manager.getUIDbySessionID("A34928CC4DF0029CC9226FA77124FA20"));
     }
 
 }
