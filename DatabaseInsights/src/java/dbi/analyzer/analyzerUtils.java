@@ -224,8 +224,11 @@ public class analyzerUtils {
      * 获取给定表的给定列的所有不同值以及其个数<br/>
      * 返回值：DBIResultSet，多行，每行由3列组成，分别存放列名字，不同值，值出现次数
      */
-    public static DBIResultSet getDistinctValuesCount(int uid, String table,String[] columns) {
+    public static DBIResultSet getDistinctValuesCount(int uid, String table,Object[] columns) {
         DBIResultSet ret = new DBIResultSet();
+        if(columns.length < 1){
+            return ret;
+        }
         DatabaseHelper user = null;
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
@@ -255,8 +258,8 @@ public class analyzerUtils {
         Debug.log("getMiniumValues=", analyzerUtils.getMiniumValues(43, "T_DI_USER"));
         Debug.log("getAverangeValues=", analyzerUtils.getAverangeValues(43, "T_DI_USER"));
         Debug.log("getAllColumnSum=", analyzerUtils.getAllColumnSum(43, "T_DI_USER"));
-        String table[]={"password","email"};
-        Debug.log("getDistinctValuesCount=",analyzerUtils.getDistinctValuesCount(43, "T_DI_USER",table ));
+        String columns[]={"password","email"};
+        Debug.log("getDistinctValuesCount=",analyzerUtils.getDistinctValuesCount(43, "T_DI_USER",columns ));
     }
 
 }

@@ -25,6 +25,8 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.Debug;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +35,7 @@ import java.util.ArrayList;
  */
 public class Chart {
 
-    public static final int CHART_PIRCHART = 1;
+    public static final int CHART_PIECHART = 1;
     public static final int CHART_LINECHART = 2;
     public static final int CHART_HISTOGRAM = 3;
 
@@ -49,12 +51,24 @@ public class Chart {
     @Override
     public String toString() {
         String chartops = "";
+        String data = "";
         switch (type) {
-            case CHART_PIRCHART:
+            case CHART_PIECHART:
+                // generate legends
+                String legends = "";
+                legends = x_values.stream().map((obj) -> "'" + String.valueOf(obj) + "',").reduce(legends, String::concat);
+                // generate series data : like {value:335, name:'DATA1'}
+                String temp_piedata = "{value:@V, name:'@N'},";
+                for (int i = 0; i < y_values.size(); i++) {
+                    data += temp_piedata.replace("@V", String.valueOf(y_values.get(i)))
+                            .replace("@N", String.valueOf(x_values.get(i)));
+                }
+                Debug.log("piedata=", data);
+                //generate options
                 chartops = ChartOption.OPTION_PIE.replace("@TITLE", title)
                         .replace("@SUBTITLE", sub_title)
-                        .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
-                        .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
+                        .replace("@XDATA", legends)
+                        .replace("@YDATA", data);
                 break;
             case CHART_LINECHART:
                 chartops = ChartOption.OPTION_LINE.replace("@TITLE", title)
@@ -82,4 +96,19 @@ public class Chart {
             + "	</div>"
             + "</div>";
 
+    public static void main(String[] argvs) {
+        ArrayList<Object> a = new ArrayList<>(), b = new ArrayList<>();
+        a.add("-1");
+        a.add("1");
+        a.add("0");
+        b.add("90");
+        b.add("56");
+        b.add("12");
+        Chart cht = new Chart();
+        cht.type = Chart.CHART_PIECHART;
+        cht.title = "chart test";
+        cht.x_values = a;
+        cht.y_values = b;
+        Debug.log("cht.toString()=", cht);
+    }
 }

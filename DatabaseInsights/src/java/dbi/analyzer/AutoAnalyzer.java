@@ -29,6 +29,7 @@ import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -36,56 +37,77 @@ import java.util.ArrayList;
  */
 public class AutoAnalyzer {
 
-    private ArrayList<Chart> charts_list = new ArrayList<Chart>();
-    private DBIResultSet colSpecies = new DBIResultSet();
-    private DBIResultSet distinctVals = new DBIResultSet();
-    private DBIResultSet maxVals = new DBIResultSet();
-    private DBIResultSet minVals = new DBIResultSet();
-    private DBIResultSet avgVals = new DBIResultSet();
+    private int uid = -1;
+    private String table = "";
 
     public AutoAnalyzer(int uid, String table) {
-        Debug.log("Generating all possiable species...");
-        colSpecies = analyzerUtils.getAllColumnSpecies(uid, table);
-        distinctVals = analyzerUtils.findDistinctValues(uid, table);
-        maxVals = analyzerUtils.getMaxiumValues(uid, table);
-        minVals = analyzerUtils.getMiniumValues(uid, table);
-        avgVals = analyzerUtils.getAverangeValues(uid, table);
+        this.uid = uid;
+        this.table = table;
+    }
 
+    public ArrayList<Chart> getAutoPieCharts() {
+        ArrayList<Chart> charts_list = new ArrayList<Chart>();
+        DBIResultSet distinctVals = analyzerUtils.findDistinctValues(uid, table);
         //check columns to draw piecharts
         // here is how we dectect:
         //        less than 5 distinct values column will be rendered to piecharts
-        Debug.log("Generate Barchart...--------cur chart_list.length=", charts_list.size());
-        DBIResultSet bufdbirs = new DBIResultSet();
+        Debug.log("Generate Piechart...--------cur chart_list.length=", charts_list.size());
+        ArrayList<String> cols = new ArrayList<>();
         for (int i = 1; i <= distinctVals.rowCount(); i++) {
             int ditvalcount = Integer.valueOf((String) distinctVals.getData(i, 2));
             if (ditvalcount < 5) {
-                Chart cht = chartsHelper.generateBarchart(new DBIResultSet(distinctVals.getRow(i)));
+                cols.add((String) distinctVals.getData(i, 1));
+            }
+        }
+        // now render parameters for piecharts
+        DBIResultSet dbirsbuf = analyzerUtils.getDistinctValuesCount(uid, table, cols.toArray()); // return name ,value ,counts
+        if (dbirsbuf.rowCount() > 0) {
+            HashMap<String, DBIResultSet> piecharts = new HashMap<>();
+            for (ArrayList<Object> row : dbirsbuf.getRows()) {
+                DBIResultSet piedata = new DBIResultSet();
+                String colname = (String) row.get(0);
+                if (piecharts.containsKey(colname)) {
+                    piedata = piecharts.get(colname);
+                }
+                piedata.addToRow((String) row.get(1));
+                piedata.addToRow((String) row.get(2));
+                piedata.finishRow();
+                piecharts.put(colname, piedata);
+            }
+            for (String key : piecharts.keySet()) {
+                Chart cht = chartsHelper.generateBarchart(key, piecharts.get(key));
                 charts_list.add(cht);
             }
         }
+        return charts_list;
+    }
 
+    public ArrayList<Chart> getAutoLineCharts() {
+        ArrayList<Chart> charts_list = new ArrayList<Chart>();
+        DBIResultSet colSpecies = analyzerUtils.getAllColumnSpecies(uid, table);
         //check columns to draw linecharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         //            then draw statistics of the values for every column which is not numberic
         Debug.log("Generate linecharts...--------cur chart_list.length=", charts_list.size());
         for (int i = 1; i <= colSpecies.rowCount(); i++) {
             if (colSpecies.getRow(i).get(6).equals("NUMBER")) {
-                Chart cht = chartsHelper.generateBarchart(new DBIResultSet());
+                Chart cht = chartsHelper.generateBarchart("", new DBIResultSet());
                 charts_list.add(cht);
             }
         }
+        return charts_list;
+    }
 
+    public ArrayList<Chart> getAutoHistogramCharts() {
+        ArrayList<Chart> charts_list = new ArrayList<Chart>();
         //check columns to draw histogramcharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         Debug.log("Generate histogram charts...--------cur chart_list.length=", charts_list.size());
-    }
-
-    public ArrayList<Chart> getAutoCharts() {
         return charts_list;
     }
 
     public static void main(String[] argvs) {
-        AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID("A34928CC4DF0029CC9226FA77124FA20"), "T_DI_USER");
+        AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID("B46E25F9F749B3F8F013E92E8AE0FC1E"), "T_DI_USER");
     }
 
 }
