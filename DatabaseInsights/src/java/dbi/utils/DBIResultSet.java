@@ -41,6 +41,11 @@ public class DBIResultSet {
         rs = new ArrayList<>();
     }
 
+    public DBIResultSet(ArrayList<Object> row) {
+        rs = new ArrayList<>();
+        rs.add(row);
+    }
+
     /*
     * Convert ResultSet to DBIResultSet
      */
@@ -58,16 +63,22 @@ public class DBIResultSet {
         }
     }
 
-    /*
-    * add current data to one temporery row
+    /**
+     * add current row to result set to makeup new result set.
+     */
+    public final void addRow(ArrayList<Object> row) {
+        rs.add(row);
+    }
+
+    /**
+     * add current data to one temporery row
      */
     public final void addToRow(Object data) {
         srow.add(data);
     }
 
-    /*
-    * finish the row created by addToRow function.
-    * then add it to the table rs
+    /**
+     * finish the row created by addToRow function. then add it to the table rs
      */
     public final ArrayList<Object> finishRow() {
         ArrayList<Object> newrow = new ArrayList<>(srow);
@@ -83,18 +94,54 @@ public class DBIResultSet {
         assert (i > 0);
         return rs.get(i - 1);
     }
-    
+
+    /**
+     * get data at row x, col y. x,y both start from 1. NOT 0;
+     */
+    public final Object getData(int x, int y) {
+        return rs.get(x - 1).get(y - 1);
+    }
+
     // get all rows of current DBIResultSet
-    public final ArrayList<ArrayList<Object>> getRows(){
+    public final ArrayList<ArrayList<Object>> getRows() {
         return rs;
     }
 
+    /**
+     * return row count
+     */
     public final int rowCount() {
         return rs.size();
     }
-    
-    //public final DBIResultSet map(func)
 
+    /**
+     * return column count per row. if no rows,return 0.
+     */
+    public final int colCount() {
+        if (rs.size() > 0) {
+            return rs.get(0).size();
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        String ret = rs.size() + "x";
+        if (rs.size() > 0) {
+            ret += rs.get(0).size() + " ";
+        } else {
+            ret += "0 ";
+        }
+        return "DBIResultSet[ " + ret + "table]{data= " + rs + " }";
+    }
+
+    //public final DBIResultSet map(func)
     public static void main(String[] args) {
+        DBIResultSet b = new DBIResultSet();
+        b.addToRow(1);
+        b.addToRow(2);
+        b.finishRow();
+        Debug.log("b=", b);
+        Debug.log("b.getData(1,1)=", b.getData(1, 1));
     }
 }
