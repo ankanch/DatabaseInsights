@@ -226,7 +226,25 @@ public class analyzerUtils {
      */
     public static DBIResultSet getDistinctValuesCount(int uid, String table,String[] columns) {
         DBIResultSet ret = new DBIResultSet();
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
+        }
+        dbhelper.Disconnect();
 
+        if (user.Connect()) {
+            for(int i=0;i<columns.length;i++){
+                DBIResultSet tablename=user.runSQLForResult("select count("+columns[i]+"),"+columns[i]+" from T_DI_USER group by "+columns[i]+"");
+                for(int j=0;j<tablename.rowCount();j++){
+                    ArrayList<Object> row = new ArrayList<>();
+                    row.add(columns[i]);
+                    row.add(tablename.getData(j+1, 2));
+                    row.add(tablename.getData(j+1, 1));
+                    ret.addRow(row);
+                }
+            }
+        }
+        user.Disconnect();
         return ret;
     }
 
@@ -237,6 +255,8 @@ public class analyzerUtils {
         Debug.log("getMiniumValues=", analyzerUtils.getMiniumValues(43, "T_DI_USER"));
         Debug.log("getAverangeValues=", analyzerUtils.getAverangeValues(43, "T_DI_USER"));
         Debug.log("getAllColumnSum=", analyzerUtils.getAllColumnSum(43, "T_DI_USER"));
+        String table[]={"password","email"};
+        Debug.log("getDistinctValuesCount=",analyzerUtils.getDistinctValuesCount(43, "T_DI_USER",table ));
     }
 
 }
