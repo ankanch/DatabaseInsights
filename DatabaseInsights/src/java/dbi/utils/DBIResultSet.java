@@ -96,29 +96,5 @@ public class DBIResultSet {
     //public final DBIResultSet map(func)
 
     public static void main(String[] args) {
-        /*
-        DBIResultSet a = new DBIResultSet();
-        for(int i=0;i<5;i++){
-            a.addToRow(i);
-            a.addToRow(i+1);
-            a.addToRow(i+2);
-            a.addToRow(i+3);
-            a.finishRow();
-        }
-        for(int i=1;i<6;i++){
-            Debug.log(a.getRow(i));
-        }
-        for(int i=1;i<6;i++){
-            a.getRow(i).add(99);
-            a.finishRow();
-        }
-        for(int i=1;i<6;i++){
-            Debug.log(a.getRow(i));
-        }
-*/
-        DBIResultSet b = new DBIResultSet();
-
-        b.finishRow();
-        Debug.log(b.getRow(1));
     }
 }

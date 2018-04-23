@@ -207,7 +207,15 @@ public class CredentialManager {
         CredentialManager a = new CredentialManager();
         Boolean q = a.addCredential("cd.kcs.akakanch.com", "DatabaseInsights", GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD,
                 "11DAD71A91396AAEE1B8D19DE406FDBD", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
-        Debug.log(q);
+        Debug.log("addCredential:",q);
+        q= a.deleteCredential("11DAD71A91396AAEE1B8D19DE406FDBD");
+        Debug.log("deleteCredential:",q);
+        q= a.alterCredential("11DAD71A91396AAEE1B8D19DE406FDBD","change name","change host","change password");
+        Debug.log("alterCredential:",q);
+        DBIResultSet s=a.getCredential("11DAD71A91396AAEE1B8D19DE406FDBD");
+        Debug.log("getCredential:",s.getRows());
+        q=a.validiateCreditial("", "change host", "change name", "", "", 0);
+        Debug.log("validiateCreditial:",q);
     }
 
 }

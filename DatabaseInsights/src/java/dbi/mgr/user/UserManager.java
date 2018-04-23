@@ -255,13 +255,15 @@ public class UserManager {
     public static void main(String[] args) {
         UserManager manager = new UserManager();
         DBIResultSet result=manager.getUserDatabases("30975E7ADB577CD3CD051823729AED26");
-        for(int i=0;i<result.rowCount();i++){
-            Debug.log(result.getRow(i+1));
-        }
+        Debug.log("getUserDatabases:",result.getRows());
         result=manager.getUserTables("30975E7ADB577CD3CD051823729AED26","DatabaseInsights");
-        for(int i=0;i<result.rowCount();i++){
-            Debug.log(result.getRow(i+1));
-        }
+        Debug.log("getUserTables:",result.getRows());
+        Boolean b=manager.validateSession("30975E7ADB577CD3CD051823729AED26");
+        Debug.log("validateSession:",b);
+        b=manager.checkPassword("30975E7ADB577CD3CD051823729AED26", "123");
+        Debug.log("checkPassword:",b);
+        b=manager.loginInUser("TEST_P", "TEST_P", "30975E7ADB577CD3CD051823729AED26");
+        Debug.log("loginInUser:",b);
     }
 
 }

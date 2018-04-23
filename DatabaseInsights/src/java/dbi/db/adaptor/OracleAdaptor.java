@@ -43,8 +43,8 @@ public class OracleAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回根据指定的表名得到该表的全部列名的sql语句
      */
     public String getColumnNamesByTable(String TableName){
-        return "select column_name\n" +
-                "from all_tab_columns \n" +
+        return "select column_name " +
+                "from all_tab_columns  " +
                 "where table_name = '" + TableName + "'";
     }
     /**
@@ -75,8 +75,8 @@ public class OracleAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回指定表的所有列的全部性质的sql语句
      */ 
     public String getColumnSpeciesByName(String Column,String table){
-        return "SELECT * \n" +
-                "FROM all_tab_columns\n" +
+        return "SELECT *  " +
+                "FROM all_tab_columns " +
                 " WHERE column_name  =  '"+ Column +"' and table_name = '"+table+"'";
     }
 
@@ -97,10 +97,10 @@ public class OracleAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找主键的sql语句
      */     
     public String findPrimaryKey(String table){
-        String findPrimaryKey="select  column_name\n" +
-            "from user_constraints con,user_cons_columns col\n" +
+        String findPrimaryKey="select  column_name " +
+            "from user_constraints con,user_cons_columns col " +
             "where\n" +
-            "con.constraint_name=col.constraint_name and con.constraint_type='P'\n" +
+            "con.constraint_name=col.constraint_name and con.constraint_type='P' " +
             "and col.table_name='"+table+"'";
         return findPrimaryKey;
     }
@@ -110,10 +110,10 @@ public class OracleAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找外键的sql语句
      */      
     public String findForeignKey(String table){
-        String findForeignKey="select b.column_name refColumn\n" +
-            "from user_constraints a\n" +
-            "left  join user_cons_columns b on a.constraint_name = b.constraint_name\n" +
-            "left  join user_cons_columns c on a.r_constraint_name = c.constraint_name\n" +
+        String findForeignKey="select b.column_name refColumn " +
+            "from user_constraints a " +
+            "left  join user_cons_columns b on a.constraint_name = b.constraint_name " +
+            "left  join user_cons_columns c on a.r_constraint_name = c.constraint_name " +
             "where a.constraint_type = 'R' and a.table_name = '"+table+"' ";
         return findForeignKey;
     }
@@ -123,8 +123,8 @@ public class OracleAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找外键的sql语句
      */    
     public String findTablecolspe(String table){
-        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE\n" +
-                "from user_tab_columns  t,user_col_comments  c\n" +
+        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE " +
+                "from user_tab_columns  t,user_col_comments  c " +
                 " where t.table_name = c.table_name"
                 + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
     }
@@ -146,6 +146,6 @@ public class OracleAdaptor extends DatabaseAdaptor{
     public String findRefid(String columnname){
         String str="select colid from T_DATABASE_COLUMN "
                 + "where columnname='"+columnname+"' and isPrimary=1";
-        return "";
+        return str;
     }
 }

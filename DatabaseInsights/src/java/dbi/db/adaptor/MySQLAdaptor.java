@@ -75,8 +75,8 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回指定表的所有列的全部性质的sql语句
      */      
     public String getColumnSpeciesByName(String Column,String table){
-        return "SELECT * \n" +
-                "FROM information_schema.columns\n" +
+        return "SELECT *  " +
+                "FROM information_schema.columns " +
                 " WHERE column_name  =  '"+ Column +"' and table_name = '"+table+"'";
     }
 
@@ -97,9 +97,9 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找主键的sql语句
      */    
     public String findPrimaryKey(String table){
-        return "SELECT COLUMN_NAME\n" +
-        "FROM INFORMATION_SCHEMA.COLUMNS\n" +
-        "WHERE table_name =  '"+table+"'\n" +
+        return "SELECT COLUMN_NAME " +
+        "FROM INFORMATION_SCHEMA.COLUMNS " +
+        "WHERE table_name =  '"+table+"' " +
         "AND COLUMN_KEY =  'PRI'";
     }
     
@@ -116,8 +116,8 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找外键的sql语句
      */      
     public String findTablecolspe(String table){
-        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE\n" +
-                "from user_tab_columns  t,user_col_comments  c\n" +
+        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE " +
+                "from user_tab_columns  t,user_col_comments  c " +
                 " where t.table_name = c.table_name"
                 + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
     }
