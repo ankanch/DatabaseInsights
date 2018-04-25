@@ -101,17 +101,29 @@
 
     function getTables(v) {
         var dbname= document.getElementById(v.id).innerText;
+        document.getElementById("buttonMenu1").innerHTML=dbname;
         SubmitFormKVF("/api/getTables",{dbname:dbname}, function error(data) {
             showMsg("Failed to load table list.");
         }, function success(data) {
             var list=data.data;
             var element=document.getElementById("showTables");
-            var st="<a class=\"dropdown-item\" href=\"#\" id=\"idcolumn\">dbname</a>";
+            var st="<a class=\"dropdown-item\" onclick=\"getTablename(this)\" href=\"#\" id=\"idcolumn\">dbname</a>";
             var str=""
             for(var i=0;i<list.length;i++){
                str=str+st.replace("idcolumn","dbc"+i).replace("dbname",list[i]);
             }
             element.innerHTML=str;
+        });
+    }
+    
+    function getTablename(v){
+        var tablename= document.getElementById(v.id).innerText;
+        document.getElementById("buttonMenu2").innerHTML=tablename;
+        var dbname= document.getElementById("buttonMenu1").innerText;
+        SubmitFormKVF("/api/getAutoAnalysisResult",{dbname: dbname, tbname: tablename, chart: "pie"}, function error(data) {
+            showMsg("Failed to load table list.");
+        }, function success(data) {
+            
         });
     }
 
