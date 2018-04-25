@@ -25,6 +25,22 @@
  */
 var error_identifier = "!@ERR!";
 
+function setProgressBar(type) {
+    // check progress bar exist
+    var pb = document.getElementById("progressbar");
+    if (pb) {
+        if(type === true){
+            //show progress bar
+            pb.style.display = '';
+        }else{
+            // hide progress bar
+            pb.style.display = 'none'; 
+        }
+        return true;
+    }
+    return false;
+}
+
 function SubmitForm(url, formid, error_msg, success_msg) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
     $.ajax({
@@ -59,6 +75,7 @@ function SubmitFormF(url, formid, error_msg, success_func) {
 
 function SubmitFormFF(url, formid, error_func, success_func) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    setProgressBar(true);
     $.ajax({
         url: url,
         type: 'post',
@@ -70,12 +87,14 @@ function SubmitFormFF(url, formid, error_func, success_func) {
             } else {
                 success_func(ret);
             }
+            setProgressBar(false);
         }
     });
 }
 
 function SubmitFormKVF(url, keyvalue, error_func, success_func) {
     // function from https://stackoverflow.com/questions/25983603/how-to-submit-html-form-without-redirection
+    setProgressBar(true);
     $.ajax({
         url: url,
         type: 'post',
@@ -87,11 +106,13 @@ function SubmitFormKVF(url, keyvalue, error_func, success_func) {
             } else {
                 success_func(ret);
             }
+            setProgressBar(false);
         }
     });
 }
 
 function GetData(url, error_msg, success_msg) {
+    setProgressBar(true);
     $.get(url, function (data) {
         var ret = new DBIEX(data);
         if (ret.status === false) {
@@ -99,10 +120,12 @@ function GetData(url, error_msg, success_msg) {
         } else {
             showMsg(success_msg);
         }
+        setProgressBar(false);
     });
 }
 
 function GetDataF(url, error_func, success_func) {
+    setProgressBar(true);
     $.get(url, function (data) {
         var ret = new DBIEX(data);
         if (ret.status === false) {
@@ -110,5 +133,6 @@ function GetDataF(url, error_func, success_func) {
         } else {
             success_func(ret);
         }
+        setProgressBar(false);
     });
 }

@@ -27,7 +27,6 @@ package dbi.analyzer;
 
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 
 /**

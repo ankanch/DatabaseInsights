@@ -316,27 +316,15 @@ public class DatabaseHelper {
      */    
     public DBIResultSet runSQLForResult(String sql) {
         DBIResultSet sqlResult = new DBIResultSet();
-        int p = 0;
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
             Debug.log("SQL=", sql);
-
             ResultSet rs = st.executeQuery(sql);
-            // 遍历获取结果
-            while (rs.next()) {
-                p = 1;
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    sqlResult.addToRow(rs.getString(i + 1));
-                }
-                sqlResult.finishRow();
-            }
+            sqlResult = new DBIResultSet(rs);
             st.close();
         } catch (Exception e) {
             Debug.error(e);
-        }
-        if (p == 0) {
-            sqlResult.finishRow();
         }
         return sqlResult;
     }

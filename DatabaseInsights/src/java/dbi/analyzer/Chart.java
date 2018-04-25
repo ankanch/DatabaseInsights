@@ -26,8 +26,8 @@
 package dbi.analyzer;
 
 import dbi.utils.Debug;
-import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -40,6 +40,7 @@ public class Chart {
     public static final int CHART_HISTOGRAM = 3;
 
     public int type = 0;
+    public String id = "cht_";
     public String x_label = "";
     public String y_label = "";
     public String title = "";
@@ -47,6 +48,22 @@ public class Chart {
     public ArrayList<String> legends = new ArrayList<>();
     public ArrayList<Object> x_values = new ArrayList<>();
     public ArrayList<Object> y_values = new ArrayList<>();
+
+    public Chart() {
+        id += UUID.randomUUID().toString().replace("-", "");
+    }
+
+    public static int switchChart(String chtname) {
+        switch (chtname) {
+            case "pie":
+                return CHART_PIECHART;
+            case "line":
+                return CHART_LINECHART;
+            case "histogram":
+                return CHART_HISTOGRAM;
+        }
+        return -1;
+    }
 
     @Override
     public String toString() {
@@ -85,16 +102,6 @@ public class Chart {
         }
         return chartops;
     }
-
-    private String CHART_CONTAINER = "<div class=\"card\">"
-            + "	<div class=\"card-body\">"
-            + "		<div id=\"@ID\" style=\"width: 600px;height:400px;\"></div>"
-            + "		<script type=\"text/javascript\">"
-            + "			var myChart = echarts.init(document.getElementById('@ID'));"
-            + "			myChart.setOption(@OPTION);"
-            + "		</script>"
-            + "	</div>"
-            + "</div>";
 
     public static void main(String[] argvs) {
         ArrayList<Object> a = new ArrayList<>(), b = new ArrayList<>();

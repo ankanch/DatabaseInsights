@@ -237,7 +237,7 @@ public class analyzerUtils {
 
         if (user.Connect()) {
             for(int i=0;i<columns.length;i++){
-                DBIResultSet tablename=user.runSQLForResult("select count("+columns[i]+"),"+columns[i]+" from T_DI_USER group by "+columns[i]+"");
+                DBIResultSet tablename=user.runSQLForResult("select count("+columns[i]+"),"+columns[i]+" from " + table + " group by "+columns[i]+"");
                 for(int j=0;j<tablename.rowCount();j++){
                     ArrayList<Object> row = new ArrayList<>();
                     row.add(columns[i]);

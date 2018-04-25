@@ -44,10 +44,28 @@ public class AutoAnalyzer {
         this.uid = uid;
         this.table = table;
     }
+    
+    public ArrayList<Chart> getAutoCharts(int chttype){
+        switch(chttype){
+            case Chart.CHART_HISTOGRAM:
+                return getAutoHistogramCharts();
+            case Chart.CHART_LINECHART:
+                return getAutoLineCharts();
+            case Chart.CHART_PIECHART:
+                return getAutoPieCharts();
+            default:
+                return new ArrayList<Chart>();
+        }
+    }
 
     public ArrayList<Chart> getAutoPieCharts() {
         ArrayList<Chart> charts_list = new ArrayList<Chart>();
         DBIResultSet distinctVals = analyzerUtils.findDistinctValues(uid, table);
+        Debug.log("distinctVals.length=",distinctVals.rowCount());
+        Debug.log("distinctVals=",distinctVals);
+        if(distinctVals.rowCount() < 1){
+            return charts_list;
+        }
         //check columns to draw piecharts
         // here is how we dectect:
         //        less than 5 distinct values column will be rendered to piecharts
@@ -55,7 +73,7 @@ public class AutoAnalyzer {
         ArrayList<String> cols = new ArrayList<>();
         for (int i = 1; i <= distinctVals.rowCount(); i++) {
             int ditvalcount = Integer.valueOf((String) distinctVals.getData(i, 2));
-            if (ditvalcount < 5) {
+            if (ditvalcount < 5 && ditvalcount > 0) {
                 cols.add((String) distinctVals.getData(i, 1));
             }
         }

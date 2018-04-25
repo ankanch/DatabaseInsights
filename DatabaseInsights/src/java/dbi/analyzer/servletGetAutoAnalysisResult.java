@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dbi.utils.GlobeVar;
 import dbi.utils.DBIDataExchange;
-import dbi.utils.DBIDataExchange;
 import dbi.mgr.user.UserManager;
 import dbi.utils.DBIResultSet;
 import java.util.ArrayList;
@@ -74,18 +73,37 @@ public class servletGetAutoAnalysisResult extends HttpServlet {
         String charttype = request.getParameter("chart");
         DBIResultSet ret = new DBIResultSet();
 
-        if (charttype.equals("pie")) {
+        int ichttype = Chart.switchChart(charttype);
+        if (ichttype > -1) {
             AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), table);
-            for (Chart cht : aa.getAutoPieCharts()) {
+            ArrayList<Chart> charts = aa.getAutoCharts(ichttype);
+            ret.addToRow(charts.size());
+            ret.finishRow();
+            ArrayList<Object> chtids = new ArrayList<>();
+            charts.forEach((cht) -> {
                 ret.addToRow(cht.toString());
-            }
+                chtids.add(cht.id);
+            });
+            ret.addRow(chtids);
             ret.finishRow();
             status = true;
+        } else {
+            status = false;
+            try (PrintWriter out = response.getWriter()) {
+                out.println(DBIDataExchange.makeupStatusCode(status, "unknow chart type"));
+                return;
+            }
         }
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
         try (PrintWriter out = response.getWriter()) {
+            // return data format, row 1 : charts count
+            //                row 2 : charts ID
+            //                row 3 : charts options
+            if(ret.rowCount() < 1){
+                out.println(DBIDataExchange.makeupStatusCode(status, "selected table can't generate barcharts!"));
+            }
             out.println(DBIDataExchange.makeupReturnData(status, "no message", ret.getRows()));
         }
     }
