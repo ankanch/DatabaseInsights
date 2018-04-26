@@ -212,7 +212,7 @@ public class UserManager {
     }
     /**
     * 根据指定usession返回该用户的全部数据库名称<br/>
-    * 返回值：DBIResultSet，每一列是一个数据路名称
+    * 返回值：DBIResultSet，每一行是一个数据库名称
      */
     public final DBIResultSet getUserDatabases(String usession) {
         DBIResultSet re = new DBIResultSet();
@@ -251,7 +251,27 @@ public class UserManager {
         }
         return re;
     }
-
+    
+    /**
+    * 根据指定usession返回该用户的全部数据库的host<br/>
+    * 返回值：DBIResultSet，每一行是一个数据库host
+     */
+    public final DBIResultSet getUserDatabasehost(String usession) {
+        DBIResultSet re = new DBIResultSet();
+        try {
+            String condition = "T_DATABASE_INFO.userid=T_DI_USER.userid and usession=''{0}''";
+            if (dbhelper.Connect()) {
+                String table[] = {"T_DATABASE_INFO", "T_DI_USER"};
+                re = dbhelper.runJoinSelect("host",
+                        table,
+                        MessageFormat.format(condition, usession));
+            }
+            dbhelper.Disconnect();
+        } catch (Exception e) {
+            Debug.error(e.getMessage());
+        }
+        return re;
+    }
     /**
      * get user id (UID) by session id. 
      * if session is invalid, return -1

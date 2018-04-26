@@ -172,7 +172,7 @@ public class DatabaseHelper {
         int isPrimary = 0;
         int isRef = 0;
         for (int i = 1; i <= getresult.rowCount(); i++) {
-            if (!primary.getRow(1).isEmpty()) {
+            if (primary.rowCount()!=0) {
                 if (getresult.getRow(i).get(1).equals(primary.getRow(1).get(0))) {
                     isPrimary = 1;
                 } else {
@@ -180,14 +180,14 @@ public class DatabaseHelper {
                 }
             }
 
-            if (!foreign.getRow(1).isEmpty()) {
+            if (foreign.rowCount()!=0) {
                 for (int j = 0; j < foreign.rowCount(); j++) {
                     if (getresult.getRow(i).get(1).equals(foreign.getRow(j + 1).get(0))) {
                         isRef = 1;
                     }
                 }
             }
-            species.addToRow(tid.getRow(tid.rowCount()).get(0));
+            species.addToRow(tid.getRow(1).get(0));
             species.addToRow(did);
             species.addToRow(userid);
             species.addToRow(getresult.getRow(i).get(1));
@@ -377,14 +377,21 @@ public class DatabaseHelper {
     * 返回值：boolean，返回指定uid的DatabaseHelper对象
      */
     public DatabaseHelper getUserdbhelper(int uid){
-        DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD from "
+        DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD,name from "
                 + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid"
                 + " and a.userid="+uid);
         String dbtype=(String)result.getRow(1).get(1);
-        String host=(String)result.getRow(1).get(2);
+        String dbhost=(String)result.getRow(1).get(2);
         String username=(String)result.getRow(1).get(3);
         String password=(String)result.getRow(1).get(4);
-        DatabaseConfig config=new DatabaseConfig(Integer.valueOf(dbtype),GlobeVar.CONFIG_DATABASE_DRIVER,host,username,password);
+        String dbname=(String)result.getRow(1).get(5);
+        if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.ORACLE_THIN, dbhost, dbname);
+         }
+        if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.MYSQL, dbhost, dbname);
+        }
+        DatabaseConfig config=new DatabaseConfig(Integer.valueOf(dbtype),GlobeVar.CONFIG_DATABASE_DRIVER,dbhost,username,password);
         return new DatabaseHelper(config);
     }
 

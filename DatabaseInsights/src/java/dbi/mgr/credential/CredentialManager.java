@@ -53,12 +53,6 @@ public class CredentialManager {
      */
     public Boolean addCredential(String dbhost, String dbname, String dbuser, String dbpawd, String userid, String dbtype) {
         if (dbhelper.Connect()) {
-            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
-                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.ORACLE_THIN, dbhost, dbname);
-            }
-            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
-                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.MYSQL, dbhost, dbname);
-            }
             try {
                 
                 int rv = (int) dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost, dbname, dbuser, dbpawd, userid, dbtype);
@@ -75,7 +69,12 @@ public class CredentialManager {
                     default:
                         break;
                 }
-
+            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.ORACLE_THIN, dbhost, dbname);
+            }
+            if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
+                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.MYSQL, dbhost, dbname);
+            }
             String driver = "";
             if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
                 driver = DatabaseConfig.DatabaseDriver.MYSQL;
@@ -101,6 +100,8 @@ public class CredentialManager {
                 }
                   DBIResultSet selectforeign=userdbhelper.runSQLForResult("select columnname,colid from T_DATABASE_COLUMN where isforeignkey=1");
                   Debug.log(selectforeign.getRow(1));
+                  System.out.println(selectforeign.rowCount());
+                  System.out.println(selectforeign.getRow(2));
                   for(int jj=0;jj<selectforeign.rowCount();jj++){
                       DBIResultSet pri=userdbhelper.runSQLForResult("select colid from T_DATABASE_COLUMN where isPrimary=1 and columnname='"
                               +selectforeign.getRow(jj+1).get(0)+"'");
