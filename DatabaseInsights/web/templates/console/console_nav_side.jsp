@@ -47,7 +47,7 @@
                 </a>
             </li>
             <li class="nav-item console-sidebar-subnav">
-                <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
+                <a class="nav-link console-siderbar" data-url="/templates/console/analytics/costomizeAnalysis" href="javascript:">
                     <i class="material-icons console-sidebar-icon-text">settings_ethernet</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_CUSTOMIZE) %></span>
                 </a>
             </li>

@@ -39,6 +39,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -229,31 +231,22 @@ public class DatabaseHelper {
     * 返回值：DBIResultSet，返回select操作后的全部结果
      */
     public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
-        String table = tables[0];
-        for (int i = 1; i <= tables.length - 1; i++) {
-            table = table+","+tables[i];
-            System.out.println(table);
-        }
-        String sql = "select " + querys + " from " + table + " where " + joinconditions;
-
-        DBIResultSet sqlResult = new DBIResultSet();
+        DBIResultSet sqlResult=null;
         try {
             Statement st = conn.createStatement();
+            String table = tables[0];
+            for (int i = 1; i <= tables.length - 1; i++) {
+                table = table+","+tables[i];
+                System.out.println(table);
+            }
+            String sql = "select " + querys + " from " + table + " where " + joinconditions;
             // 执行数据库语句
             Debug.log("SQL=", sql);
             ResultSet rs = st.executeQuery(sql);
-            // 遍历获取结果
-            while (rs.next()) {
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
-                    sqlResult.addToRow(rs.getString(i + 1));
-                }
-                sqlResult.finishRow();
-            }
-            st.close();
+            sqlResult = new DBIResultSet(rs);
         } catch (Exception e) {
             Debug.error(e);
         }
-
         return sqlResult;
     }
     /**
@@ -396,20 +389,16 @@ public class DatabaseHelper {
     }
 
     public static void main(String[] args) {
-
-        DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C, "oracle.jdbc.driver.OracleDriver", "jdbc:oracle:thin:@//111.231.225.37:1521/DatabaseInsights", "di", "DI2017");
-        //DatabaseConfig a = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_MYSQL, "org.gjt.mm.mysql.Driver", "jdbc:mysql://115.159.197.66:3306/IncidentsReport", "ir", "2yvaVjSNVYHwWwcR");
-        DatabaseHelper test = new DatabaseHelper(a);
-        DBIResultSet columns = new DBIResultSet();
-        test.Connect();
-        try {
-            String table[]={"T_DATABASE_INFO","T_DATABASE_CERTIFICATION"};
-            DBIResultSet result=test.runJoinSelect("*", table, "T_DATABASE_INFO.DID=T_DATABASE_CERTIFICATION.DID");
-            for(int i=0;i<result.rowCount();i++){
-                System.out.println(result.getRow(i+1));
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+        
+        DatabaseHelper helper=new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
+        helper.Connect();
+        String []tables={"T_DATABASE_COLUMN","T_DATABASE_TABLE","T_DATABASE_INFO"};
+        DBIResultSet ret=helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
+                + "and T_DATABASE_INFO.did=T_DATABASE_COLUMN.DID "
+                + "and tname='T_DATABASE_CERTIFICATION' and name='DatabaseInsights'");
+        for(int i=0;i<ret.rowCount();i++){
+            Debug.log(ret.getRow(i+1));
         }
+        
     }
 }

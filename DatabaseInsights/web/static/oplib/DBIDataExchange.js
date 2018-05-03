@@ -39,19 +39,23 @@ class DBIEX {
         // str like below:
         // true<@SUS>this is a test message<@MSG>test1<@C>text11<@C><@R>test2<@C>text22<@C><@R>test3<@C>text33<@C><@R> 
         var res = exstr.split(SP_STATUS);
-        if(res[0] === "true"){
+        if (res[0] === "true") {
             this.status = true;
         }
         var res = res[1].split(SP_MESSAGE);
         this.message = res[0];
         var rows = res[1].split(SP_ROW);
-        var i;
-        for (i = 0; i < rows.length; i++) {
-            var rowx = rows[i].split(SP_COLUMN);
-            rowx.pop();
-            if (rowx.length > 0) {
-                this.data.push(rowx);
+        if (rows.length > 1) {
+            var i;
+            for (i = 0; i < rows.length; i++) {
+                var rowx = rows[i].split(SP_COLUMN);
+                rowx.pop();
+                if (rowx.length > 0) {
+                    this.data.push(rowx);
+                }
             }
+        }else{
+            this.data.push(rows);
         }
         console.log(this);
     }
