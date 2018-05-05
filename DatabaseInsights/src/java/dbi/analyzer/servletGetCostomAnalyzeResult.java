@@ -67,21 +67,21 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
             return;
         }
         //- | --> ADD YOUR CODE BELOW
-        String database = request.getParameter("dbname");
-        String table = request.getParameter("tbname");
-        DBIResultSet ret = new DBIResultSet();
+        String fields=request.getParameter("fields");
+        String type=request.getParameter("type");
+        String summary=request.getParameter("summary");
+        String instructions=request.getParameter("instructions");
 
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
+        
+        
         try (PrintWriter out = response.getWriter()) {
-            if (ret.rowCount() < 1) {
-                out.println(DBIDataExchange.makeupStatusCode(status, "No column!"));
-            } else {
-                status = true;
-                out.println(DBIDataExchange.makeupReturnData(status, "the table field is:", ret));
-            }
+            status = true;
+            out.println(DBIDataExchange.makeupReturnData(status, "submit is successful:", "success"));
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

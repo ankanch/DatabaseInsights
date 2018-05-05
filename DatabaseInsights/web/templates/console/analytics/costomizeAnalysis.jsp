@@ -101,7 +101,27 @@
     }
 
     function startAnalyze() {
-
+        var rowcolnum=showRowcolnum()-1;
+        var fields;
+        var type;
+        var summary;
+        var instructions;
+        console.log("rowcolnum:"+rowcolnum.toString());
+        for (var i=1;i<rowcolnum+1;i++){
+            fields=document.getElementById("field_" + i.toString()).value;
+            type=document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
+            summary=document.getElementById("buttonnames_" + i.toString()).innerHTML;
+            instructions=document.getElementById("instructions_" + i.toString()).value;
+            console.log("fields:"+fields);
+            console.log("type"+type);
+            console.log("summary:"+summary);
+            console.log("instructions:"+instructions);
+            SubmitFormKVF("/api/servletGetCostomAnalyzeResult", {fields: fields, type: type,summary:summary,instructions:instructions}, function error_func(data) {
+                console.log("error"+i.toString());
+            }, function success_func(data) {
+                console.log("success"+i.toString());
+            });
+        }
     }
 
     function chooseNumber(v) {
@@ -130,16 +150,15 @@
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "文本";
         var element = document.getElementById("choosetype_" + v);
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
-                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>";
+                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
         element.innerHTML = str;
     }
 
     function chooseBoolean(v) {
-        console.log("btn_selecttype_" + v.toString());
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "布尔值";
         var element = document.getElementById("choosetype_" + v.toString());
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
-                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>";
+                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
         element.innerHTML = str;
     }
 
@@ -171,7 +190,6 @@
         }, function success_func(data) {
             var element = document.getElementById("DBtbody");
             element.innerHTML = data.data[0];
-            console.log(data.data);
         });
     }
 
@@ -190,6 +208,12 @@
             }
             element.innerHTML = str;
         });
+    }
+    
+    function showRowcolnum(){
+        var tab=document.getElementById("columnstable");
+        var rows=tab.rows.length;
+        return rows;
     }
 
 </script>

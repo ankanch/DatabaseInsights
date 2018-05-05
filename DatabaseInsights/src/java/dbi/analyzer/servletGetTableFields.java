@@ -82,13 +82,13 @@ public class servletGetTableFields extends HttpServlet {
                 + "and tname='" + table + "' and name='" + database + "'");
         //根据上面DBIResultSet的内容，生成表，并返回主界面
         String str = "<tr>"
-                + "                            <th scope=\"row\">{0}</th>"
+                + "                            <th scope=\"row\" id=\"row_{0}\">{0}</th>"
                 + "                            <td  style=\"width: 30%\">"
-                + "                                    <input type=\"text\" class=\"form-control\" value=\"{1}\">"
+                + "                                    <input type=\"text\" class=\"form-control\" value=\"{1}\" id=\"field_{0}\">"
                 + "                            </td>"
                 + "                            <td>"
                 + "                                <button class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\""
-                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"btn_selecttype_{0}\">文本</button>"
+                + "                                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"btn_selecttype_{0}\">文本</button>"
                 + "                                <div class=\"dropdown-menu\">"
                 + "                                    <a class=\"dropdown-item\" href=\"javascript:chooseNumber({0})\">数字</a>"
                 + "                                    <a class=\"dropdown-item\" href=\"javascript:chooseText({0})\">文本</a>"
@@ -97,10 +97,10 @@ public class servletGetTableFields extends HttpServlet {
                 + "                            </td>"
                 + "                            <td id=\"choosetype_{0}\">"
                 + "                                <button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\" "
-                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>"
+                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_{0}\">无</button>"
                 + "                            </td>"
                 + "                            <td>"
-                + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\">"
+                + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\" id=\"instructions_{0}\">"
                 + "                            </td>"
                 + "                        </tr>";
         StringBuilder a = new StringBuilder();
