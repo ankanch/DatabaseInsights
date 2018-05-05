@@ -3,7 +3,7 @@
  *
  * *** Copyright © Long Zhang(kanch)
  * *** Email: kanchisme@gmail.com
- * *** Code created on Apr 23 2018
+ * *** Code created on May 05 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,10 @@
  */
 package dbi.analyzer;
 
+import dbi.mgr.user.UserManager;
+import dbi.utils.DBIDataExchange;
+import dbi.utils.DBIResultSet;
+import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -32,18 +36,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import dbi.utils.GlobeVar;
-import dbi.utils.DBIDataExchange;
-import dbi.mgr.user.UserManager;
-import dbi.utils.DBIResultSet;
-import java.util.ArrayList;
 
 /**
  *
  * @author kanch
  */
-@WebServlet(name = "servletGetAutoAnalysisResult", urlPatterns = {"/api/getAutoAnalysisResult"})
-public class servletGetAutoAnalysisResult extends HttpServlet {
+@WebServlet(name = "servletGetCostomAnalyzeResult", urlPatterns = {"/api/servletGetCostomAnalyzeResult"})
+public class servletGetCostomAnalyzeResult extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,41 +69,18 @@ public class servletGetAutoAnalysisResult extends HttpServlet {
         //- | --> ADD YOUR CODE BELOW
         String database = request.getParameter("dbname");
         String table = request.getParameter("tbname");
-        String charttype = request.getParameter("chart");
         DBIResultSet ret = new DBIResultSet();
 
-        int ichttype = Chart.switchChart(charttype);
-        if (ichttype > -1) {
-            AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), table);
-            ArrayList<Chart> charts = aa.getAutoCharts(ichttype);
-            ret.addToRow(charts.size());
-            ret.finishRow();
-            ArrayList<Object> chtids = new ArrayList<>();
-            charts.forEach((cht) -> {
-                ret.addToRow(cht.toString());
-                chtids.add(cht.id);
-            });
-            ret.addRow(chtids);
-            ret.finishRow();
-            status = true;
-        } else {
-            status = false;
-            try (PrintWriter out = response.getWriter()) {
-                out.println(DBIDataExchange.makeupStatusCode(status, "unknow chart type"));
-                return;
-            }
-        }
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
         try (PrintWriter out = response.getWriter()) {
-            // return data format, row 1 : charts count
-            //                row 2 : charts ID
-            //                row 3 : charts options
             if (ret.rowCount() < 1) {
-                out.println(DBIDataExchange.makeupStatusCode(status, "selected table can't generate barcharts!"));
+                out.println(DBIDataExchange.makeupStatusCode(status, "No column!"));
+            } else {
+                status = true;
+                out.println(DBIDataExchange.makeupReturnData(status, "the table field is:", ret));
             }
-            out.println(DBIDataExchange.makeupReturnData(status, "no message", ret.getRows()));
         }
     }
 

@@ -10,6 +10,7 @@
 <div id="analytics_auto">
     <h2>costomize Analytics</h2>
     <div class="card">
+        <div class="progress-line" id="progressbar" style="display:none;"></div>
         <div class="card-body">
             <button type="button" class="btn" disabled style="color:#4e4e52;">Select your database and table to start</button>
             <div class="btn-group">
@@ -30,29 +31,55 @@
 
                 </div>
             </div>
+            <button type="button" class="btn btn-raised btn-success" id="btn_start" onclick="startAnalyze()">Start Analyze</button>
         </div>
     </div>
-    <div class="row mt-2">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="progress-line" id="progressbar" style="display:none;"></div>
-                <div class="alert alert-danger" role="alert" id="alarmcard">
-                    请选择数据库和表，选后可进行下一步操作
-                </div>
-                <table class="table table-striped" style="text-align:center;" id="columnstable">
-                    <thead>
-                        <tr>
-                            <th scope="col">索引</th>
-                            <th scope="col">字段</th>
-                            <th scope="col">类型</th>
-                            <th scope="col">汇总</th>
-                            <th scope="col">说明</th>
-                        </tr>
-                    </thead>
-                    <tbody id="DBtbody">
+    <hr>
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link console-text-button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        1.选择字段
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert" id="alarmcard">
+                        请选择数据库和表，选后可进行下一步操作
+                    </div>
+                    <table class="table table-striped" style="text-align:center;" id="columnstable">
+                        <thead>
+                            <tr>
+                                <th scope="col">索引</th>
+                                <th scope="col">字段</th>
+                                <th scope="col">类型</th>
+                                <th scope="col">汇总</th>
+                                <th scope="col">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DBtbody">
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed console-text-button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        2.查看分析结果
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert" id="alarmcard">
+                        请完成第一步后，再查看分析结果
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -71,6 +98,10 @@
     function initChartWithOption(id, option) {
         var myChart = echarts.init(document.getElementById(id));
         myChart.setOption(option);
+    }
+
+    function startAnalyze() {
+
     }
 
     function chooseNumber(v) {
@@ -131,9 +162,9 @@
         var tbname = document.getElementById(v.id).innerText;
         document.getElementById("buttonMenu2").innerHTML = tbname;
         var dbname = document.getElementById("buttonMenu1").innerHTML;
-        
-            $("#alarmcard").hide();
-            $("#columnstable").show();
+
+        $("#alarmcard").hide();
+        $("#columnstable").show();
 
         SubmitFormKVF("/api/GetTableFields", {dbname: dbname, tbname: tbname}, function error_func(data) {
             showMsg("Failed to load table field list.");

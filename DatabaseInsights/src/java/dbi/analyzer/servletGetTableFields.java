@@ -58,7 +58,7 @@ public class servletGetTableFields extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-  Boolean status = false;
+        Boolean status = false;
         String sid = request.getSession().getId();
         UserManager um = GlobeVar.OBJ_MANAGER_USER;
         // check if user login first, if not, return error
@@ -74,49 +74,49 @@ public class servletGetTableFields extends HttpServlet {
         DBIResultSet ret = new DBIResultSet();
         //取出列名和列的类型在一个DBIResultSet中，再根据其具体类型把它分为三类（和主页上的类一致）
         //根据数据库名和表名取出其列的信息，取出列名和类型
-        DatabaseHelper helper=new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
+        DatabaseHelper helper = new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
         helper.Connect();
-        String []tables={"T_DATABASE_COLUMN","T_DATABASE_TABLE","T_DATABASE_INFO"};
-        ret=helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
+        String[] tables = {"T_DATABASE_COLUMN", "T_DATABASE_TABLE", "T_DATABASE_INFO"};
+        ret = helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
                 + "and T_DATABASE_INFO.did=T_DATABASE_COLUMN.DID "
-                + "and tname='"+table+"' and name='"+database+"'");
+                + "and tname='" + table + "' and name='" + database + "'");
         //根据上面DBIResultSet的内容，生成表，并返回主界面
-        String str="<tr>"+
-"                            <th scope=\"row\">{0}</th>"+
-"                            <td  style=\"width: 30%\">"+
-"                                    <input type=\"text\" class=\"form-control\" value=\"{1}\">"+
-"                            </td>"+
-"                            <td>"+
-"                                <button class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\""+
-"                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"btn_selecttype_{0}\">文本</button>"+
-"                                <div class=\"dropdown-menu\">"+
-"                                    <a class=\"dropdown-item\" href=\"javascript:chooseNumber({0})\">数字</a>"+
-"                                    <a class=\"dropdown-item\" href=\"javascript:chooseText({0})\">文本</a>"+
-"                                    <a class=\"dropdown-item\" href=\"javascript:chooseBoolean({0})\">布尔值</a>"+
-"                                </div>"+
-"                            </td>"+
-"                            <td id=\"choosetype_{0}\">"+
-"                                <button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\" "+
-"                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>"+
-"                            </td>"+
-"                            <td>"+
-"                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\">"+
-"                            </td>"+
-"                        </tr>";
-        StringBuilder a=new StringBuilder();
-        System.out.println("ret.rowCount()"+ret.rowCount());
-        for(int i=1;i<=ret.rowCount();i++){
-            System.out.println("haven:"+ret.getRow(i));
-            a.append(MessageFormat.format(str,String.valueOf(i),ret.getData(i, 1)));
+        String str = "<tr>"
+                + "                            <th scope=\"row\">{0}</th>"
+                + "                            <td  style=\"width: 30%\">"
+                + "                                    <input type=\"text\" class=\"form-control\" value=\"{1}\">"
+                + "                            </td>"
+                + "                            <td>"
+                + "                                <button class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\""
+                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"btn_selecttype_{0}\">文本</button>"
+                + "                                <div class=\"dropdown-menu\">"
+                + "                                    <a class=\"dropdown-item\" href=\"javascript:chooseNumber({0})\">数字</a>"
+                + "                                    <a class=\"dropdown-item\" href=\"javascript:chooseText({0})\">文本</a>"
+                + "                                    <a class=\"dropdown-item\" href=\"javascript:chooseBoolean({0})\">布尔值</a>"
+                + "                                </div>"
+                + "                            </td>"
+                + "                            <td id=\"choosetype_{0}\">"
+                + "                                <button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\" "
+                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>"
+                + "                            </td>"
+                + "                            <td>"
+                + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\">"
+                + "                            </td>"
+                + "                        </tr>";
+        StringBuilder a = new StringBuilder();
+        System.out.println("ret.rowCount()" + ret.rowCount());
+        for (int i = 1; i <= ret.rowCount(); i++) {
+            System.out.println("haven:" + ret.getRow(i));
+            a.append(MessageFormat.format(str, String.valueOf(i), ret.getData(i, 1)));
         }
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
         try (PrintWriter out = response.getWriter()) {
-            if(ret.rowCount() < 1){
+            if (ret.rowCount() < 1) {
                 out.println(DBIDataExchange.makeupStatusCode(status, "No column!"));
-            }else{
-                status=true;
+            } else {
+                status = true;
                 out.println(DBIDataExchange.makeupReturnData(status, "the table field is:", a));
             }
         }

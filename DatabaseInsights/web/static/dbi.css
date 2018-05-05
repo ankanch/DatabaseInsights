@@ -301,3 +301,8 @@ h1 {
 .console-mw-500{
     max-width: 500px;
 }
+
+.console-text-button{
+    font-weight:bolder;
+    font-size:14px;
+}

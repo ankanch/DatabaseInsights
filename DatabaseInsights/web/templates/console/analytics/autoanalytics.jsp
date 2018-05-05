@@ -10,6 +10,7 @@
 <div id="analytics_auto">
     <h2>Auto Analytics</h2>
     <div class="card">
+        <div class="progress-line" id="progressbar" style="display:none;"></div>
         <div class="card-body">
             <button type="button" class="btn" disabled style="color:#4e4e52;">Select your database and table to start</button>
             <div class="btn-group">
@@ -35,7 +36,6 @@
     <div class="row mt-2">
         <div class="col-md-12">
             <div class="card">
-                <div class="progress-line" id="progressbar" style="display:none;"></div>
                 <h5 class="card-header" id="card_title">Auto Analytics</h5>
                 <div class="card-body" id="chartslist">
 
