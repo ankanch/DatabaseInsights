@@ -102,26 +102,40 @@
 
     function startAnalyze() {
         var rowcolnum=showRowcolnum()-1;
-        var fields;
-        var type;
-        var summary;
-        var instructions;
-        console.log("rowcolnum:"+rowcolnum.toString());
+        var fields="";
+        var type="";
+        var summary="";
+        var instructions="";
+        var lastfields="";
+        console.log("rowcolnum:"+rowcolnum.toString());        
         for (var i=1;i<rowcolnum+1;i++){
-            fields=document.getElementById("field_" + i.toString()).value;
-            type=document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
-            summary=document.getElementById("buttonnames_" + i.toString()).innerHTML;
-            instructions=document.getElementById("instructions_" + i.toString()).value;
-            console.log("fields:"+fields);
-            console.log("type"+type);
-            console.log("summary:"+summary);
-            console.log("instructions:"+instructions);
-            SubmitFormKVF("/api/servletGetCostomAnalyzeResult", {fields: fields, type: type,summary:summary,instructions:instructions}, function error_func(data) {
-                console.log("error"+i.toString());
-            }, function success_func(data) {
-                console.log("success"+i.toString());
-            });
+            if(i===1){
+                lastfields=document.getElementById("lastfield_" + i.toString()).value;
+                fields=document.getElementById("field_" + i.toString()).value;
+                type=document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
+                summary=document.getElementById("buttonnames_" + i.toString()).innerHTML;
+                instructions=document.getElementById("instructions_" + i.toString()).value;
+            }else{
+                lastfields=lastfields+","+document.getElementById("field_" + i.toString()).value;
+                fields=fields+","+document.getElementById("field_" + i.toString()).value;
+                type=type+","+document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
+                summary=summary+","+document.getElementById("buttonnames_" + i.toString()).innerHTML;
+                instructions=instructions+","+document.getElementById("instructions_" + i.toString()).value;
+            }
         }
+        SubmitFormKVF("/api/servletGetCostomAnalyzeResult", {lastfields: lastfields,fields: fields, type: type,summary:summary,instructions:instructions}, function error_func(data) {
+                console.log("error:"+lastfields);
+                console.log("error:"+fields);
+                console.log("error:"+type);
+                console.log("error:"+summary);
+                console.log("error:"+instructions);
+        }, function success_func(data) {
+                console.log("success:"+lastfields);
+                console.log("success:"+fields);
+                console.log("success:"+type);
+                console.log("success:"+summary);
+                console.log("success:"+instructions);
+        });
     }
 
     function chooseNumber(v) {

@@ -85,6 +85,7 @@ public class servletGetTableFields extends HttpServlet {
                 + "                            <th scope=\"row\" id=\"row_{0}\">{0}</th>"
                 + "                            <td  style=\"width: 30%\">"
                 + "                                    <input type=\"text\" class=\"form-control\" value=\"{1}\" id=\"field_{0}\">"
+                + "                                    <input type=\"text\" value=\"{1}\" id=\"lastfield_{0}\" style=\"display:none;\">"
                 + "                            </td>"
                 + "                            <td>"
                 + "                                <button class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\""

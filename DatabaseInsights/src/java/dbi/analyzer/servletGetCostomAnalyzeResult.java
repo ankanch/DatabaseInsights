@@ -67,7 +67,8 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
             return;
         }
         //- | --> ADD YOUR CODE BELOW
-        String fields=request.getParameter("fields");
+        String lastfields=request.getParameter("lastfields");
+        String newfields=request.getParameter("fields");
         String type=request.getParameter("type");
         String summary=request.getParameter("summary");
         String instructions=request.getParameter("instructions");
