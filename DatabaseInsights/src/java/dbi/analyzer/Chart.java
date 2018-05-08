@@ -69,10 +69,10 @@ public class Chart {
     public String toString() {
         String chartops = "";
         String data = "";
+        String legends = "";
         switch (type) {
             case CHART_PIECHART:
                 // generate legends
-                String legends = "";
                 legends = x_values.stream().map((obj) -> "'" + String.valueOf(obj) + "',").reduce(legends, String::concat);
                 // generate series data : like {value:335, name:'DATA1'}
                 String temp_piedata = "{value:@V, name:'@N'},";
@@ -80,7 +80,7 @@ public class Chart {
                     data += temp_piedata.replace("@V", String.valueOf(y_values.get(i)))
                             .replace("@N", String.valueOf(x_values.get(i)));
                 }
-                Debug.log("piedata=", data);
+                //Debug.log("piedata=", data);
                 //generate options
                 chartops = ChartOption.OPTION_PIE.replace("@TITLE", title)
                         .replace("@SUBTITLE", sub_title)
@@ -88,6 +88,7 @@ public class Chart {
                         .replace("@YDATA", data);
                 break;
             case CHART_LINECHART:
+                //generate options
                 chartops = ChartOption.OPTION_LINE.replace("@TITLE", title)
                         .replace("@SUBTITLE", sub_title)
                         .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")

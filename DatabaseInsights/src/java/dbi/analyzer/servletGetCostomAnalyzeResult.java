@@ -28,6 +28,7 @@ package dbi.analyzer;
 import dbi.mgr.user.UserManager;
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -72,6 +73,11 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
         String type=request.getParameter("type");
         String summary=request.getParameter("summary");
         String instructions=request.getParameter("instructions");
+        Debug.log("lastfields=",lastfields);
+        Debug.log("newfields=",newfields);
+        Debug.log("type=",type);
+        Debug.log("summary=",summary);
+        Debug.log("instructions=",instructions);
 
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 

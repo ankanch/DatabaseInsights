@@ -49,8 +49,8 @@ public class analyzerUtils {
      */
     public static DBIResultSet getAllColumnSpecies(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        String sql = "select * from T_DATABASE_COLUMN\n"
-                + "where TID in (select tid from T_DATABASE_TABLE where tname='" + table + "') "
+        String sql = "select * from T_DATABASE_COLUMN where TID in (select tid from T_DATABASE_TABLE where tname='"
+                + table + "') "
                 + "and userid=" + uid;
         DatabaseHelper user = null;
         if (dbhelper.Connect()) {
@@ -70,7 +70,6 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
             String column = "";
@@ -109,7 +108,6 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
             result = user.getIsNumberColumns(uid, table);
@@ -140,7 +138,6 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
             result = user.getIsNumberColumns(uid, table);
@@ -171,7 +168,6 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
             result = user.getIsNumberColumns(uid, table);
@@ -202,7 +198,6 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
             result = user.getIsNumberColumns(uid, table);
@@ -224,30 +219,38 @@ public class analyzerUtils {
      * 获取给定表的给定列的所有不同值以及其个数<br/>
      * 返回值：DBIResultSet，多行，每行由3列组成，分别存放列名字，不同值，值出现次数
      */
-    public static DBIResultSet getDistinctValuesCount(int uid, String table,Object[] columns) {
+    public static DBIResultSet getDistinctValuesCount(int uid, String table, Object[] columns) {
         DBIResultSet ret = new DBIResultSet();
-        if(columns.length < 1){
+        if (columns.length < 1) {
             return ret;
         }
         DatabaseHelper user = null;
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(uid);
         }
-        dbhelper.Disconnect();
 
         if (user.Connect()) {
-            for(int i=0;i<columns.length;i++){
-                DBIResultSet tablename=user.runSQLForResult("select count("+columns[i]+"),"+columns[i]+" from " + table + " group by "+columns[i]+"");
-                for(int j=0;j<tablename.rowCount();j++){
+            for (int i = 0; i < columns.length; i++) {
+                DBIResultSet tablename = user.runSQLForResult("select count(" + columns[i] + ")," + columns[i] + " from " + table + " group by " + columns[i] + "");
+                for (int j = 0; j < tablename.rowCount(); j++) {
                     ArrayList<Object> row = new ArrayList<>();
                     row.add(columns[i]);
-                    row.add(tablename.getData(j+1, 2));
-                    row.add(tablename.getData(j+1, 1));
+                    row.add(tablename.getData(j + 1, 2));
+                    row.add(tablename.getData(j + 1, 1));
                     ret.addRow(row);
                 }
             }
         }
         user.Disconnect();
+        return ret;
+    }
+
+    /**
+     * 获取给定表的给定列的所有值列表<br/>
+     * 返回值：DBIResultSet，多行，每行由n列组成，第一列为列名，其次为每列的所有值
+     */
+    public static DBIResultSet getColumnValues(int uid, String table, Object[] columns) {
+        DBIResultSet ret = new DBIResultSet();
         return ret;
     }
 
@@ -258,8 +261,8 @@ public class analyzerUtils {
         Debug.log("getMiniumValues=", analyzerUtils.getMiniumValues(43, "T_DI_USER"));
         Debug.log("getAverangeValues=", analyzerUtils.getAverangeValues(43, "T_DI_USER"));
         Debug.log("getAllColumnSum=", analyzerUtils.getAllColumnSum(43, "T_DI_USER"));
-        String columns[]={"password","email"};
-        Debug.log("getDistinctValuesCount=",analyzerUtils.getDistinctValuesCount(43, "T_DI_USER",columns ));
+        String columns[] = {"password", "email"};
+        Debug.log("getDistinctValuesCount=", analyzerUtils.getDistinctValuesCount(43, "T_DI_USER", columns));
     }
 
 }
