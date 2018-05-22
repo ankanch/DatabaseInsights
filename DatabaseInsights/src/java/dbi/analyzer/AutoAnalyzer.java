@@ -111,29 +111,24 @@ public class AutoAnalyzer {
         Debug.log("Generate linecharts...--------cur chart_list.length=", charts_list.size());
         ArrayList<String> cols = new ArrayList<>();
         for (int i = 1; i <= colSpecies.rowCount(); i++) {
-            if (colSpecies.getRow(i).get(6).equals("NUMBER")) {
-                cols.add((String) colSpecies.getRow(i).get(5));
+            Debug.log("-Detecting column with type ", colSpecies.getRow(i).get(5));
+            if (colSpecies.getRow(i).get(5).equals("NUMBER")) {
+                cols.add((String) colSpecies.getRow(i).get(4));
+                Debug.log("--Found ", colSpecies.getRow(i).get(5));
             }
         }
         // now render parameters for linecharts
         DBIResultSet dbirsbuf = analyzerUtils.getColumnValues(uid, table, cols.toArray()); // return column name,values
+        Debug.log("dbirsbuf=",dbirsbuf);
         if (dbirsbuf.rowCount() > 0) {
-            HashMap<String, DBIResultSet> linecharts = new HashMap<>();
             for (ArrayList<Object> row : dbirsbuf.getRows()) {
-                row.remove(0);
-                DBIResultSet linedata = new DBIResultSet(row);
                 String colname = (String) row.get(0);
-                linecharts.put(colname, linedata);
-            }
-            for (String key : linecharts.keySet()) {
-                Chart cht = chartsHelper.generateLinechart(new DBIResultSet());
-                cht.title = "Trend of " + table + "." + key;
+                DBIResultSet linedata = (DBIResultSet) row.get(1);
+                Chart cht = chartsHelper.generateLinechart(linedata);
+                cht.title = "Trend of " + table + "." + colname;
                 charts_list.add(cht);
             }
         }
-        //Chart cht = chartsHelper.generateLinechart(new DBIResultSet());
-        //cht.title = "Trend of " + table + ".";
-        //charts_list.add(cht);
         return charts_list;
     }
 
@@ -142,6 +137,7 @@ public class AutoAnalyzer {
         //check columns to draw histogramcharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         Debug.log("Generate histogram charts...--------cur chart_list.length=", charts_list.size());
+        
         return charts_list;
     }
 

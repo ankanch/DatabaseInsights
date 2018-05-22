@@ -247,10 +247,27 @@ public class analyzerUtils {
 
     /**
      * 获取给定表的给定列的所有值列表<br/>
-     * 返回值：DBIResultSet，多行，每行由n列组成，第一列为列名，其次为每列的所有值
+     * 返回值：DBIResultSet，多行，每行由2列组成，第一列为列名，第2列的所有值数组
      */
     public static DBIResultSet getColumnValues(int uid, String table, Object[] columns) {
         DBIResultSet ret = new DBIResultSet();
+        if (columns.length < 1) {
+            return ret;
+        }
+        DatabaseHelper user = null;
+        if (dbhelper.Connect()) {
+            user = dbhelper.getUserdbhelper(uid);
+            if (user.Connect()) {
+                for (int i = 0; i < columns.length; i++) {
+                    DBIResultSet coldata = user.runSQLForResult("select " + columns[i] + " from " + table);
+                    Debug.log("coldata=",coldata);
+                    ret.addToRow(columns[i]);
+                    ret.addToRow(coldata);
+                    ret.finishRow();
+                }
+            }
+            user.Disconnect();
+        }
         return ret;
     }
 

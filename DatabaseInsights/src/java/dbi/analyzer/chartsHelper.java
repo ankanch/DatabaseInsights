@@ -61,10 +61,9 @@ public class chartsHelper {
         Chart cht = new Chart();
         cht.type = Chart.CHART_LINECHART;
         ArrayList<Object> x_values = new ArrayList<>();
-        ArrayList<Object> y_values = new ArrayList<>();
-        for (int i = 1; i <= xyvalues.rowCount(); i++) {
+        ArrayList<Object> y_values = xyvalues.toArray1D();
+        for (int i = 1; i <= y_values.size(); i++) {
             x_values.add(i);
-            y_values.add(xyvalues.getData(1, i));
         }
         cht.x_values = x_values;
         cht.y_values = y_values;

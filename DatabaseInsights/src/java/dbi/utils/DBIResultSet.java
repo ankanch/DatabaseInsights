@@ -109,6 +109,24 @@ public class DBIResultSet {
     }
 
     /**
+     * parse DBIResultSet to ArrayList<Object>, only works when DBIResultSet is
+     * n*1 or 1*n
+     */
+    public ArrayList<Object> toArray1D() {
+        ArrayList<Object> arr = new ArrayList<Object>();
+        if (rowCount() == 1) {
+            for (Object obj : rs.get(0)) {
+                arr.add(obj);
+            }
+        } else if (colCount() == 1) {
+            for (ArrayList<Object> obj : rs) {
+                arr.add(obj.get(0));
+            }
+        }
+        return arr;
+    }
+
+    /**
      * return row count
      */
     public final int rowCount() {
@@ -128,9 +146,9 @@ public class DBIResultSet {
     /**
      * count given String in specified column. colnum start from 1.
      */
-    public final int countDistinctStringOnColumn( int colnum) {
+    public final int countDistinctStringOnColumn(int colnum) {
         HashMap<String, Integer> mp = new HashMap<>();
-        rs.stream().map((row) -> (String) row.get(colnum-1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
+        rs.stream().map((row) -> (String) row.get(colnum - 1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
             mp.put(v, 1);
         });     // generate  by NetBeans,functional ops
         /*/for (ArrayList<Object> row : rs) {
@@ -141,14 +159,14 @@ public class DBIResultSet {
         }/*/
         return mp.size();
     }
-    
-     /**
+
+    /**
      * count given integer in specified column. colnum start from 1.
      */
-    public final int countDistinctIntegerOnColumn( int colnum) {
+    public final int countDistinctIntegerOnColumn(int colnum) {
         HashMap<Integer, Integer> mp = new HashMap<>();
         // generate  by NetBeans,functional ops
-        rs.stream().map((row) -> (Integer) row.get(colnum-1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
+        rs.stream().map((row) -> (Integer) row.get(colnum - 1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
             mp.put(v, 1);
         });
         return mp.size();
@@ -168,11 +186,17 @@ public class DBIResultSet {
     //public final DBIResultSet map(func)
     public static void main(String[] args) {
         DBIResultSet b = new DBIResultSet();
-        b.addToRow(1);b.addToRow(2);b.finishRow();
-        b.addToRow(2);b.addToRow(4);b.finishRow();
-        b.addToRow(1);b.addToRow(8);b.finishRow();
+        b.addToRow(1);
+        b.addToRow(2);
+        b.finishRow();
+        b.addToRow(2);
+        b.addToRow(4);
+        b.finishRow();
+        b.addToRow(1);
+        b.addToRow(8);
+        b.finishRow();
         Debug.log("b=", b);
         Debug.log("b.getData(1,1)=", b.getData(1, 1));
-        Debug.log("count distinct vals on column 1=",b.countDistinctIntegerOnColumn( 1));
+        Debug.log("count distinct vals on column 1=", b.countDistinctIntegerOnColumn(1));
     }
 }

@@ -98,8 +98,8 @@
         document.getElementById("buttonMenu2").innerHTML = tablename;
         var dbname = document.getElementById("buttonMenu1").innerText;
 
-        var i = 0;
         //get pie charts
+        showMsg("Loading charts...");
         SubmitFormKVF("/api/getAutoAnalysisResult", {dbname: dbname, tbname: tablename, chart: "pie"}, function error(data) {
             showMsg("Failed to load table list.");
             $("#card_title").text("Failed to load Auto Analytics,please try again later.");
@@ -111,7 +111,7 @@
             //               row 2: chart id list
             //               row 3: chart option list
             // generate chart 
-            for (; i < pie[0]; i++) {
+            for (var i = 0; i < pie[0]; i++) {
                 var chtid = pie[1][i];
                 var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
                 $("#chartslist").append(chtcontainer);
@@ -125,16 +125,16 @@
             showMsg("Failed to load table list.");
             // $("#card_title").text("Failed to load Auto Analytics,please try again later.");
         }, function success(data) {
-            var pie = data.data;
+            var line = data.data;
             // data format-> row 1: chart count
             //               row 2: chart id list
             //               row 3: chart option list
             // generate chart 
-            for (; i < pie[0]; i++) {
-                var chtid = pie[1][i];
+            for (var i = 0; i < line[0]; i++) {
+                var chtid = line[1][i];
                 var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
                 $("#chartslist").append(chtcontainer);
-                option = eval(pie[2][i]);
+                option = eval(line[2][i]);
                 initChartWithOption(chtid, option);
             }
         });

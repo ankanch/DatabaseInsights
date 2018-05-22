@@ -91,8 +91,8 @@ public class Chart {
                 //generate options
                 chartops = ChartOption.OPTION_LINE.replace("@TITLE", title)
                         .replace("@SUBTITLE", sub_title)
-                        .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
-                        .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
+                        .replace("@XDATA", x_values.toString())
+                        .replace("@YDATA", y_values.toString());
                 break;
             case CHART_HISTOGRAM:
                 chartops = ChartOption.OPTION_HISTOGRAM.replace("@TITLE", title)
