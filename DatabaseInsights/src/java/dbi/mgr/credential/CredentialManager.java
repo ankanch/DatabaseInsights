@@ -25,17 +25,13 @@
  */
 package dbi.mgr.credential;
 
-import dbi.db.adaptor.DatabaseAdaptor;
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
-import dbi.db.adaptor.MySQLAdaptor;
-import dbi.db.adaptor.OracleAdaptor;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  *

@@ -125,6 +125,24 @@ public class DBIResultSet {
         }
         return arr;
     }
+    
+        /**
+     * parse DBIResultSet to ArrayList<Object>, only works when DBIResultSet is
+     * n*1 or 1*n
+     */
+    public <T> ArrayList<T> toArray1D(Class<T> cname) {
+        ArrayList<T> arr = new ArrayList<>();
+        if (rowCount() == 1) {
+            for (Object objo : rs.get(0)) {
+                arr.add((cname.cast(objo)));
+            }
+        } else if (colCount() == 1) {
+            for (ArrayList<Object> objo : rs) {
+                arr.add( cname.cast(objo.get(0)));
+            }
+        }
+        return arr;
+    }
 
     /**
      * return row count

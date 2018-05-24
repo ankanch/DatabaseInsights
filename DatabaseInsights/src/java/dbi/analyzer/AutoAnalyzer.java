@@ -134,6 +134,7 @@ public class AutoAnalyzer {
 
     public ArrayList<Chart> getAutoHistogramCharts() {
         ArrayList<Chart> charts_list = new ArrayList<Chart>();
+        DBIResultSet distValues = analyzerUtils.getAllColumnSpecies(uid, table);
         //check columns to draw histogramcharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         Debug.log("Generate histogram charts...--------cur chart_list.length=", charts_list.size());

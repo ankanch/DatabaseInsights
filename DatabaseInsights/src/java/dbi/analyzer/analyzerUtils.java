@@ -42,7 +42,7 @@ public class analyzerUtils {
 
     private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-
+    
     /**
      * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
      * 返回值：DBIResultSet，每一行包含表的一列的全部信息

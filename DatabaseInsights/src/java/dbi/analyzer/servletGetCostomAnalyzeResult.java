@@ -28,10 +28,12 @@ package dbi.analyzer;
 import dbi.mgr.user.UserManager;
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
+import dbi.utils.DataValidation;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -68,27 +70,52 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
             return;
         }
         //- | --> ADD YOUR CODE BELOW
-        String lastfields=request.getParameter("lastfields");
-        String newfields=request.getParameter("fields");
-        String type=request.getParameter("type");
-        String summary=request.getParameter("summary");
-        String instructions=request.getParameter("instructions");
-        Debug.log("lastfields=",lastfields);
-        Debug.log("newfields=",newfields);
-        Debug.log("type=",type);
-        Debug.log("summary=",summary);
-        Debug.log("instructions=",instructions);
+        String tname = request.getParameter("tname");
+        String lastfields = request.getParameter("lastfields");
+        String newfields = request.getParameter("fields");
+        String type = request.getParameter("type");
+        String summary = request.getParameter("summary");
+        String instructions = request.getParameter("instructions");
+        DBIResultSet ret = new DBIResultSet();
+        if (!DataValidation.containsNULL(tname, lastfields, newfields, type, summary, instructions)) {
+            DBIResultSet jobs = new DBIResultSet();
+            String[] lastf = lastfields.split(",");
+            String[] newf = newfields.split(",");
+            String[] types = type.split(",");
+            String[] pools = summary.split(",");
+            String[] comments = instructions.split(",");
+            for (int i = 0; i < lastf.length; i++) {
+                CustomizeJob cj = new CustomizeJob(lastf[i], newf[i], types[i], pools[i], comments[i]);
+                jobs.addToRow(cj);
+            }
+            jobs.finishRow();
+            CustomizeAnalyzer ca = new CustomizeAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), tname);
+            ArrayList<Chart> charts = ca.generateCharts(jobs.toArray1D(CustomizeJob.class));
+            ret.addToRow(charts.size());
+            ret.finishRow();
+            ArrayList<Object> chtids = new ArrayList<>();
+            charts.forEach((cht) -> {
+                ret.addToRow(cht.toString());
+                chtids.add(cht.id);
+            });
+            ret.addRow(chtids);
+            ret.finishRow();
+            status = true;
+        } else {
+            status = false;
+        }
 
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
-        
-        
         try (PrintWriter out = response.getWriter()) {
-            status = true;
-            out.println(DBIDataExchange.makeupReturnData(status, "submit is successful:", "success"));
+            if (status) {
+                out.println(DBIDataExchange.makeupReturnData(status, "charts generated successful:", ret.getRows()));
+            }else{
+                out.println(DBIDataExchange.makeupStatusCode(status, "error!"));
+            }
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
