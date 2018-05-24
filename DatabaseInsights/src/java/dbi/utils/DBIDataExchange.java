@@ -26,7 +26,6 @@
 package dbi.utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Class for Data Exchange between frontend and backend Data will be transfered

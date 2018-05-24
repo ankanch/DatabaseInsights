@@ -30,9 +30,7 @@ import dbi.db.adaptor.DatabaseHelper;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *

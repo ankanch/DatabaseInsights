@@ -26,7 +26,6 @@
 package dbi.mgr.credential;
 
 import dbi.utils.DBIDataExchange;
-import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;

@@ -27,7 +27,6 @@ package dbi.utils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -161,35 +160,6 @@ public class DBIResultSet {
         return 0;
     }
 
-    /**
-     * count given String in specified column. colnum start from 1.
-     */
-    public final int countDistinctStringOnColumn(int colnum) {
-        HashMap<String, Integer> mp = new HashMap<>();
-        rs.stream().map((row) -> (String) row.get(colnum - 1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
-            mp.put(v, 1);
-        });     // generate  by NetBeans,functional ops
-        /*/for (ArrayList<Object> row : rs) {
-            String v = (String) row.get(colnum);
-            if (mp.containsKey(v) == false) {
-                mp.put(v, 1);
-            }
-        }/*/
-        return mp.size();
-    }
-
-    /**
-     * count given integer in specified column. colnum start from 1.
-     */
-    public final int countDistinctIntegerOnColumn(int colnum) {
-        HashMap<Integer, Integer> mp = new HashMap<>();
-        // generate  by NetBeans,functional ops
-        rs.stream().map((row) -> (Integer) row.get(colnum - 1)).filter((v) -> (mp.containsKey(v) == false)).forEachOrdered((v) -> {
-            mp.put(v, 1);
-        });
-        return mp.size();
-    }
-
     @Override
     public String toString() {
         String ret = rs.size() + "x";
@@ -215,6 +185,5 @@ public class DBIResultSet {
         b.finishRow();
         Debug.log("b=", b);
         Debug.log("b.getData(1,1)=", b.getData(1, 1));
-        Debug.log("count distinct vals on column 1=", b.countDistinctIntegerOnColumn(1));
     }
 }

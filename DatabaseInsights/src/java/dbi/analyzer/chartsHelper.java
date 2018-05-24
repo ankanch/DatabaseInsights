@@ -26,7 +26,6 @@
 package dbi.analyzer;
 
 import dbi.utils.DBIResultSet;
-import dbi.utils.Debug;
 import java.util.ArrayList;
 
 /**
