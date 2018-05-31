@@ -109,19 +109,11 @@
         var lastfields = "";
         console.log("rowcolnum:" + rowcolnum.toString());
         for (var i = 1; i < rowcolnum + 1; i++) {
-            if (i === 1) {
-                lastfields = document.getElementById("lastfield_" + i.toString()).value;
-                fields = document.getElementById("field_" + i.toString()).value;
-                type = document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
-                summary = document.getElementById("buttonnames_" + i.toString()).innerHTML;
-                instructions = document.getElementById("instructions_" + i.toString()).value;
-            } else {
-                lastfields = lastfields + "," + document.getElementById("field_" + i.toString()).value;
-                fields = fields + "," + document.getElementById("field_" + i.toString()).value;
-                type = type + "," + document.getElementById("btn_selecttype_" + i.toString()).innerHTML;
-                summary = summary + "," + document.getElementById("buttonnames_" + i.toString()).innerHTML;
-                instructions = instructions + "," + document.getElementById("instructions_" + i.toString()).value;
-            }
+            lastfields = lastfields+document.getElementById("lastfield_" + i.toString()).value+",";
+            fields = fields+document.getElementById("field_" + i.toString()).value+",";
+            type = type+document.getElementById("btn_selecttype_" + i.toString()).dataset.poolf+",";
+            summary = summary+document.getElementById("buttonnames_" + i.toString()).dataset.poolf+",";
+            instructions = instructions+document.getElementById("instructions_" + i.toString()).value+",";
         }
         SubmitFormKVF("/api/servletGetCostomAnalyzeResult", {lastfields: lastfields, fields: fields, type: type, summary: summary, instructions: instructions}, function error_func(data) {
             console.log("error:" + lastfields);
@@ -140,39 +132,43 @@
 
     function chooseNumber(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "数字";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_number";
         var element = document.getElementById("choosetype_" + v.toString());
         var str = "<button id=\"buttonnames_" + v.toString() + "\" class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\"" +
-                "                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\">无</button>" +
+                "                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf='pf_none'>无</button>" +
                 "                <div class=\"dropdown-menu\">" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('无'," + v.toString() + ") \">无</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('平均'," + v.toString() + ") \">平均</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('计数'," + v.toString() + ") \">计数</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('非重复计数'," + v.toString() + ") \">非重复计数</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('最大'," + v.toString() + ") \">最大</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('最小'," + v.toString() + ") \">最小</a>" +
-                "                <a class=\"dropdown-item\" href=\"javascript:choosetypename('总和'," + v.toString() + ") \">总和</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_none\">无</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_avg\" data-text='平均'>平均</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count\">计数</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count_norepeat\">非重复计数</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_max\">最大</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_min\">最小</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_sum\">总和</a>" +
                 "                </div>";
 
         element.innerHTML = str;
     }
 
     function choosetypename(v, x) {
-        document.getElementById("buttonnames_" + x.toString()).innerHTML = v;
+        document.getElementById("buttonnames_" + x.toString()).dataset.poolf=v.dataset.poolf;
+        document.getElementById("buttonnames_" + x.toString()).innerHTML = v.innerHTML;
     }
 
     function chooseText(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "文本";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_text";
         var element = document.getElementById("choosetype_" + v);
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
-                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
+                "aria-haspopup=\"true\" data-poolf=\"pf_none\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
         element.innerHTML = str;
     }
 
     function chooseBoolean(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "布尔值";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_boolean";
         var element = document.getElementById("choosetype_" + v.toString());
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
-                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
+                "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf=\"pf_none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
         element.innerHTML = str;
     }
 
