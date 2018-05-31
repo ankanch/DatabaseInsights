@@ -31,7 +31,7 @@
 
                 </div>
             </div>
-            <button type="button" class="btn btn-raised btn-success" id="btn_start" onclick="startAnalyze()">Start Analyze</button>
+            <button type="button" class="btn btn-raised btn-success" id="btn_start" onclick="startAnalyze()"  style="display:none">Start Analyze</button>
         </div>
     </div>
     <hr>
@@ -204,6 +204,7 @@
         }, function success_func(data) {
             var element = document.getElementById("DBtbody");
             element.innerHTML = data.data[0];
+            document.getElementById("btn_start").style.display = "";
         });
     }
 
