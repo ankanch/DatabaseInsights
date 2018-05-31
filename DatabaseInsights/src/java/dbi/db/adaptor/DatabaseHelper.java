@@ -61,18 +61,19 @@ public class DatabaseHelper {
         }
     }
     
+    
     /*
     * 检查 给定DatabaseHelper对象是否为空，以及是否已经建立连接,如果未建立连接，则尝试建立连接
     */
-    public static Boolean isAvailable(DatabaseHelper dbh){
+    public static DatabaseHelper isAvailable(DatabaseHelper dbh){
         if(null != dbh){
             if(dbh.checkConnection()){
-                return true;
+                return dbh;
             }else if(dbh.Connect()){
-                return true;
+                return dbh;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -323,7 +324,7 @@ public class DatabaseHelper {
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
-            Debug.log("SQL=", sql);
+            //Debug.log("SQL=", sql);
             ResultSet rs = st.executeQuery(sql);
             sqlResult = new DBIResultSet(rs);
             st.close();

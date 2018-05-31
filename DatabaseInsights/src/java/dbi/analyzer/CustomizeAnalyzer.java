@@ -35,10 +35,12 @@ public class CustomizeAnalyzer {
 
     private int uid = -1;
     private String table = "";
+    private analyzerUtils au;
 
-    public CustomizeAnalyzer(int uid, String table) {
+    public CustomizeAnalyzer(int uid,String database, String table) {
         this.uid = uid;
         this.table = table;
+        au = new analyzerUtils(this.uid,database,table);
     }
 
     public ArrayList<Chart> generateCharts(ArrayList<CustomizeJob> jobs) {
