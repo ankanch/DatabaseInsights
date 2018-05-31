@@ -40,6 +40,17 @@ public class analyzerUtils {
 
     private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
+    
+    private int uid;
+    private String database;
+    private String table;
+
+    public analyzerUtils(int uid, String database, String table) {
+        this.uid = uid;
+        this.database = database;
+        this.table = table;
+    }
+    
 
     /**
      * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
@@ -247,6 +258,113 @@ public class analyzerUtils {
         return ret;
     }
 
+    /**
+     * *********************************************************************
+     * Pooling functions for customize analyze on Columns
+     * *********************************************************************
+     */
+    /**
+     * 获取给定列的平均值<br/>
+     * 返回值：DBIResultSet，1行，列名，平均值
+     */
+    public static DBIResultSet getColumnAverage(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT AVG(" + column + ") FROM " + table;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 获取给定列的最大值<br/>
+     * 返回值：DBIResultSet，1行，列名，最大值
+     */
+    public static DBIResultSet getColumnMaxiumValue(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT MAX(" + column + ") FROM " + table;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 获取给定列的最小值<br/>
+     * 返回值：DBIResultSet，1行，列名，最小值
+     */
+    public static DBIResultSet getColumnMiniumValue(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT MIN(" + column + ") FROM " + table;;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 获取给定列的总和<br/>
+     * 返回值：DBIResultSet，1行，列名，总和
+     */
+    public static DBIResultSet getColumnSum(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT SUM(" + column + ") FROM " + table;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 获取给定列所有值的分组统计结果<br/>
+     * 返回值：DBIResultSet，多行，每行由2列组成，第一列为值，第2列为数量
+     */
+    public static DBIResultSet getColumnValueCounts(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT " + column + ",COUNT(" + column + ") FROM " + table + " GROUP BY " + column;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 获取给定列所有不同值的个数<br/>
+     * 返回值：DBIResultSet，多行，每行由1列组成，存放不同数据值
+     */
+    public static DBIResultSet getColumnValueCountsNoRepeat(int uid, String table, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String sql = "SELECT DISTINCT " + column + " FROM " + table;
+                ret = user.runSQLForResult(sql);
+                user.Disconnect();
+            }
+        }
+        return ret;
+    }
+
     public static void main(String args[]) {
         Debug.log("getAllColumnSpecies=", analyzerUtils.getAllColumnSpecies(43, "T_DI_USER"));
         Debug.log("findDistinctValues=", analyzerUtils.findDistinctValues(43, "T_DI_USER"));
@@ -256,6 +374,12 @@ public class analyzerUtils {
         Debug.log("getAllColumnSum=", analyzerUtils.getAllColumnSum(43, "T_DI_USER"));
         String columns[] = {"password", "email"};
         Debug.log("getDistinctValuesCount=", analyzerUtils.getDistinctValuesCount(43, "T_DI_USER", columns));
+        Debug.log("getColumnAverage=",analyzerUtils.getColumnAverage(43, "T_DI_USER", "USERID"));
+        Debug.log("getColumnAverage=",analyzerUtils.getColumnMaxiumValue(43, "T_DI_USER", "STATUS"));
+        Debug.log("getColumnMiniumValue=",analyzerUtils.getColumnMiniumValue(43, "T_DI_USER", "STATUS"));
+        Debug.log("getColumnSum=",analyzerUtils.getColumnSum(43, "T_DI_USER", "STATUS"));
+        Debug.log("getColumnValueCounts=",analyzerUtils.getColumnValueCounts(43, "T_DI_USER", "STATUS"));
+        Debug.log("getColumnValueCountsNoRepeat=",analyzerUtils.getColumnValueCountsNoRepeat(43, "T_DI_USER", "STATUS"));
     }
 
 }
