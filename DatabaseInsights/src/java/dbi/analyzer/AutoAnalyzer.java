@@ -39,10 +39,14 @@ public class AutoAnalyzer {
 
     private int uid = -1;
     private String table = "";
+    private String database = "";
+    private analyzerUtils au;
 
-    public AutoAnalyzer(int uid, String table) {
+    public AutoAnalyzer(int uid,String database, String table) {
         this.uid = uid;
         this.table = table;
+        this.database = database;
+        au = new analyzerUtils(this.uid,database,table);
     }
 
     public ArrayList<Chart> getAutoCharts(int chttype) {
@@ -60,7 +64,7 @@ public class AutoAnalyzer {
 
     public ArrayList<Chart> getAutoPieCharts() {
         ArrayList<Chart> charts_list = new ArrayList<Chart>();
-        DBIResultSet distinctVals = analyzerUtils.findDistinctValues(uid, table);
+        DBIResultSet distinctVals = au.findDistinctValues();
         Debug.log("distinctVals.length=", distinctVals.rowCount());
         Debug.log("distinctVals=", distinctVals);
         if (distinctVals.rowCount() < 1) {
@@ -78,7 +82,7 @@ public class AutoAnalyzer {
             }
         }
         // now render parameters for piecharts
-        DBIResultSet dbirsbuf = analyzerUtils.getDistinctValuesCount(uid, table, cols.toArray()); // return name ,value ,counts
+        DBIResultSet dbirsbuf = au.getDistinctValuesCount( cols.toArray()); // return name ,value ,counts
         if (dbirsbuf.rowCount() > 0) {
             HashMap<String, DBIResultSet> piecharts = new HashMap<>();
             for (ArrayList<Object> row : dbirsbuf.getRows()) {
@@ -103,7 +107,7 @@ public class AutoAnalyzer {
 
     public ArrayList<Chart> getAutoLineCharts() {
         ArrayList<Chart> charts_list = new ArrayList<Chart>();
-        DBIResultSet colSpecies = analyzerUtils.getAllColumnSpecies(uid, table);
+        DBIResultSet colSpecies = au.getAllColumnSpecies();
         //check columns to draw linecharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         //            then draw statistics of the values for every column which is not numberic
@@ -118,7 +122,7 @@ public class AutoAnalyzer {
             }
         }
         // now render parameters for linecharts
-        DBIResultSet dbirsbuf = analyzerUtils.getColumnValues(uid, table, cols.toArray()); // return column name,values
+        DBIResultSet dbirsbuf = au.getColumnValues( cols.toArray()); // return column name,values
         Debug.log("dbirsbuf=",dbirsbuf);
         if (dbirsbuf.rowCount() > 0) {
             for (ArrayList<Object> row : dbirsbuf.getRows()) {
@@ -134,7 +138,7 @@ public class AutoAnalyzer {
 
     public ArrayList<Chart> getAutoHistogramCharts() {
         ArrayList<Chart> charts_list = new ArrayList<Chart>();
-        DBIResultSet distValues = analyzerUtils.getAllColumnSpecies(uid, table);
+        DBIResultSet distValues = au.getAllColumnSpecies();
         //check columns to draw histogramcharts
         //methodlogy: draw linecharts for every numberic columns excluding primary keys
         Debug.log("Generate histogram charts...--------cur chart_list.length=", charts_list.size());
@@ -143,7 +147,7 @@ public class AutoAnalyzer {
     }
 
     public static void main(String[] argvs) {
-        AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID("B46E25F9F749B3F8F013E92E8AE0FC1E"), "T_DI_USER");
+        AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID("19105E36BA6793CBA237F6510CCDD028"),"11", "T_DI_USER");
     }
 
 }

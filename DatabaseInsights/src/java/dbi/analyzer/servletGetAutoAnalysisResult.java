@@ -75,7 +75,7 @@ public class servletGetAutoAnalysisResult extends HttpServlet {
 
         int ichttype = Chart.switchChart(charttype);
         if (ichttype > -1) {
-            AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), table);
+            AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid),"DATABAASE", table);
             ArrayList<Chart> charts = aa.getAutoCharts(ichttype);
             ret.addToRow(charts.size());
             ret.finishRow();

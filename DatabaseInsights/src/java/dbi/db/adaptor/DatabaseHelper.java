@@ -61,18 +61,19 @@ public class DatabaseHelper {
         }
     }
     
+    
     /*
     * 检查 给定DatabaseHelper对象是否为空，以及是否已经建立连接,如果未建立连接，则尝试建立连接
     */
-    public static Boolean isAvailable(DatabaseHelper dbh){
+    public static DatabaseHelper isAvailable(DatabaseHelper dbh){
         if(null != dbh){
             if(dbh.checkConnection()){
-                return true;
+                return dbh;
             }else if(dbh.Connect()){
-                return true;
+                return dbh;
             }
         }
-        return false;
+        return null;
     }
 
     /**
