@@ -48,7 +48,7 @@ public class CustomizeAnalyzer {
     public ArrayList<Chart> generateCharts(ArrayList<CustomizeJob> jobs) {
         ArrayList<Chart> chtarr = new ArrayList<>();
         for (CustomizeJob job : jobs) {
-            Debug.log("current process field=",job.column_name,"\ttype=",job.type,"\tpoolf=",job.pool_func);
+            Debug.log("current process field=", job.column_name, "\ttype=", job.type, "\tpoolf=", job.pool_func);
             switch (job.type) {
                 case CustomizeJob.TYPE_NUMBER:
                     switch (job.pool_func) {
@@ -82,7 +82,7 @@ public class CustomizeAnalyzer {
                     break;
             }
         }
-        Debug.log("chtarr.size()=",chtarr.size());
+        Debug.log("chtarr.size()=", chtarr.size());
         return chtarr;
     }
 
@@ -91,22 +91,22 @@ public class CustomizeAnalyzer {
      */
     private Chart generateAverageChart(CustomizeJob job) {
         DBIResultSet avgvalue = au.getColumnAverage(job.column_name);
-        DBIResultSet coldata = au.getColumnData( analyzerUtils.SORT_NONE, job.column_name);
+        DBIResultSet coldata = au.getColumnData(analyzerUtils.SORT_NONE, job.column_name);
         ArrayList<Object> cd = coldata.toArray1D();
         String dta = "";
         String sa = "[@X,@Y],";
         for (int i = 0; i < cd.size(); i++) {
-            dta += sa.replace("@X", String.valueOf(i+1))
+            dta += sa.replace("@X", String.valueOf(i + 1))
                     .replace("@Y", String.valueOf(cd.get(i)));
         }
         String chartops = ChartOption.OPTION_SCATTER_WITH_AVERAGE.replace("@TITLE", job.column_nickname)
                 .replace("@SUBTITLE", job.comment)
                 .replace("@DATA", dta)
-                .replace("@AVG_Y", String.valueOf(avgvalue.getData(1, 1)) )
+                .replace("@AVG_Y", String.valueOf(avgvalue.getData(1, 1)))
                 .replace("@AVG_X1", "1")
                 .replace("@AVG_X2", String.valueOf(cd.size()))
                 .replace("@AVERAGE_TEXT", "average");
-        Chart cht = new Chart(chartops,Chart.CHART_SCATTER_AVERGAE);
+        Chart cht = new Chart(chartops, Chart.CHART_SCATTER_AVERGAE);
         return cht;
     }
 
@@ -140,9 +140,21 @@ public class CustomizeAnalyzer {
     }
 
     private Chart generateSumationChart(CustomizeJob job) {
-        DBIResultSet dbirs = au.getColumnSum(job.column_name);
-        Chart cht = new Chart();
-
+        //DBIResultSet dbirs = au.getColumnSum(job.column_name);
+        DBIResultSet coldata = au.getColumnData(analyzerUtils.SORT_ASC, job.column_name);
+        String ydata = "", xdata = "";
+        double sum = 0.0;
+        int i = 0;
+        for (ArrayList<Object> obj : coldata.getRows()) {
+            sum += Double.parseDouble(String.valueOf(obj.get(0)));
+            ydata += String.valueOf(sum) + ",";
+            xdata += String.valueOf(++i) + ",";
+        }
+        String chartops = ChartOption.OPTION_HISTOGRAM_FULLAREA.replace("@TITLE", job.column_nickname)
+                .replace("@SUBTITLE", job.comment)
+                .replace("@XDATA", xdata.substring(0, xdata.length() - 1) )
+                .replace("@YDATA", ydata.substring(0, ydata.length() - 1) );
+        Chart cht = new Chart(chartops, Chart.CHART_HISTOGRAM_FULLAREA);
         return cht;
     }
 

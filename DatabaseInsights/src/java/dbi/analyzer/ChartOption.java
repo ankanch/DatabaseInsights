@@ -160,7 +160,26 @@ public class ChartOption {
             + "        }"
             + "    ]"
             + "};";
-    
-    
+
+    public static String OPTION_HISTOGRAM_FULLAREA = "option = {"
+            + "        title : {"
+            + "        text: '@TITLE',"
+            + "        subtext: '@SUBTITLE',"
+            + "        x:'center'"
+            + "    },"
+            + "    xAxis: {"
+            + "        type: 'category',"
+            + "        boundaryGap: false,"
+            + "        data: [@XDATA]"
+            + "    },"
+            + "    yAxis: {"
+            + "        type: 'value'"
+            + "    },"
+            + "    series: [{"
+            + "        data: [@YDATA],"
+            + "        type: 'line',"
+            + "        areaStyle: {}"
+            + "    }]"
+            + "};";
 
 }

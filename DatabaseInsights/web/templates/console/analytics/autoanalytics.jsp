@@ -50,7 +50,7 @@
 
     var CHART_CONTAINER = `<div class="card">
                                 <div class="card-body">
-                                    <div id="@ID" style="width: 600px;height:400px;"></div>
+                                    <div id="@ID" style="width: 800px;height:400px;"></div>
                                 </div>
                             </div>`;
 

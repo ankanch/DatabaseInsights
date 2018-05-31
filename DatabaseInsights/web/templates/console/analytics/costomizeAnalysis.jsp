@@ -44,7 +44,7 @@
                     </button>
                 </h5>
             </div>
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     <div class="alert alert-danger" role="alert" id="alarmcard">
                         请选择数据库和表，选后可进行下一步操作
@@ -75,8 +75,8 @@
                 </h5>
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                <div class="card-body">
-                    <div class="alert alert-danger" role="alert" id="alarmcard">
+                <div class="card-body" id="customizeret">
+                    <div class="alert alert-danger" role="alert" >
                         请完成第一步后，再查看分析结果
                     </div>
                 </div>
@@ -91,9 +91,12 @@
 
     var CHART_CONTAINER = `<div class="card">
                                 <div class="card-body">
-                                    <div id="@ID" style="width: 600px;height:400px;"></div>
+                                    <div id="@ID" style="width: 800px;height:400px;"></div>
                                 </div>
                             </div>`;
+    var choosed_table = "";
+
+    var choosed_db = "";
 
     function initChartWithOption(id, option) {
         var myChart = echarts.init(document.getElementById(id));
@@ -102,37 +105,49 @@
 
     function startAnalyze() {
         var rowcolnum = showRowcolnum() - 1;
-        var fields = "";
-        var type = "";
-        var summary = "";
-        var instructions = "";
-        var lastfields = "";
-        console.log("rowcolnum:" + rowcolnum.toString());
+        var fields = "", type = "", summary = "", instructions = "", lastfields = "";
         for (var i = 1; i < rowcolnum + 1; i++) {
-            lastfields = lastfields+document.getElementById("lastfield_" + i.toString()).value+",";
-            fields = fields+document.getElementById("field_" + i.toString()).value+",";
-            type = type+document.getElementById("btn_selecttype_" + i.toString()).dataset.poolf+",";
-            summary = summary+document.getElementById("buttonnames_" + i.toString()).dataset.poolf+",";
-            instructions = instructions+document.getElementById("instructions_" + i.toString()).value+",";
+            lastfields = lastfields + document.getElementById("lastfield_" + i.toString()).value + ",";
+            fields = fields + document.getElementById("field_" + i.toString()).value + ",";
+            type = type + document.getElementById("btn_selecttype_" + i.toString()).dataset.poolf + ",";
+            summary = summary + document.getElementById("buttonnames_" + i.toString()).dataset.poolf + ",";
+            instructions = instructions + document.getElementById("instructions_" + i.toString()).value + " ,";
         }
-        SubmitFormKVF("/api/servletGetCostomAnalyzeResult", {lastfields: lastfields, fields: fields, type: type, summary: summary, instructions: instructions}, function error_func(data) {
-            console.log("error:" + lastfields);
-            console.log("error:" + fields);
-            console.log("error:" + type);
-            console.log("error:" + summary);
-            console.log("error:" + instructions);
-        }, function success_func(data) {
-            console.log("success:" + lastfields);
-            console.log("success:" + fields);
-            console.log("success:" + type);
-            console.log("success:" + summary);
-            console.log("success:" + instructions);
-        });
+        showMsg("generating...");
+        SubmitFormKVF("/api/getCostomAnalyzeResult",
+                {
+                    tname: choosed_table,
+                    dbname: choosed_db,
+                    lastfields: lastfields,
+                    fields: fields,
+                    type: type,
+                    summary: summary,
+                    instructions: instructions
+                },
+                function error_func(data) {
+                    showMsg("error submit data.");
+                },
+                function success_func(data) {
+                    $("#customizeret").html("");
+                    var line = data.data;
+                    // data format-> row 1: chart count
+                    //               row 2: chart id list
+                    //               row 3: chart option list
+                    // generate chart 
+                    for (var i = 0; i < line[0]; i++) {
+                        var chtid = line[1][i];
+                        var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
+                        $("#customizeret").append(chtcontainer);
+                        option = eval(line[2][i]);
+                        initChartWithOption(chtid, option);
+                    }
+                    $('#collapseTwo').collapse("show");
+                });
     }
 
     function chooseNumber(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "数字";
-        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_number";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf = "type_number";
         var element = document.getElementById("choosetype_" + v.toString());
         var str = "<button id=\"buttonnames_" + v.toString() + "\" class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\"" +
                 "                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf='pf_none'>无</button>" +
@@ -150,13 +165,13 @@
     }
 
     function choosetypename(v, x) {
-        document.getElementById("buttonnames_" + x.toString()).dataset.poolf=v.dataset.poolf;
+        document.getElementById("buttonnames_" + x.toString()).dataset.poolf = v.dataset.poolf;
         document.getElementById("buttonnames_" + x.toString()).innerHTML = v.innerHTML;
     }
 
     function chooseText(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "文本";
-        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_text";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf = "type_text";
         var element = document.getElementById("choosetype_" + v);
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
                 "aria-haspopup=\"true\" data-poolf=\"pf_none\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
@@ -165,7 +180,7 @@
 
     function chooseBoolean(v) {
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "布尔值";
-        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf="type_boolean";
+        document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf = "type_boolean";
         var element = document.getElementById("choosetype_" + v.toString());
         var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
                 "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf=\"pf_none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
@@ -189,23 +204,25 @@
 
     function getCharts(v) {
         var tbname = document.getElementById(v.id).innerText;
+        choosed_table = tbname;
         document.getElementById("buttonMenu2").innerHTML = tbname;
         var dbname = document.getElementById("buttonMenu1").innerHTML;
 
         $("#alarmcard").hide();
         $("#columnstable").show();
-
         SubmitFormKVF("/api/GetTableFields", {dbname: dbname, tbname: tbname}, function error_func(data) {
             showMsg("Failed to load table field list.");
         }, function success_func(data) {
             var element = document.getElementById("DBtbody");
             element.innerHTML = data.data[0];
             document.getElementById("btn_start").style.display = "";
+            $('#collapseOne').collapse("show");
         });
     }
 
     function getTables(v) {
         var dbname = document.getElementById(v.id).innerText;
+        choosed_db = dbname;
         document.getElementById("buttonMenu1").innerHTML = dbname;
         SubmitFormKVF("/api/getTables", {dbname: dbname}, function error(data) {
             showMsg("Failed to load table list.");
