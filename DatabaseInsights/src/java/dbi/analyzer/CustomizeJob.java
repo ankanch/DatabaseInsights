@@ -32,18 +32,18 @@ package dbi.analyzer;
 public class CustomizeJob {
 
     // pooling function code
-    public static int PF_NONE = 10001;
-    public static int PF_AVERANGE = 10002;
-    public static int PF_COUNT = 10003;
-    public static int PF_COUNT_NOREPEAT = 10004;
-    public static int PF_MAX = 10005;
-    public static int PF_MIN = 10006;
-    public static int PF_SUM = 10007;
+    public static final int PF_NONE = 10001;
+    public static final int PF_AVERANGE = 10002;
+    public static final int PF_COUNT = 10003;
+    public static final int PF_COUNT_NOREPEAT = 10004;
+    public static final int PF_MAX = 10005;
+    public static final int PF_MIN = 10006;
+    public static final int PF_SUM = 10007;
 
     // type code
-    public static int TYPE_NUMBER = 20001;
-    public static int TYPE_TEXT = 20002;
-    public static int TYPE_BOOLEAN = 20003;
+    public static final int TYPE_NUMBER = 20001;
+    public static final int TYPE_TEXT = 20002;
+    public static final int TYPE_BOOLEAN = 20003;
 
     public String column_name = "";
     public String column_nickname = "";

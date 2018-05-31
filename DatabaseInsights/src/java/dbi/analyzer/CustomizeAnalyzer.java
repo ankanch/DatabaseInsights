@@ -43,9 +43,25 @@ public class CustomizeAnalyzer {
 
     public ArrayList<Chart> generateCharts(ArrayList<CustomizeJob> jobs) {
         ArrayList<Chart> chtarr = new ArrayList<>();
-        
+        for (CustomizeJob job : jobs) {
+            switch (job.pool_func) {
+                case CustomizeJob.PF_AVERANGE:
+                    break;
+                case CustomizeJob.PF_COUNT:
+                    break;
+                case CustomizeJob.PF_COUNT_NOREPEAT:
+                    break;
+                case CustomizeJob.PF_MAX:
+                    break;
+                case CustomizeJob.PF_MIN:
+                    break;
+                case CustomizeJob.PF_SUM:
+                    break;
+                default:
+                                    ;
+            }
+        }
         return chtarr;
     }
 
-    
 }

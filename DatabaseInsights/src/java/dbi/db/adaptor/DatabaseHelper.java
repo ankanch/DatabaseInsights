@@ -60,6 +60,20 @@ public class DatabaseHelper {
             DBAdaptor = new OracleAdaptor();
         }
     }
+    
+    /*
+    * 检查 给定DatabaseHelper对象是否为空，以及是否已经建立连接,如果未建立连接，则尝试建立连接
+    */
+    public static Boolean isAvailable(DatabaseHelper dbh){
+        if(null != dbh){
+            if(dbh.checkConnection()){
+                return true;
+            }else if(dbh.Connect()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
     * 连接数据库<br/>
