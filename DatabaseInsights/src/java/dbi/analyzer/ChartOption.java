@@ -182,4 +182,11 @@ public class ChartOption {
             + "    }]"
             + "};";
 
+    public static String OPTION_TREEMAP = "option = {"
+            + "    series: [{"
+            + "        type: 'treemap',"
+            + "        data: [@DATA]"
+            + "    }]"
+            + "};";
+
 }

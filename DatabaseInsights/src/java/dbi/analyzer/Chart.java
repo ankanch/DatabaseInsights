@@ -40,6 +40,7 @@ public class Chart {
     public static final int CHART_HISTOGRAM = 3;
     public static final int CHART_SCATTER_AVERGAE = 4;
     public static final int CHART_HISTOGRAM_FULLAREA = 5;
+    public static final int CHART_TREE_MAP = 6;
 
     public int type = 0;
     public String id = "cht_";

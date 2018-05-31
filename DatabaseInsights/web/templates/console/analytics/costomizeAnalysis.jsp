@@ -130,16 +130,22 @@
                 function success_func(data) {
                     $("#customizeret").html("");
                     var line = data.data;
+                    console.log("line=" + line);
                     // data format-> row 1: chart count
                     //               row 2: chart id list
                     //               row 3: chart option list
                     // generate chart 
                     for (var i = 0; i < line[0]; i++) {
                         var chtid = line[1][i];
+                        console.log("process " + i + "\t with id of " + chtid);
                         var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
+                        console.log("id replaced");
                         $("#customizeret").append(chtcontainer);
+                        console.log("container added");
                         option = eval(line[2][i]);
+                        console.log("option evaled");
                         initChartWithOption(chtid, option);
+                        console.log("chart generated");
                     }
                     $('#collapseTwo').collapse("show");
                 });

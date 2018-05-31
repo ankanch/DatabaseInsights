@@ -27,91 +27,168 @@ package dbi.utils;
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Miss Zhang
  */
 public class DBILog {
-    private ArrayList<ArrayList<Object>> reportlist=new ArrayList<>();
-    private ArrayList<Object> srow = new ArrayList<>();
-    private DBIResultSet result=new DBIResultSet();
+
+    public class DBILogItem {
+
+        public int userid;
+        public int log_type;
+        public String dbname;
+        public String tname;
+        public String message;
+        public String logtime;
+
+        @Override
+        public String toString() {
+            return " VALUES(" + userid + "," + log_type + ",'" + logtime + "','" + dbname + "','" + tname + "','" + message + "') ";
+        }
+    }
+
+    public String dbname;
+    public String tname;
+    public int userid;
+    private ArrayList<DBILogItem> reportlist = new ArrayList<>();
     private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    void log(int userid,int type,String dbname,String tbname,String message){
-        Date day=new Date();    
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd"); 
-        String localtime=df.format(day);
-        srow.add(userid);
-        srow.add(type);
-        srow.add(localtime);
-        srow.add(dbname);
-        srow.add(tbname);
-        srow.add(message);
-        reportlist.add(srow);
-        srow.clear();
+    private static final int TYPE_INFO = 1000;
+    private static final int TYPE_ERROR = 1005;
+    private static final int TYPE_WARNING = 1010;
+
+    public DBILog(String dbname, String tname, int userid) {
+        this.dbname = dbname;
+        this.tname = tname;
+        this.userid = userid;
+    }
+
+    public DBILog() {
     }
     
-    void commit(){
-        if(dbhelper.Connect()){
-            for(int i=0;i<reportlist.size();i++){
-                for(int j=0;j<srow.size();j++){
-                    String sql="insert into T_DI_LOG values('"+reportlist.get(i).get(j)+"','"+reportlist.get(i).get(j)+"',"
-                            + "'"+reportlist.get(i).get(j)+"','"+reportlist.get(i).get(j)+"','"+reportlist.get(i).get(j)+"'"
-                            + ",'"+reportlist.get(i).get(j)+"')";
-                    if(dbhelper.runSQL(sql)){
-                        System.out.println("success:"+sql);
-                    }
+    void log(int userid, int type, String dbname, String tbname, String message) {
+        DBILogItem logitem = new DBILogItem();
+        Date day = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String localtime = df.format(day);
+        logitem.userid = userid;
+        logitem.log_type = type;
+        logitem.logtime = localtime;
+        logitem.dbname = dbname;
+        logitem.tname = tbname;
+        logitem.message = message;
+        reportlist.add(logitem);
+    }
+
+    void log(int type, String message) {
+        DBILogItem logitem = new DBILogItem();
+        Date day = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String localtime = df.format(day);
+        logitem.userid = userid;
+        logitem.log_type = type;
+        logitem.logtime = localtime;
+        logitem.dbname = dbname;
+        logitem.tname = tname;
+        logitem.message = message;
+        reportlist.add(logitem);
+    }
+
+    void logInfo(String message) {
+        DBILogItem logitem = new DBILogItem();
+        Date day = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String localtime = df.format(day);
+        logitem.userid = userid;
+        logitem.log_type = TYPE_INFO;
+        logitem.logtime = localtime;
+        logitem.dbname = dbname;
+        logitem.tname = tname;
+        logitem.message = message;
+        reportlist.add(logitem);
+    }
+
+    void logError(String message) {
+        DBILogItem logitem = new DBILogItem();
+        Date day = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String localtime = df.format(day);
+        logitem.userid = userid;
+        logitem.log_type = TYPE_ERROR;
+        logitem.logtime = localtime;
+        logitem.dbname = dbname;
+        logitem.tname = tname;
+        logitem.message = message;
+        reportlist.add(logitem);
+    }
+
+    void logWarning(String message) {
+        DBILogItem logitem = new DBILogItem();
+        Date day = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String localtime = df.format(day);
+        logitem.userid = userid;
+        logitem.log_type = TYPE_WARNING;
+        logitem.logtime = localtime;
+        logitem.dbname = dbname;
+        logitem.tname = tname;
+        logitem.message = message;
+        reportlist.add(logitem);
+    }
+
+    void log(DBILogItem logitem) {
+        reportlist.add(logitem);
+    }
+
+    void commit() {
+        if (dbhelper.Connect()) {
+            for (DBILogItem logitem : reportlist) {
+                String sql = "INSERT INTO T_DI_LOG" + logitem;
+                if (dbhelper.runSQL(sql)) {
+                    System.out.println("success:" + sql);
                 }
             }
         }
-        dbhelper.Disconnect();
     }
-    
-    DBIResultSet searchlog(String uid,String time){
-        String times="";
-        DBIResultSet result=null;
+
+    DBIResultSet searchlog(String uid, String time) {
+        String times = "";
+        DBIResultSet result = null;
         switch (time) {
-                case "7天":
-                    times="where LDATE between sysdate - interval '7' day and sysdate and userid='"+uid+"'";
-                    break;
-                case "1个月":
-                    times="where LDATE between sysdate - interval '30' day and sysdate and userid='"+uid+"'";
-                    break;
-                case "6个月":
-                    times="where LDATE between sysdate - 150 and sysdate and userid='"+uid+"'";
-                    break;
-                case "7个月":
-                    times="where LDATE between sysdate - interval '7' month and sysdate and userid='"+uid+"'";
-                    break;
-                case "1年":
-                    times="where LDATE between sysdate - 365 and sysdate and userid='"+uid+"'";
-                    break;
-                case "全部":
-                    times="where userid='"+uid+"'";
-                    break;
-            }
-            String sql="select * from T_DI_LOG "+times;
-        if(dbhelper.Connect()){
-            result=dbhelper.runSQLForResult(sql);
-        }else{
+            case "7天":
+                times = "where LDATE between sysdate - interval '7' day and sysdate and userid='" + uid + "'";
+                break;
+            case "1个月":
+                times = "where LDATE between sysdate - interval '30' day and sysdate and userid='" + uid + "'";
+                break;
+            case "6个月":
+                times = "where LDATE between sysdate - 150 and sysdate and userid='" + uid + "'";
+                break;
+            case "7个月":
+                times = "where LDATE between sysdate - interval '7' month and sysdate and userid='" + uid + "'";
+                break;
+            case "1年":
+                times = "where LDATE between sysdate - 365 and sysdate and userid='" + uid + "'";
+                break;
+            case "全部":
+                times = "where userid='" + uid + "'";
+                break;
+        }
+        String sql = "select * from T_DI_LOG " + times;
+        if (dbhelper.Connect()) {
+            result = dbhelper.runSQLForResult(sql);
+        } else {
             System.out.println("wrong");
         }
-        dbhelper.Disconnect();
         return result;
     }
-    
-    public static void main(String args[]){
-        
+
+    public static void main(String args[]) {
     }
 }

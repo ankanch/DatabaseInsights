@@ -53,40 +53,40 @@ public class servletGetLogs extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String time=request.getParameter("time");
-        String sid=request.getSession().getId();
-        UserManager manager=new UserManager();
-        String uid=String.valueOf(manager.getUIDbySessionID(sid));
-        DBILog log=new DBILog();
-        DBIResultSet result=log.searchlog(uid, time);
-        String allhtml="";
-        String html="<tr>\n" +
-"                    <th>{0}</th>\n" +
-"                    <td>{1}</td>\n" +
-"                    <td>{2}</td>\n" +
-"                    <td>{3}</td>\n" +
-"                    <td>{4}</td>\n" +
-"                </tr>";
-        System.out.println("result.rowCount():"+result.rowCount());
-        for(int i=1;i<=result.rowCount();i++){
-            allhtml=allhtml+MessageFormat.format(html,result.getData(i, 4),result.getData(i, 3),result.getData(i, 5)
-            ,result.getData(i, 6),result.getData(i, 7));
+
+        String time = request.getParameter("time");
+        String sid = request.getSession().getId();
+        UserManager manager = new UserManager();
+        String uid = String.valueOf(manager.getUIDbySessionID(sid));
+        DBILog log = new DBILog();
+        DBIResultSet result = log.searchlog(uid, time);
+        String allhtml = "";
+        String html = "<tr>\n"
+                + "                    <th>{0}</th>\n"
+                + "                    <td>{1}</td>\n"
+                + "                    <td>{2}</td>\n"
+                + "                    <td>{3}</td>\n"
+                + "                    <td>{4}</td>\n"
+                + "                </tr>";
+        System.out.println("result.rowCount():" + result.rowCount());
+        for (int i = 1; i <= result.rowCount(); i++) {
+            allhtml = allhtml + MessageFormat.format(html, result.getData(i, 4), result.getData(i, 3), result.getData(i, 5),
+                     result.getData(i, 6), result.getData(i, 7));
         }
-        String div="<table class=\"table table-striped\">\n" +
-"            <thead>\n" +
-"                <tr>\n" +
-"                    <th scope=\"col\">日志日期</th>\n" +
-"                    <th scope=\"col\">日志类型</th>\n" +
-"                    <th scope=\"col\">相关数据库</th>\n" +
-"                    <th scope=\"col\">相关表</th>\n" +
-"                    <th scope=\"col\">日志内容</th>\n" +
-"                </tr>\n" +
-"            </thead>\n" +
-"            <tbody>{0}\n" +
-"            </tbody>\n" +
-"        </table>";
-        String htmlresult=MessageFormat.format(div, allhtml);
+        String div = "<table class=\"table table-striped\">\n"
+                + "            <thead>\n"
+                + "                <tr>\n"
+                + "                    <th scope=\"col\">日志日期</th>\n"
+                + "                    <th scope=\"col\">日志类型</th>\n"
+                + "                    <th scope=\"col\">相关数据库</th>\n"
+                + "                    <th scope=\"col\">相关表</th>\n"
+                + "                    <th scope=\"col\">日志内容</th>\n"
+                + "                </tr>\n"
+                + "            </thead>\n"
+                + "            <tbody>{0}\n"
+                + "            </tbody>\n"
+                + "        </table>";
+        String htmlresult = MessageFormat.format(div, allhtml);
         try (PrintWriter out = response.getWriter()) {
             out.println(DBIDataExchange.makeupReturnData(true, "sucess", htmlresult));
         }

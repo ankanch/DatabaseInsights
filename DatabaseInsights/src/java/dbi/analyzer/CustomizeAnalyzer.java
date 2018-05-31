@@ -75,10 +75,13 @@ public class CustomizeAnalyzer {
                     }
                     break;
                 case CustomizeJob.TYPE_TEXT:   // for text type, we generate pie chart
+                    chtarr.add(generateCountsChart(job));
                     break;
                 case CustomizeJob.TYPE_BOOLEAN:  // for Boolean type ,we generate piechart
+                    chtarr.add(generateCountsChart(job));
                     break;
                 default:
+                    chtarr.add(generateCountsChart(job));
                     break;
             }
         }
@@ -120,8 +123,13 @@ public class CustomizeAnalyzer {
 
     private Chart generateCountsNoRepeat(CustomizeJob job) {
         DBIResultSet dbirs = au.getColumnValueCountsNoRepeat(job.column_name);
-        Chart cht = new Chart();
-
+        String xdata = "";
+        String datatemp = "{ name: '@NODENAME',value: 1,},";
+        for(ArrayList<Object> row : dbirs.getRows()){
+            xdata += datatemp.replace("@NODENAME",String.valueOf(row.get(0)));
+        }
+        String chartops = ChartOption.OPTION_TREEMAP.replace("@DATA", xdata);
+        Chart cht = new Chart(chartops,Chart.CHART_TREE_MAP);
         return cht;
     }
 
