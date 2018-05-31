@@ -40,7 +40,7 @@ public class analyzerUtils {
 
     private static DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private static DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    
+
     /**
      * 从columnspecies中得到指定用户的指定表的所有列的全部信息<br/>
      * 返回值：DBIResultSet，每一行包含表的一列的全部信息
@@ -50,7 +50,6 @@ public class analyzerUtils {
         String sql = "select * from T_DATABASE_COLUMN where TID in (select tid from T_DATABASE_TABLE where tname='"
                 + table + "') "
                 + "and userid=" + uid;
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
             dbire = dbhelper.runSQLForResult(sql);
         }
@@ -64,32 +63,30 @@ public class analyzerUtils {
      */
     public static DBIResultSet findDistinctValues(int uid, String table) {
         DBIResultSet ret = new DBIResultSet();
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            String column = "";
-            DBIResultSet tablename = user.runSQLForResult("select distinct columnname  from t_database_column where userid=" + uid + " and "
-                    + "tid in(select tid from T_DATABASE_TABLE where tname='" + table + "')");
-            for (int i = 0; i < tablename.rowCount() - 1; i++) {
-                column = column + "count(distinct " + tablename.getRow(i + 1).get(0) + "),";
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                String column = "";
+                DBIResultSet tablename = user.runSQLForResult("select distinct columnname  from t_database_column where userid=" + uid + " and "
+                        + "tid in(select tid from T_DATABASE_TABLE where tname='" + table + "')");
+                for (int i = 0; i < tablename.rowCount() - 1; i++) {
+                    column = column + "count(distinct " + tablename.getRow(i + 1).get(0) + "),";
+                }
+                column = column + " count(distinct " + tablename.getRow(tablename.rowCount()).get(0) + ")";
+                Debug.log(column);
+                String sql = "select " + column + " from " + table;
+                Debug.log(sql);
+                DBIResultSet dbire = user.runSQLForResult(sql);
+                //拼凑结果集 ---格式： 多行，每一行为 [列名,列不重复值个数]
+                for (int i = 1; i <= tablename.rowCount(); i++) {
+                    ArrayList<Object> row = new ArrayList<>();
+                    row.add(tablename.getData(i, 1));
+                    row.add(dbire.getData(1, i));
+                    ret.addRow(row);
+                }
+                user.Disconnect();
             }
-            column = column + " count(distinct " + tablename.getRow(tablename.rowCount()).get(0) + ")";
-            Debug.log(column);
-            String sql = "select " + column + " from " + table;
-            Debug.log(sql);
-            DBIResultSet dbire = user.runSQLForResult(sql);
-            //拼凑结果集 ---格式： 多行，每一行为 [列名,列不重复值个数]
-            for (int i = 1; i <= tablename.rowCount(); i++) {
-                ArrayList<Object> row = new ArrayList<>();
-                row.add(tablename.getData(i, 1));
-                row.add(dbire.getData(1, i));
-                ret.addRow(row);
-            }
         }
-        user.Disconnect();
         return ret;
     }
 
@@ -99,27 +96,23 @@ public class analyzerUtils {
      */
     public static DBIResultSet getMaxiumValues(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        DBIResultSet result = new DBIResultSet();
-        DBIResultSet max = new DBIResultSet();
 
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            result = user.getIsNumberColumns(uid, table);
-            for (int i = 0; i < result.rowCount(); i++) {
-                if (result.getRow(i + 1).get(1).equals("1")) {
-                    max = user.runSQLForResult("select max(" + result.getRow(i + 1).get(0) + ") from " + table);
-                    dbire.addToRow(max.getRow(1).get(0));
-                } else {
-                    dbire.addToRow(null);
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                DBIResultSet result = user.getIsNumberColumns(uid, table);
+                for (int i = 0; i < result.rowCount(); i++) {
+                    if (result.getRow(i + 1).get(1).equals("1")) {
+                        DBIResultSet max = user.runSQLForResult("select max(" + result.getRow(i + 1).get(0) + ") from " + table);
+                        dbire.addToRow(max.getRow(1).get(0));
+                    } else {
+                        dbire.addToRow(null);
+                    }
                 }
+                dbire.finishRow();
+                user.Disconnect();
             }
-            dbire.finishRow();
         }
-        user.Disconnect();
         return dbire;
     }
 
@@ -129,27 +122,23 @@ public class analyzerUtils {
      */
     public static DBIResultSet getMiniumValues(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        DBIResultSet result = new DBIResultSet();
-        DBIResultSet min = new DBIResultSet();
 
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            result = user.getIsNumberColumns(uid, table);
-            for (int i = 0; i < result.rowCount(); i++) {
-                if (result.getRow(i + 1).get(1).equals("1")) {
-                    min = user.runSQLForResult("select min(" + result.getRow(i + 1).get(0) + ") from " + table);
-                    dbire.addToRow(min.getRow(1).get(0));
-                } else {
-                    dbire.addToRow(null);
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                DBIResultSet result = user.getIsNumberColumns(uid, table);
+                for (int i = 0; i < result.rowCount(); i++) {
+                    if (result.getRow(i + 1).get(1).equals("1")) {
+                        DBIResultSet min = user.runSQLForResult("select min(" + result.getRow(i + 1).get(0) + ") from " + table);
+                        dbire.addToRow(min.getRow(1).get(0));
+                    } else {
+                        dbire.addToRow(null);
+                    }
                 }
+                dbire.finishRow();
+                user.Disconnect();
             }
-            dbire.finishRow();
         }
-        user.Disconnect();
         return dbire;
     }
 
@@ -159,27 +148,23 @@ public class analyzerUtils {
      */
     public static DBIResultSet getAverangeValues(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        DBIResultSet result = new DBIResultSet();
-        DBIResultSet avg = new DBIResultSet();
 
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            result = user.getIsNumberColumns(uid, table);
-            for (int i = 0; i < result.rowCount(); i++) {
-                if (result.getRow(i + 1).get(1).equals("1")) {
-                    avg = user.runSQLForResult("select avg(" + result.getRow(i + 1).get(0) + ") from " + table);
-                    dbire.addToRow(avg.getRow(1).get(0));
-                } else {
-                    dbire.addToRow(null);
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                DBIResultSet result = user.getIsNumberColumns(uid, table);
+                for (int i = 0; i < result.rowCount(); i++) {
+                    if (result.getRow(i + 1).get(1).equals("1")) {
+                        DBIResultSet avg = user.runSQLForResult("select avg(" + result.getRow(i + 1).get(0) + ") from " + table);
+                        dbire.addToRow(avg.getRow(1).get(0));
+                    } else {
+                        dbire.addToRow(null);
+                    }
                 }
+                dbire.finishRow();
+                user.Disconnect();
             }
-            dbire.finishRow();
         }
-        user.Disconnect();
         return dbire;
     }
 
@@ -189,27 +174,23 @@ public class analyzerUtils {
      */
     public static DBIResultSet getAllColumnSum(int uid, String table) {
         DBIResultSet dbire = new DBIResultSet();
-        DBIResultSet result = new DBIResultSet();
-        DBIResultSet sum = new DBIResultSet();
 
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            result = user.getIsNumberColumns(uid, table);
-            for (int i = 0; i < result.rowCount(); i++) {
-                if (result.getRow(i + 1).get(1).equals("1")) {
-                    sum = user.runSQLForResult("select sum(" + result.getRow(i + 1).get(0) + ") from " + table);
-                    dbire.addToRow(sum.getRow(1).get(0));
-                } else {
-                    dbire.addToRow(null);
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                DBIResultSet result = user.getIsNumberColumns(uid, table);
+                for (int i = 0; i < result.rowCount(); i++) {
+                    if (result.getRow(i + 1).get(1).equals("1")) {
+                        DBIResultSet sum = user.runSQLForResult("select sum(" + result.getRow(i + 1).get(0) + ") from " + table);
+                        dbire.addToRow(sum.getRow(1).get(0));
+                    } else {
+                        dbire.addToRow(null);
+                    }
                 }
+                dbire.finishRow();
+                user.Disconnect();
             }
-            dbire.finishRow();
         }
-        user.Disconnect();
         return dbire;
     }
 
@@ -222,24 +203,22 @@ public class analyzerUtils {
         if (columns.length < 1) {
             return ret;
         }
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-        }
-
-        if (user.Connect()) {
-            for (int i = 0; i < columns.length; i++) {
-                DBIResultSet tablename = user.runSQLForResult("select count(" + columns[i] + ")," + columns[i] + " from " + table + " group by " + columns[i] + "");
-                for (int j = 0; j < tablename.rowCount(); j++) {
-                    ArrayList<Object> row = new ArrayList<>();
-                    row.add(columns[i]);
-                    row.add(tablename.getData(j + 1, 2));
-                    row.add(tablename.getData(j + 1, 1));
-                    ret.addRow(row);
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
+                for (int i = 0; i < columns.length; i++) {
+                    DBIResultSet tablename = user.runSQLForResult("select count(" + columns[i] + ")," + columns[i] + " from " + table + " group by " + columns[i] + "");
+                    for (int j = 0; j < tablename.rowCount(); j++) {
+                        ArrayList<Object> row = new ArrayList<>();
+                        row.add(columns[i]);
+                        row.add(tablename.getData(j + 1, 2));
+                        row.add(tablename.getData(j + 1, 1));
+                        ret.addRow(row);
+                    }
                 }
+                user.Disconnect();
             }
         }
-        user.Disconnect();
         return ret;
     }
 
@@ -252,19 +231,18 @@ public class analyzerUtils {
         if (columns.length < 1) {
             return ret;
         }
-        DatabaseHelper user = null;
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(uid);
-            if (user.Connect()) {
+            DatabaseHelper user = dbhelper.getUserdbhelper(uid);
+            if (DatabaseHelper.isAvailable(user)) {
                 for (int i = 0; i < columns.length; i++) {
                     DBIResultSet coldata = user.runSQLForResult("select " + columns[i] + " from " + table);
-                    Debug.log("coldata=",coldata);
+                    Debug.log("coldata=", coldata);
                     ret.addToRow(columns[i]);
                     ret.addToRow(coldata);
                     ret.finishRow();
                 }
+                user.Disconnect();
             }
-            user.Disconnect();
         }
         return ret;
     }
