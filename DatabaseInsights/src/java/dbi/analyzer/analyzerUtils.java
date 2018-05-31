@@ -38,6 +38,10 @@ import java.util.ArrayList;
  */
 public class analyzerUtils {
 
+    public static final String SORT_ASC = " ORDER BY @COL ASC";
+    public static final String SORT_DESC = " ORDER BY @COL DESC";
+    public static final String SORT_NONE = " ";
+
     private DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private DatabaseHelper dbhelper;
 
@@ -54,6 +58,20 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             user = dbhelper.getUserdbhelper(this.uid);
         }
+    }
+
+    /**
+     * 获取一列的所有数据,参数指定是否排序，否则为SORT_NONE 返回值：DBIResultSet，多行，每行一个数据
+     */
+    public DBIResultSet getColumnData(String sort, String column) {
+        DBIResultSet ret = new DBIResultSet();
+        if (dbhelper.Connect()) {
+            if ((user = DatabaseHelper.isAvailable(user)) != null) {
+                String sql = "select " + column + " from " + table + sort.replace("@COL", column);
+                ret = user.runSQLForResult(sql);
+            }
+        }
+        return ret;
     }
 
     /**
@@ -352,6 +370,7 @@ public class analyzerUtils {
         Debug.log("getAverangeValues=", au.getAverangeValues());
         Debug.log("getAllColumnSum=", au.getAllColumnSum());
         String columns[] = {"password", "email"};
+        Debug.log("getColumnData=",au.getColumnData(SORT_DESC, "USERID"));
         Debug.log("getDistinctValuesCount=", au.getDistinctValuesCount(columns));
         Debug.log("getColumnAverage=", au.getColumnAverage("USERID"));
         Debug.log("getColumnAverage=", au.getColumnMaxiumValue("STATUS"));

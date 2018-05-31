@@ -29,6 +29,7 @@ import dbi.mgr.user.UserManager;
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
 import dbi.utils.DataValidation;
+import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletGetCostomAnalyzeResult", urlPatterns = {"/api/servletGetCostomAnalyzeResult"})
+@WebServlet(name = "servletGetCostomAnalyzeResult", urlPatterns = {"/api/getCostomAnalyzeResult"})
 public class servletGetCostomAnalyzeResult extends HttpServlet {
 
     /**
@@ -64,7 +65,7 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
         // check if user login first, if not, return error
         if (!um.validateSession(sid)) {
             try (PrintWriter out = response.getWriter()) {
-                DBIDataExchange.makeupStatusCode(false, " No authentication.");
+                out.println(DBIDataExchange.makeupStatusCode(false, " No authentication."));
             }
             return;
         }
@@ -84,11 +85,12 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
             String[] pools = summary.split(",");
             String[] comments = instructions.split(",");
             for (int i = 0; i < lastf.length; i++) {
+                Debug.log("parse parameters=",lastf[i], newf[i], types[i], pools[i], comments[i]);
                 CustomizeJob cj = new CustomizeJob(lastf[i], newf[i], types[i], pools[i], comments[i]);
                 jobs.addToRow(cj);
             }
             jobs.finishRow();
-            CustomizeAnalyzer ca = new CustomizeAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), tname);
+            CustomizeAnalyzer ca = new CustomizeAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid),"DATABASE", tname);
             ArrayList<Chart> charts = ca.generateCharts(jobs.toArray1D(CustomizeJob.class));
             ret.addToRow(charts.size());
             ret.finishRow();

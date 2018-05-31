@@ -25,6 +25,8 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
 import java.util.ArrayList;
 
 /**
@@ -37,33 +39,111 @@ public class CustomizeAnalyzer {
     private String table = "";
     private analyzerUtils au;
 
-    public CustomizeAnalyzer(int uid,String database, String table) {
+    public CustomizeAnalyzer(int uid, String database, String table) {
         this.uid = uid;
         this.table = table;
-        au = new analyzerUtils(this.uid,database,table);
+        au = new analyzerUtils(this.uid, database, table);
     }
 
     public ArrayList<Chart> generateCharts(ArrayList<CustomizeJob> jobs) {
         ArrayList<Chart> chtarr = new ArrayList<>();
         for (CustomizeJob job : jobs) {
-            switch (job.pool_func) {
-                case CustomizeJob.PF_AVERANGE:
+            Debug.log("current process field=",job.column_name,"\ttype=",job.type,"\tpoolf=",job.pool_func);
+            switch (job.type) {
+                case CustomizeJob.TYPE_NUMBER:
+                    switch (job.pool_func) {
+                        case CustomizeJob.PF_AVERANGE:
+                            chtarr.add(generateAverageChart(job));
+                            break;
+                        case CustomizeJob.PF_COUNT:
+                            chtarr.add(generateCountsChart(job));
+                            break;
+                        case CustomizeJob.PF_COUNT_NOREPEAT:
+                            chtarr.add(generateCountsNoRepeat(job));
+                            break;
+                        case CustomizeJob.PF_MAX:
+                            chtarr.add(generateMaxiumChart(job));
+                            break;
+                        case CustomizeJob.PF_MIN:
+                            chtarr.add(generateMiniumChart(job));
+                            break;
+                        case CustomizeJob.PF_SUM:
+                            chtarr.add(generateSumationChart(job));
+                            break;
+                        default:
+                            ;
+                    }
                     break;
-                case CustomizeJob.PF_COUNT:
+                case CustomizeJob.TYPE_TEXT:   // for text type, we generate pie chart
                     break;
-                case CustomizeJob.PF_COUNT_NOREPEAT:
-                    break;
-                case CustomizeJob.PF_MAX:
-                    break;
-                case CustomizeJob.PF_MIN:
-                    break;
-                case CustomizeJob.PF_SUM:
+                case CustomizeJob.TYPE_BOOLEAN:  // for Boolean type ,we generate piechart
                     break;
                 default:
-                                    ;
+                    break;
             }
         }
+        Debug.log("chtarr.size()=",chtarr.size());
         return chtarr;
+    }
+
+    /*
+    * scatter chart with an average line
+     */
+    private Chart generateAverageChart(CustomizeJob job) {
+        DBIResultSet avgvalue = au.getColumnAverage(job.column_name);
+        DBIResultSet coldata = au.getColumnData( analyzerUtils.SORT_NONE, job.column_name);
+        ArrayList<Object> cd = coldata.toArray1D();
+        String dta = "";
+        String sa = "[@X,@Y],";
+        for (int i = 0; i < cd.size(); i++) {
+            dta += sa.replace("@X", String.valueOf(i+1))
+                    .replace("@Y", String.valueOf(cd.get(i)));
+        }
+        String chartops = ChartOption.OPTION_SCATTER_WITH_AVERAGE.replace("@TITLE", job.column_nickname)
+                .replace("@SUBTITLE", job.comment)
+                .replace("@DATA", dta)
+                .replace("@AVG_Y", String.valueOf(avgvalue.getData(1, 1)) )
+                .replace("@AVG_X1", "1")
+                .replace("@AVG_X2", String.valueOf(cd.size()))
+                .replace("@AVERAGE_TEXT", "average");
+        Chart cht = new Chart(chartops,Chart.CHART_SCATTER_AVERGAE);
+        return cht;
+    }
+
+    private Chart generateCountsChart(CustomizeJob job) {
+        DBIResultSet dbirs = au.getColumnValueCounts(job.column_name);
+        Chart cht = chartsHelper.generateBarchart(dbirs);
+        cht.title = job.column_nickname;
+        cht.sub_title = job.comment;
+        return cht;
+    }
+
+    private Chart generateCountsNoRepeat(CustomizeJob job) {
+        DBIResultSet dbirs = au.getColumnValueCountsNoRepeat(job.column_name);
+        Chart cht = new Chart();
+
+        return cht;
+    }
+
+    private Chart generateMaxiumChart(CustomizeJob job) {
+        DBIResultSet dbirs = au.getColumnMaxiumValue(job.column_name);
+        Chart cht = new Chart();
+
+        return cht;
+    }
+
+    private Chart generateMiniumChart(CustomizeJob job) {
+        DBIResultSet dbirs = au.getColumnMiniumValue(job.column_name);
+        Chart cht = new Chart();
+
+        return cht;
+    }
+
+    private Chart generateSumationChart(CustomizeJob job) {
+        DBIResultSet dbirs = au.getColumnSum(job.column_name);
+        Chart cht = new Chart();
+
+        return cht;
     }
 
 }

@@ -38,6 +38,7 @@ public class Chart {
     public static final int CHART_PIECHART = 1;
     public static final int CHART_LINECHART = 2;
     public static final int CHART_HISTOGRAM = 3;
+    public static final int CHART_SCATTER_AVERGAE = 4;
 
     public int type = 0;
     public String id = "cht_";
@@ -45,12 +46,19 @@ public class Chart {
     public String y_label = "";
     public String title = "";
     public String sub_title = "";
+    public String afxchartops = "";
     public ArrayList<String> legends = new ArrayList<>();
     public ArrayList<Object> x_values = new ArrayList<>();
     public ArrayList<Object> y_values = new ArrayList<>();
 
     public Chart() {
         id += UUID.randomUUID().toString().replace("-", "");
+    }
+    
+    public Chart(String option,int chart_type){
+        id += UUID.randomUUID().toString().replace("-", "");
+        afxchartops = option;
+        this.type = chart_type;
     }
 
     public static int switchChart(String chtname) {
@@ -61,6 +69,8 @@ public class Chart {
                 return CHART_LINECHART;
             case "histogram":
                 return CHART_HISTOGRAM;
+            case "scatteravg":
+                return CHART_SCATTER_AVERGAE;
         }
         return -1;
     }
@@ -85,7 +95,8 @@ public class Chart {
                 chartops = ChartOption.OPTION_PIE.replace("@TITLE", title)
                         .replace("@SUBTITLE", sub_title)
                         .replace("@XDATA", legends)
-                        .replace("@YDATA", data);
+                        .replace("@YDATA", data)
+                        .replace("@INFO", "value:protion");
                 break;
             case CHART_LINECHART:
                 //generate options
@@ -100,6 +111,8 @@ public class Chart {
                         .replace("@XDATA", "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']")
                         .replace("@YDATA", "[820, 932, 901, 934, 1290, 1330, 1320]");
                 break;
+            default:
+                chartops = afxchartops;
         }
         return chartops;
     }

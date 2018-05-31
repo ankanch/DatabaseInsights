@@ -32,18 +32,18 @@ package dbi.analyzer;
 public class CustomizeJob {
 
     // pooling function code
-    public static final int PF_NONE = 10001;
-    public static final int PF_AVERANGE = 10002;
-    public static final int PF_COUNT = 10003;
-    public static final int PF_COUNT_NOREPEAT = 10004;
-    public static final int PF_MAX = 10005;
-    public static final int PF_MIN = 10006;
-    public static final int PF_SUM = 10007;
+    public static final int PF_NONE = 1001;
+    public static final int PF_AVERANGE = 1002;
+    public static final int PF_COUNT = 1003;
+    public static final int PF_COUNT_NOREPEAT = 1004;
+    public static final int PF_MAX = 1005;
+    public static final int PF_MIN = 1006;
+    public static final int PF_SUM = 1007;
 
     // type code
-    public static final int TYPE_NUMBER = 20001;
-    public static final int TYPE_TEXT = 20002;
-    public static final int TYPE_BOOLEAN = 20003;
+    public static final int TYPE_NUMBER = 2001;
+    public static final int TYPE_TEXT = 2002;
+    public static final int TYPE_BOOLEAN = 2003;
 
     public String column_name = "";
     public String column_nickname = "";
@@ -68,22 +68,22 @@ public class CustomizeJob {
                 this.pool_func = PF_NONE;
                 break;
             case "pf_avg":
-                this.type = PF_AVERANGE;
+                this.pool_func = PF_AVERANGE;
                 break;
             case "pf_count":
-                this.type = PF_COUNT;
+                this.pool_func = PF_COUNT;
                 break;
             case "pf_count_norepeat":
-                this.type = PF_COUNT_NOREPEAT;
+                this.pool_func = PF_COUNT_NOREPEAT;
                 break;
             case "pf_max":
-                this.type = PF_MAX;
+                this.pool_func = PF_MAX;
                 break;
             case "pf_min":
-                this.type = PF_MIN;
+                this.pool_func = PF_MIN;
                 break;
             case "pf_sum":
-                this.type = PF_SUM;
+                this.pool_func = PF_SUM;
                 break;
         }
         column_name = lastf;
