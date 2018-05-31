@@ -78,6 +78,39 @@ public class DBILog {
         dbhelper.Disconnect();
     }
     
+    DBIResultSet searchlog(String uid,String time){
+        String times="";
+        DBIResultSet result=null;
+        switch (time) {
+                case "7天":
+                    times="where LDATE between sysdate - interval '7' day and sysdate and userid='"+uid+"'";
+                    break;
+                case "1个月":
+                    times="where LDATE between sysdate - interval '30' day and sysdate and userid='"+uid+"'";
+                    break;
+                case "6个月":
+                    times="where LDATE between sysdate - 150 and sysdate and userid='"+uid+"'";
+                    break;
+                case "7个月":
+                    times="where LDATE between sysdate - interval '7' month and sysdate and userid='"+uid+"'";
+                    break;
+                case "1年":
+                    times="where LDATE between sysdate - 365 and sysdate and userid='"+uid+"'";
+                    break;
+                case "全部":
+                    times="where userid='"+uid+"'";
+                    break;
+            }
+            String sql="select * from T_DI_LOG "+times;
+        if(dbhelper.Connect()){
+            result=dbhelper.runSQLForResult(sql);
+        }else{
+            System.out.println("wrong");
+        }
+        dbhelper.Disconnect();
+        return result;
+    }
+    
     public static void main(String args[]){
         
     }

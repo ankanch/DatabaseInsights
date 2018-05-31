@@ -324,7 +324,7 @@ public class DatabaseHelper {
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
-            //Debug.log("SQL=", sql);
+            Debug.log("SQL=", sql);
             ResultSet rs = st.executeQuery(sql);
             sqlResult = new DBIResultSet(rs);
             st.close();

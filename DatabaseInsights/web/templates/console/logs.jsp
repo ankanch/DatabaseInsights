@@ -23,41 +23,8 @@
         </div>
     </div>
 
-    <div class="card">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">日志日期</th>
-                    <th scope="col">日志类型</th>
-                    <th scope="col">相关数据库</th>
-                    <th scope="col">相关表</th>
-                    <th scope="col">日志内容</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>@fat</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="card" id="tablecontent">
+        
     </div>
 </div>
 <script>
@@ -66,5 +33,11 @@
     function chooseTime(v){
         var element = v.innerText;
         document.getElementById("dropdownMenuButton").innerHTML=element;
+        SubmitFormKVF("/getLogs",{time:element} , function error(data) {
+            showMsg("Failed to load log.");
+        }, function success(data) {
+            var element = document.getElementById("tablecontent");
+            element.innerHTML = data.data[0];
+        });
     }
 </script>
