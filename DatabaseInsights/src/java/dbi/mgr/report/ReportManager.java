@@ -45,22 +45,20 @@ public class ReportManager {
     public ReportManager() {
     }
 
-    public void createReport(String name) {
+    public void addReport(int uid, Report rep) {
 
     }
 
-    public void addReport() {
+    public ArrayList<Report> getReport(int uid, int repid) {
+        ArrayList<Report> replist = new ArrayList<Report>();
 
+        return replist;
     }
 
-    public boolean commitReport(String name) {
+    public ArrayList<Report> getUserReportsList(int uid) {
+        ArrayList<Report> replist = new ArrayList<Report>();
 
-        return false;
-    }
-
-    public boolean commitAllReport() {
-
-        return false;
+        return replist;
     }
 
 }
