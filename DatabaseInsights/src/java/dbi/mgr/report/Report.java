@@ -33,10 +33,24 @@ import java.util.Date;
  * @author kanch
  */
 public class Report {
+
     public String title = "";
     public String des = "";
     public DBIResultSet charts = new DBIResultSet();  // 多行两列，第一行存放图表信息，第二存放用户针对改图表添加的信息
     public int id = 0;
+    public int userid = 0;
     public Date generatedate = new Date();
-    
+
+    public Report() {
+    }
+
+    public Report(String datastring) {
+        
+    }
+
+    @Override
+    public String toString() {
+        return "Report{" + "title=" + title + ", des=" + des + ", charts=" + charts + ", id=" + id + ", userid=" + userid + ", generatedate=" + generatedate + '}';
+    }
+
 }

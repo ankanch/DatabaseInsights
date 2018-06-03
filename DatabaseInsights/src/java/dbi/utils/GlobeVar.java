@@ -29,6 +29,7 @@ import dbi.db.adaptor.DatabaseConfig;
 import dbi.localization.langChinese;
 import dbi.localization.langEnglish;
 import dbi.mgr.credential.CredentialManager;
+import dbi.mgr.report.ReportManager;
 import dbi.mgr.user.UserManager;
 
 /**
@@ -52,6 +53,7 @@ public class GlobeVar {
     // globe manager object
     public static UserManager OBJ_MANAGER_USER = new UserManager();
     public static CredentialManager OBJ_MANAGER_CREDENTIAL = new CredentialManager();
+    public static ReportManager OBJ_MANAGER_REPORT = new ReportManager();
     
     //localization objs
     public static langChinese OBJ_LOCALIZATION_CHINESE = new langChinese();
