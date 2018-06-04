@@ -40,4 +40,11 @@
             element.innerHTML = data.data[0];
         });
     }
+    
+    SubmitFormKVF("/getLogs",{time:"6个月"} , function error(data) {
+            showMsg("Failed to load log.");
+        }, function success(data) {
+            var element = document.getElementById("tablecontent");
+            element.innerHTML = data.data[0];
+    });
 </script>
