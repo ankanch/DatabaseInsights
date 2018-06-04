@@ -60,15 +60,17 @@ public class servletGetReport extends HttpServlet {
         String sid = request.getSession().getId();
         String gtype = request.getParameter("gtype");
         String strrepid = request.getParameter("repid");
-        ArrayList<Report> rps = new ArrayList<>();
         Report rp = new Report();
+        String repliststr = "";
         if (DataValidation.containsNULL(gtype)) {   // get 1
             if (!DataValidation.containsNULL(strrepid)) {
                 rp = GlobeVar.OBJ_MANAGER_REPORT.getReport(Integer.parseInt(strrepid));
                 status = true;
             }
         } else {    // get multi
-            rps = GlobeVar.OBJ_MANAGER_REPORT.getUserReportsList(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid));
+            ArrayList<Report> rps = GlobeVar.OBJ_MANAGER_REPORT.getUserReportsList(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid));
+            ReportBean rb = new ReportBean();
+            repliststr = rb.generateReportTable(rps);
         }
 
         try (PrintWriter out = response.getWriter()) {
@@ -76,7 +78,7 @@ public class servletGetReport extends HttpServlet {
                 if (null != gtype) {
                     out.println(DBIDataExchange.makeupReturnData(status, "success", rp));
                 } else {
-                    out.println(DBIDataExchange.makeupReturnData(status, "success", rps));
+                    out.println(DBIDataExchange.makeupReturnData(status, "success", repliststr));
                 }
             } else {
                 out.println(DBIDataExchange.makeupStatusCode(status, "error"));

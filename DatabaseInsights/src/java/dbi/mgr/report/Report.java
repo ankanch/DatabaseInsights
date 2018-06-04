@@ -39,6 +39,7 @@ public class Report {
     public DBIResultSet charts = new DBIResultSet();  // 多行两列，第一行存放图表信息，第二存放用户针对改图表添加的信息
     public int id = 0;
     public int userid = 0;
+    public String relations = ""; //存放参与分析的数据库表
     public Date generatedate = new Date();
 
     public Report() {
@@ -50,7 +51,7 @@ public class Report {
 
     @Override
     public String toString() {
-        return "Report{" + "title=" + title + ", des=" + des + ", charts=" + charts + ", id=" + id + ", userid=" + userid + ", generatedate=" + generatedate + '}';
+        return "Report{" + "title:" + title + ", des:" + des + ", charts:" + charts + ", id:" + id + ", userid:" + userid + ", generatedate:" + generatedate + '}';
     }
 
 }

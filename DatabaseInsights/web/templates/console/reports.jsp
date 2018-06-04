@@ -4,163 +4,76 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.lang"%>
+<%@page import="dbi.localization.langID"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% lang local = lang.detectLang(request);%>
 <div id="reports">
 
-    <h1>Report</h1>
-
-    <section class="row text-center placeholders">
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <div class="text-muted">Something else</div>
+    <h1>Reports</h1>
+    <div class="card">
+        <div class="progress-line" id="progressbar" style="display:none;"></div>
+        <div class="card-body">
+            <div class="row">
+                <form class="form-inline my-2 my-lg-0 col-md-5">
+                    <div class="form-group console-div-vc">
+                        <label for="searchcre" class="bmd-label-floating"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_TIP_SEARCH)%></label>
+                        <input type="text" class="form-control" id="searchcre">
+                    </div>
+                    <span class="form-group bmd-form-group console-div-vc"> <!-- needed to match padding for floating labels -->
+                        <button type="submit" class="btn btn-primary"><%=local.getString(langID.JSP_CONSOLE_CREDENTIAL_MGR_BUTTON_SEARCH)%></button>
+                    </span>
+                </form>
+            </div>
+            <hr/>
+            <table class="table table-striped"> 
+                <thead>               
+                    <tr>                     
+                        <th scope="col">#</th>           
+                        <th scope="col">TITLE</th>       
+                        <th scope="col">DATE</th>                  
+                        <th scope="col">DESCRIPTION</th>                 
+                        <th scope="col">RELATION</th>                    
+                        <th scope="col">Operations</th>               
+                    </tr>               
+                </thead>           
+                <tbody>                     
+                    <tr id="credtable_row_194">   
+                        <th scope="row" style="vertical-align: inherit;">1</th>     
+                        <td style="vertical-align: inherit;padding: 0rem;">      
+                            DatabaseInsights               
+                        </td>                        
+                        <td style="vertical-align: inherit;padding: 0rem;">                            
+                            cd.kcs.akakanch.com            
+                        </td>                        <td style="vertical-align: inherit;padding: 0rem;">                    
+                            dbaccount                
+                        </td>                      
+                        <td style="vertical-align: inherit;padding: 0rem;">                            
+                            Single Table
+                        </td>                       
+                        <td>   
+                            <button id="credtable_row_194_edit" type="button" class="btn btn-primary" onclick="inspect(194)">DETAILS</button>                      
+                            <button id="credtable_row_194_edit" type="button" class="btn btn-info" onclick="view(194)">View</button>                         
+                            <button type="button" class="btn btn-danger" onclick="del(194)">Delete</button>                      
+                        </td>                   
+                    </tr>               
+                </tbody>            
+            </table>
         </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Something else</span>
-        </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Something else</span>
-        </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="data:image/gif;base64,R0lGODlhAQABAIABAADcgwAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Something else</span>
-        </div>
-    </section>
-
-    <h2>Section title</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                    <th>Header</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>amet</td>
-                    <td>consectetur</td>
-                    <td>adipiscing</td>
-                    <td>elit</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>Integer</td>
-                    <td>nec</td>
-                    <td>odio</td>
-                    <td>Praesent</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>libero</td>
-                    <td>Sed</td>
-                    <td>cursus</td>
-                    <td>ante</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>dapibus</td>
-                    <td>diam</td>
-                    <td>Sed</td>
-                    <td>nisi</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>Nulla</td>
-                    <td>quis</td>
-                    <td>sem</td>
-                    <td>at</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>nibh</td>
-                    <td>elementum</td>
-                    <td>imperdiet</td>
-                    <td>Duis</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>sagittis</td>
-                    <td>ipsum</td>
-                    <td>Praesent</td>
-                    <td>mauris</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>Fusce</td>
-                    <td>nec</td>
-                    <td>tellus</td>
-                    <td>sed</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>augue</td>
-                    <td>semper</td>
-                    <td>porta</td>
-                    <td>Mauris</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>massa</td>
-                    <td>Vestibulum</td>
-                    <td>lacinia</td>
-                    <td>arcu</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>eget</td>
-                    <td>nulla</td>
-                    <td>Class</td>
-                    <td>aptent</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>taciti</td>
-                    <td>sociosqu</td>
-                    <td>ad</td>
-                    <td>litora</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>torquent</td>
-                    <td>per</td>
-                    <td>conubia</td>
-                    <td>nostra</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>per</td>
-                    <td>inceptos</td>
-                    <td>himenaeos</td>
-                    <td>Curabitur</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>sodales</td>
-                    <td>ligula</td>
-                    <td>in</td>
-                    <td>libero</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 <script>
     $('#reports').bootstrapMaterialDesign();
+    
+    function view(){
+        
+    }
+    
+    function del(){
+        
+    }
+    
+    function inspect(){
+        
+    }
 </script>
