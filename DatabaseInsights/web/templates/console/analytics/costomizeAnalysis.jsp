@@ -179,8 +179,14 @@
         document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "文本";
         document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf = "type_text";
         var element = document.getElementById("choosetype_" + v);
-        var str = "<button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\"" +
-                "aria-haspopup=\"true\" data-poolf=\"pf_none\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
+        var str = "<button id=\"buttonnames_" + v.toString() + "\" class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\"" +
+                "                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf='pf_none'>无</button>" +
+                "                <div class=\"dropdown-menu\">" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_none\">无</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count\">计数</a>" +
+                "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count_norepeat\">非重复计数</a>" +
+                "                </div>";
+
         element.innerHTML = str;
     }
 

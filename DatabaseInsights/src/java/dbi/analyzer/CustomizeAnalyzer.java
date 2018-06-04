@@ -75,8 +75,16 @@ public class CustomizeAnalyzer {
                     }
                     break;
                 case CustomizeJob.TYPE_TEXT:   // for text type, we generate pie chart
-                    chtarr.add(generateCountsChart(job));
-                    break;
+                    switch (job.pool_func) {
+                        case CustomizeJob.PF_COUNT:
+                            chtarr.add(generateCountsChart(job));
+                            break;
+                        case CustomizeJob.PF_COUNT_NOREPEAT:
+                            chtarr.add(generateCountsNoRepeat(job));
+                            break;
+                        default:
+                            chtarr.add(generateCountsChart(job));
+                    }
                 case CustomizeJob.TYPE_BOOLEAN:  // for Boolean type ,we generate piechart
                     chtarr.add(generateCountsChart(job));
                     break;
@@ -125,11 +133,11 @@ public class CustomizeAnalyzer {
         DBIResultSet dbirs = au.getColumnValueCountsNoRepeat(job.column_name);
         String xdata = "";
         String datatemp = "{ name: '@NODENAME',value: 1,},";
-        for(ArrayList<Object> row : dbirs.getRows()){
-            xdata += datatemp.replace("@NODENAME",String.valueOf(row.get(0)));
+        for (ArrayList<Object> row : dbirs.getRows()) {
+            xdata += datatemp.replace("@NODENAME", String.valueOf(row.get(0)));
         }
         String chartops = ChartOption.OPTION_TREEMAP.replace("@DATA", xdata);
-        Chart cht = new Chart(chartops,Chart.CHART_TREE_MAP);
+        Chart cht = new Chart(chartops, Chart.CHART_TREE_MAP);
         return cht;
     }
 
@@ -160,8 +168,8 @@ public class CustomizeAnalyzer {
         }
         String chartops = ChartOption.OPTION_HISTOGRAM_FULLAREA.replace("@TITLE", job.column_nickname)
                 .replace("@SUBTITLE", job.comment)
-                .replace("@XDATA", xdata.substring(0, xdata.length() - 1) )
-                .replace("@YDATA", ydata.substring(0, ydata.length() - 1) );
+                .replace("@XDATA", xdata.substring(0, xdata.length() - 1))
+                .replace("@YDATA", ydata.substring(0, ydata.length() - 1));
         Chart cht = new Chart(chartops, Chart.CHART_HISTOGRAM_FULLAREA);
         return cht;
     }

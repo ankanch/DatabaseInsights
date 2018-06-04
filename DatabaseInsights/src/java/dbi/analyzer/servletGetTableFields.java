@@ -28,6 +28,7 @@ import dbi.db.adaptor.DatabaseHelper;
 import dbi.mgr.user.UserManager;
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,8 +97,13 @@ public class servletGetTableFields extends HttpServlet {
                 + "                                </div>"
                 + "                            </td>"
                 + "                            <td id=\"choosetype_{0}\">"
-                + "                                <button class=\"btn btn-outline-secondary\" type=\"button\" data-toggle=\"dropdown\" "
-                + "                                        aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" id=\"buttonnames_{0}\" data-poolf='pf_none'>无</button>"
+                + "                                <button id=\"buttonnames_{0}\" class=\"btn btn-outline-secondary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\""
+                + "                                     aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf='pf_none'>无</button>"
+                + "                                     <div class=\"dropdown-menu\">"
+                + "                                         <a class=\"dropdown-item\" href='javascript:' onclick=''choosetypename(this,{0}) '' data-poolf=\"pf_none\">无</a>"
+                + "                                         <a class=\"dropdown-item\" href='javascript:' onclick=''choosetypename(this,{0}) '' data-poolf=\"pf_count\">计数</a>"
+                + "                                         <a class=\"dropdown-item\" href='javascript:' onclick=''choosetypename(this,{0}) '' data-poolf=\"pf_count_norepeat\">非重复计数</a>"
+                + "                                     </div>"
                 + "                            </td>"
                 + "                            <td>"
                 + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\" id=\"instructions_{0}\">"
@@ -106,9 +112,9 @@ public class servletGetTableFields extends HttpServlet {
         StringBuilder a = new StringBuilder();
         System.out.println("ret.rowCount()" + ret.rowCount());
         for (int i = 1; i <= ret.rowCount(); i++) {
-            System.out.println("haven:" + ret.getRow(i));
             a.append(MessageFormat.format(str, String.valueOf(i), ret.getData(i, 1)));
         }
+        Debug.log(a);
         //- | --> ADD YOUR COE ABOVE
         // return status ,you may change to other functions of 
         // DBIDataExchange in order to return data to display frontend
