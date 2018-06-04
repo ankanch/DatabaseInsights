@@ -63,7 +63,7 @@ public class servletGetAutoAnalysisResult extends HttpServlet {
         // check if user login first, if not, return error
         if (!um.validateSession(sid)) {
             try (PrintWriter out = response.getWriter()) {
-                DBIDataExchange.makeupStatusCode(false, " No authentication.");
+                out.println(DBIDataExchange.makeupStatusCode(false, " No authentication."));
             }
             return;
         }
@@ -75,7 +75,7 @@ public class servletGetAutoAnalysisResult extends HttpServlet {
 
         int ichttype = Chart.switchChart(charttype);
         if (ichttype > -1) {
-            AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid),"DATABAASE", table);
+            AutoAnalyzer aa = new AutoAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), "DATABAASE", table);
             ArrayList<Chart> charts = aa.getAutoCharts(ichttype);
             ret.addToRow(charts.size());
             ret.finishRow();

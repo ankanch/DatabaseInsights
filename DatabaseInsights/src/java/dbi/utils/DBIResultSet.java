@@ -27,6 +27,7 @@ package dbi.utils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -69,7 +70,18 @@ public class DBIResultSet {
     public final void addRow(ArrayList<Object> row) {
         rs.add(row);
     }
+    
+    public final void addRow(Object[] row){
+        rs.add( new ArrayList<>(Arrays.asList(row)) );
+    }
 
+    public Object setValue(int row, int col , Object val){
+        ArrayList<Object> orgrow = rs.get(row-1);
+        orgrow.set(col-1, val);
+        rs.set(row-1, orgrow );
+        return val;
+    }
+    
     /**
      * add current data to one temporery row
      */
@@ -98,10 +110,15 @@ public class DBIResultSet {
     /**
      * get data at row x, col y. x,y both start from 1. NOT 0;
      */
-    public final Object getData(int x, int y) {
-        return rs.get(x - 1).get(y - 1);
+    public final Object getData(int row, int col) {
+        return rs.get(row - 1).get(col - 1);
     }
 
+    public final<T> T getData(int row,int col, Class<T> cname){
+        Object obj = getData(row,col);
+        return cname.cast(obj);
+    }
+    
     // get all rows of current DBIResultSet
     public final ArrayList<ArrayList<Object>> getRows() {
         return rs;

@@ -27,7 +27,9 @@ package dbi.mgr.report;
 
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
+import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
+import dbi.utils.DataValidation;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.sql.Connection;
@@ -54,12 +56,13 @@ public class ReportManager {
 
     /*
     * 向给定用户添加一个分析报告
-    */
+     */
     public boolean addReport(int uid, Report rep) {
         if (dbhelper.Connect()) {
             String sql = "INSERT INTO T_DATABASE_REPORT VALUES({0},{1},{2},{3},{4})";
             Date now = new Date();
-            sql = MessageFormat.format(sql, rep.userid, rep.title, now, rep.des, rep.charts);
+            sql = MessageFormat.format(sql, rep.userid, rep.title, now, rep.des,
+                    DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
             if (dbhelper.runSQL(sql)) {
                 return true;
             }
@@ -69,13 +72,18 @@ public class ReportManager {
 
     /*
     * 获得指定ID的分析报告信息
-    */
+     */
     public Report getReport(int repid) {
         Report rep = new Report();
         if (dbhelper.Connect()) {
-            String sql = "SELECT * FROM T_DATABASE_REPORT WHERE RID=";
+            String sql = "SELECT * FROM T_DATABASE_REPORT WHERE RID=" + String.valueOf(repid);
             DBIResultSet ret = dbhelper.runSQLForResult(sql);
-            Debug.log(ret);
+            rep.id = Integer.parseInt(ret.getData(1, 1, String.class));
+            rep.userid = Integer.parseInt(ret.getData(1, 2, String.class));
+            rep.title = ret.getData(1, 3, String.class);
+            rep.generatedate = ret.getData(1, 4, String.class);
+            rep.des = ret.getData(1, 5, String.class);
+            rep.charts = DBIDataExchange.parse(DataValidation.decodeFromBase64(ret.getData(1, 6, String.class)));
         }
         return rep;
     }
@@ -86,19 +94,27 @@ public class ReportManager {
     public ArrayList<Report> getUserReportsList(int uid) {
         ArrayList<Report> replist = new ArrayList<>();
         if (dbhelper.Connect()) {
-            String sql = "SELECT RID,USERID,TITLE,GENERATEDATE,DESCRIPTION FROM T_DATABASE_REPORT WHERE USERID=";
+            String sql = "SELECT RID,USERID,TITLE,GENERATEDATE,DESCRIPTION FROM T_DATABASE_REPORT WHERE USERID=" + String.valueOf(uid);
             DBIResultSet ret = dbhelper.runSQLForResult(sql);
-            Debug.log(ret);
+            for (int i = 1; i <= ret.rowCount(); i++) {
+                Report rep = new Report();
+                rep.id = Integer.parseInt(ret.getData(i, 1, String.class));
+                rep.userid = Integer.parseInt(ret.getData(i, 2, String.class));
+                rep.title = ret.getData(i, 3, String.class);
+                rep.generatedate = ret.getData(i, 4, String.class);
+                rep.des = ret.getData(i, 5, String.class);
+                replist.add(rep);
+            }
         }
         return replist;
     }
-    
-    public static void main(String[] argv){
+
+    public static void main(String[] argv) {
         ReportManager rm = new ReportManager();
         Report rp = new Report();
-        Debug.log("addReport=",rm.addReport(43, rp));
-        Debug.log("getReport=",rm.getReport( 1));
-        Debug.log("getUserReportsList=",rm.getUserReportsList(43));
+        //Debug.log("addReport=",rm.addReport(43, rp));
+        Debug.log("getReport=", rm.getReport(1));
+        Debug.log("getUserReportsList=", rm.getUserReportsList(43));
     }
 
 }

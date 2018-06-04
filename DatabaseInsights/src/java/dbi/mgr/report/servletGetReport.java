@@ -27,6 +27,7 @@ package dbi.mgr.report;
 
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DataValidation;
+import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -58,6 +59,13 @@ public class servletGetReport extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         Boolean status = false;
         String sid = request.getSession().getId();
+        // check if user login first, if not, return error
+        if (!GlobeVar.OBJ_MANAGER_USER.validateSession(sid)) {
+            try (PrintWriter out = response.getWriter()) {
+                out.println(DBIDataExchange.makeupStatusCode(false, " No authentication."));
+            }
+            return;
+        }
         String gtype = request.getParameter("gtype");
         String strrepid = request.getParameter("repid");
         Report rp = new Report();
@@ -71,11 +79,13 @@ public class servletGetReport extends HttpServlet {
             ArrayList<Report> rps = GlobeVar.OBJ_MANAGER_REPORT.getUserReportsList(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid));
             ReportBean rb = new ReportBean();
             repliststr = rb.generateReportTable(rps);
+            status = true;
+            Debug.log("multi-report.length=", rps.size());
         }
 
         try (PrintWriter out = response.getWriter()) {
             if (status) {
-                if (null != gtype) {
+                if (null == gtype) {
                     out.println(DBIDataExchange.makeupReturnData(status, "success", rp));
                 } else {
                     out.println(DBIDataExchange.makeupReturnData(status, "success", repliststr));

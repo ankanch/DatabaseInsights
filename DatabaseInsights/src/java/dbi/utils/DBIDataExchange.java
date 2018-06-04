@@ -92,6 +92,32 @@ public class DBIDataExchange {
         return result;
     }
 
+    public static String makeupInternalExchangeData(ArrayList<ArrayList<Object>> data) {
+        String result = "";
+        result = data.stream().map((objlist) -> {
+            String row = "";
+            row = objlist.stream().map((obj) -> String.valueOf(obj) + SP_COLUMN).reduce(row, String::concat);
+            return row;
+        }).map((row) -> row + SP_ROW).reduce(result, String::concat);
+        return result;
+    }
+
+    public static DBIResultSet parse(String data) {
+        DBIResultSet ret = new DBIResultSet();
+        String[] dat = data.split(SP_MESSAGE);
+        String[] rows;
+        if (dat.length > 1) {
+            rows = dat[1].split(SP_ROW);
+        } else {
+            rows = dat[0].split(SP_ROW);
+        }
+        for (String row : rows) {
+            String[] cols = row.split(SP_COLUMN);
+            ret.addRow(cols);
+        }
+        return ret;
+    }
+
     public static void main(String[] args) {
         String[] a = {"test1", "test2", "test3"};
         String[][] c = {{"test1", "text11"}, {"test2", "text22"}, {"test3", "text33"}};

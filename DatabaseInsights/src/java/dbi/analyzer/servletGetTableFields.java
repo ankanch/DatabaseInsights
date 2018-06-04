@@ -63,7 +63,7 @@ public class servletGetTableFields extends HttpServlet {
         // check if user login first, if not, return error
         if (!um.validateSession(sid)) {
             try (PrintWriter out = response.getWriter()) {
-                DBIDataExchange.makeupStatusCode(false, " No authentication.");
+                out.println(DBIDataExchange.makeupStatusCode(false, " No authentication."));
             }
             return;
         }

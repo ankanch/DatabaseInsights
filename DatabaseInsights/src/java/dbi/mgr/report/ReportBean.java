@@ -78,9 +78,9 @@ public class ReportBean {
 
         for (Report rep : replist) {
             rows += MessageFormat.format(rowtemp, replist.indexOf(rep) + 1,
-                    terminated(rep.title,10),
+                    terminated(rep.title, 10),
                     rep.generatedate,
-                    terminated(rep.des,20),
+                    terminated(rep.des, 20),
                     transReportRelations(rep.relations),
                     rep.id);
         }
@@ -94,8 +94,11 @@ public class ReportBean {
         }
         return "Single";
     }
-    
-    public String terminated(String s, int len){
-        return s.substring(0,len);
+
+    public String terminated(String s, int len) {
+        if (s.length() >= len) {
+            return s.substring(0, len);
+        }
+        return s;
     }
 }

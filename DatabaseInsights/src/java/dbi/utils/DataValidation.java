@@ -25,6 +25,8 @@
  */
 package dbi.utils;
 
+import java.util.Base64;
+
 /**
  *
  * @author kanch
@@ -38,6 +40,14 @@ public class DataValidation {
             }
         }
         return false;
+    }
+    
+    public static String encodeToBase64(String s){
+        return Base64.getEncoder().encodeToString((s.getBytes()));
+    }
+    
+    public static String decodeFromBase64(String s){
+        return new String(Base64.getDecoder().decode(s));
     }
    
     

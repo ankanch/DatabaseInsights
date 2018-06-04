@@ -40,7 +40,7 @@ public class Report {
     public int id = 0;
     public int userid = 0;
     public String relations = ""; //存放参与分析的数据库表
-    public Date generatedate = new Date();
+    public String generatedate = "";
 
     public Report() {
     }

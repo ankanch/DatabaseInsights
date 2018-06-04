@@ -26,44 +26,21 @@
                 </form>
             </div>
             <hr/>
-            <table class="table table-striped"> 
-                <thead>               
-                    <tr>                     
-                        <th scope="col">#</th>           
-                        <th scope="col">TITLE</th>       
-                        <th scope="col">DATE</th>                  
-                        <th scope="col">DESCRIPTION</th>                 
-                        <th scope="col">RELATION</th>                    
-                        <th scope="col">Operations</th>               
-                    </tr>               
-                </thead>           
-                <tbody>                     
-                    <tr id="credtable_row_194">   
-                        <th scope="row" style="vertical-align: inherit;">1</th>     
-                        <td style="vertical-align: inherit;padding: 0rem;">      
-                            DatabaseInsights               
-                        </td>                        
-                        <td style="vertical-align: inherit;padding: 0rem;">                            
-                            cd.kcs.akakanch.com            
-                        </td>                        <td style="vertical-align: inherit;padding: 0rem;">                    
-                            dbaccount                
-                        </td>                      
-                        <td style="vertical-align: inherit;padding: 0rem;">                            
-                            Single Table
-                        </td>                       
-                        <td>   
-                            <button id="credtable_row_194_edit" type="button" class="btn btn-primary" onclick="inspect(194)">DETAILS</button>                      
-                            <button id="credtable_row_194_edit" type="button" class="btn btn-info" onclick="view(194)">View</button>                         
-                            <button type="button" class="btn btn-danger" onclick="del(194)">Delete</button>                      
-                        </td>                   
-                    </tr>               
-                </tbody>            
-            </table>
+            <div id="reportscontainer">
+            </div>
         </div>
     </div>
 </div>
 <script>
     $('#reports').bootstrapMaterialDesign();
+    
+    function getReports(){
+        GetDataF("getReport?gtype=1",function error(data){
+           showMsg("loading error :" + data.msg); 
+        }, function success(data){
+            $("#reportscontainer").html(data.data[0]);
+        });
+    }
     
     function view(){
         
@@ -76,4 +53,6 @@
     function inspect(){
         
     }
+    
+    getReports();
 </script>
