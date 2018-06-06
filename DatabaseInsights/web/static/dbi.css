@@ -306,3 +306,31 @@ h1 {
     font-weight:bolder;
     font-size:14px;
 }
+
+.console-report-details-note{
+    font-weight: 600;
+    font-size: .9rem;
+    font-style: italic;
+}
+
+.console-report-details-text{
+    font-weight: 100;
+    font-size: 1rem;
+    color: gray;
+    font-style: normal;
+}
+
+.console-floatbtn-rb-1{
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    box-shadow:0px 0px 3px rgba(0,0,0,0.5),3px 3px 3px rgba(0,0,0,0.25);
+}
+.console-floatbtn-rb-2{
+    position: fixed;
+    bottom: 95px;
+    right: 30px;
+    z-index: 99;
+    box-shadow:0px 0px 3px rgba(0,0,0,0.5),3px 3px 3px rgba(0,0,0,0.25);
+}

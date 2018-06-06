@@ -38,7 +38,7 @@ public class ReportBean {
     }
 
     public String generateReportTable(ArrayList<Report> replist) {
-        String ret = "<table class=\"table table-striped\"> "
+        String ret = "<table class=\"table table-striped\" id=\"report_table\"> "
                 + "                <thead>               "
                 + "                    <tr>                     "
                 + "                        <th scope=\"col\">#</th>           "

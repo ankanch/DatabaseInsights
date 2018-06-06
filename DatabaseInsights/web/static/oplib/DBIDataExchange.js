@@ -57,7 +57,7 @@ class DBIEX {
         }else{
             this.data.push(rows);
         }
-        console.log(this);
+        //console.log(this);
     }
 }
 
