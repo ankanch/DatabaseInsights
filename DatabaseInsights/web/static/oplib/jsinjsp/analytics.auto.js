@@ -71,7 +71,7 @@ function getCharts(v) {
         $("#card_title").text("Failed to load Auto Analytics,please try again later.");
     }, function success(data) {
         $("#card_title").text("Auto Analytics");
-        $("#chartslist").html("");
+        $("#chartslist").html(REPORT_HEAD);
         var pie = data.data;
         // data format-> row 1: chart count
         //               row 2: chart id list

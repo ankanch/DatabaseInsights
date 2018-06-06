@@ -54,7 +54,7 @@ function startAnalyze() {
             showMsg("error submit data.");
         },
         function success_func(data) {
-            $("#chartslist").html(CHART_CONTAINER_SAVE_REPORT);
+            $("#chartslist").html(CHART_CONTAINER_SAVE_REPORT + REPORT_HEAD);
             var line = data.data;
             console.log("line=" + line);
             // data format-> row 1: chart count

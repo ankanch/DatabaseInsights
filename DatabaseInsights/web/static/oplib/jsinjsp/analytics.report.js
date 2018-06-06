@@ -7,9 +7,14 @@
  *
  * 该文件负责首先分析完成后，生成 保存/下载报告的fab按钮，以及开始分析到得到分析结果这一段的逻辑
  */
+//用于添加标题头和报告描述头
+var REPORT_HEAD = `<div class="notes" style="width:1000px;height:150px;display:inline-block;">
+                        <input type="text" class="form-control console-reporttitle-input" id="report_title" placeholder="Add report title here." style="text-align: center;font-size: 3rem;font-weight: 600;">
+                        <textarea class="form-control" id="report_des" rows="4" placeholder="Write some description about this report." style="font-size: 1.1rem;"></textarea>
+                   </div>`;
 
 //报告生成后右下角的fab按钮
-var CHART_CONTAINER_SAVE_REPORT = `<button type="button" class="btn btn-info bmd-btn-fab btn-raised console-floatbtn-rb-1" onclick="savereport()">
+var CHART_CONTAINER_SAVE_REPORT = `<hr/><button type="button" class="btn btn-info bmd-btn-fab btn-raised console-floatbtn-rb-1" onclick="savereport()">
                                         <i class="material-icons">save</i><div class="ripple-container"></div>
                                        </button>
                                         <button type="button" class="btn btn-danger bmd-btn-fab console-floatbtn-rb-2" onclick="downloadreport()">
@@ -18,7 +23,7 @@ var CHART_CONTAINER_SAVE_REPORT = `<button type="button" class="btn btn-info bmd
 
 // 用于下载生成的报告
 function downloadreport() {
-
+    window.print();
 }
 
 // 用于保存报告到数据库
@@ -34,7 +39,15 @@ function savereport() {
     });
     var data = [noteslist,optionlist];
     var chartsdata = DBIEX.toString(data);
-    var repdata = encodeReport("","",chartsdata,"");
+    var title = $("#report_title").val();
+    var des = $("#report_des").val();
+    if(title.length < 1){
+        title = "no title specified";
+    }
+    if(des.length < 1){
+        des = " ";
+    }
+    var repdata = encodeReport(title,des,chartsdata,"");
     
     // send to sevlet
     SubmitFormKVF("addReport", {repdata:repdata}, function error(data){
