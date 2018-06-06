@@ -17,14 +17,35 @@ var CHART_CONTAINER_SAVE_REPORT = `<button type="button" class="btn btn-info bmd
                                        </button>`;
 
 // 用于下载生成的报告
-function downloadreport(){
-    
+function downloadreport() {
+
 }
 
 // 用于保存报告到数据库
-function savereport(){
+function savereport() {
     // 所有报告信息都存放在 chartslist 中
-    var notesdivlist = $("#chartslist > div > div > div.notes > textarea").each(function(){console.log("val=" + $(this).val());});
-    var optiondivlist = $("#chartslist > div > div > div.option").each(function(){console.log("val=" + $(this).html());});
+    var noteslist = [];
+    var optionlist = [];
+    $("#chartslist > div > div > div.notes > textarea").each(function () {
+        noteslist.push($(this).val());
+    });
+    $("#chartslist > div > div > div.option").each(function () {
+        optionlist.push( $(this).html());
+    });
+    var data = [noteslist,optionlist];
+    var chartsdata = DBIEX.toString(data);
+    var repdata = encodeReport("","",chartsdata,"");
+    
+    // send to sevlet
+    SubmitFormKVF("addReport", {repdata:repdata}, function error(data){
+        showMsg(data.msg);
+    }, function success(data){
+        showMsg(data.msg);
+    });
 
+}
+
+
+function encodeReport(title,des,chtdata,relations){
+    return title + "<@REPSP!>" + des + "<@REPSP!>" + chtdata + "<@REPSP!>" + relations;
 }

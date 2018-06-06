@@ -54,10 +54,29 @@ class DBIEX {
                     this.data.push(rowx);
                 }
             }
-        }else{
+        } else {
             this.data.push(rows);
         }
         //console.log(this);
+    }
+
+    static toString(arr) {
+        var SP_COLUMN = "<@C>";
+        var SP_ROW = "<@R>";
+        var SP_MESSAGE = "<@MSG>";
+        var ret = "";
+        arr.forEach(function (item, index, array) {
+            var rowstr = "";
+            item.forEach(function (item, index, array) {
+                if (item.length > 0) {
+                    rowstr += item + SP_COLUMN;
+                }else{
+                    rowstr += "no notes provided." + SP_COLUMN;
+                }
+            });
+            ret += rowstr + SP_ROW;
+        });
+        return "1" + SP_MESSAGE + ret;
     }
 }
 

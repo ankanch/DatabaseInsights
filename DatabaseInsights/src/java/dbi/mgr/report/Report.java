@@ -25,9 +25,8 @@
  */
 package dbi.mgr.report;
 
+import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
-import java.util.Date;
-
 /**
  *
  * @author kanch
@@ -46,12 +45,17 @@ public class Report {
     }
 
     public Report(String datastring) {
-        
+        String[] decoded = datastring.split("<@REPSP!>");
+        title = decoded[0];
+        des = decoded[1];
+        charts = DBIDataExchange.parse(decoded[2]);
+        relations = decoded[3];
     }
 
     @Override
     public String toString() {
-        return "Report{" + "title:" + title + ", des:" + des + ", charts:" + charts + ", id:" + id + ", userid:" + userid + ", generatedate:" + generatedate + '}';
+        return "{" + "title:" + title + ", des:" + des + ", charts:" + charts + ", id:" + id 
+                + ", userid:" + userid + ", generatedate:" + generatedate + ", relations:" + relations +'}';
     }
 
 }

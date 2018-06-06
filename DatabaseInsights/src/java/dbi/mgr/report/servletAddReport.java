@@ -61,6 +61,7 @@ public class servletAddReport extends HttpServlet {
         if (!DataValidation.containsNULL(repdata)) {
             Report rep = new Report(repdata);
             if (GlobeVar.OBJ_MANAGER_REPORT.addReport(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), rep)) {
+                GlobeVar.OBJ_MANAGER_REPORT.addReport(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), rep);
                 status = true;
             }
         }
