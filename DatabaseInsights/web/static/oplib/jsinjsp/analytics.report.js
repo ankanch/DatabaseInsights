@@ -23,5 +23,8 @@ function downloadreport(){
 
 // 用于保存报告到数据库
 function savereport(){
-    
+    // 所有报告信息都存放在 chartslist 中
+    var notesdivlist = $("#chartslist > div > div > div.notes > textarea").each(function(){console.log("val=" + $(this).val());});
+    var optiondivlist = $("#chartslist > div > div > div.option").each(function(){console.log("val=" + $(this).html());});
+
 }

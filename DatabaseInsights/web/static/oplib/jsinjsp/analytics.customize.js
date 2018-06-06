@@ -12,9 +12,10 @@
 var CHART_CONTAINER = `<div class="card">
                 <div class="card-body">
                     <div id="@ID" style="width: 800px;height:400px;display:inline-block;"></div>
-                    <div id="@ID_note" style="width:200px;height:400px;display:inline-block;">
-                        <textarea class="form-control" id="exampleTextarea" rows="14" placeholder="write notes here if you want to add more information about this chart."></textarea>
+                    <div class="notes" style="width:200px;height:400px;display:inline-block;">
+                        <textarea class="form-control" rows="14" placeholder="write notes here if you want to add more information about this chart."></textarea>
                     </div>
+                    <div class="option" style="display:none;">@OPTION</div>
                 </div>
             </div>`;
 
@@ -41,39 +42,34 @@ function startAnalyze() {
         summary = summary + document.getElementById("buttonnames_" + i.toString()).dataset.poolf + ",";
         instructions = instructions + document.getElementById("instructions_" + i.toString()).value + " ,";
     }
-    showMsg("generating...");
     SubmitFormKVF("/api/getCostomAnalyzeResult",
-    {tname: choosed_table,
-    dbname: choosed_db,
-    lastfields: lastfields,
-    fields: fields,
-    type: type,
-    summary: summary,
-    instructions: instructions},
-    function error_func(data) {
-        showMsg("error submit data.");
-    },
-    function success_func(data) {
-        $("#customizeret").html(CHART_CONTAINER_SAVE_REPORT);
-        var line = data.data;
-        console.log("line=" + line);
-        // data format-> row 1: chart count
-        //               row 2: chart id list
-        //               row 3: chart option list
-        // generate chart 
-        for (var i = 0; i < line[0]; i++) {
-            var chtid = line[1][i];
-            console.log("process " + i + "\t with id of " + chtid);
-            var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
-            console.log("id replaced");
-            $("#customizeret").append(chtcontainer);
-            console.log("container added");
-            option = eval(line[2][i]);
-            console.log("option evaled");
-            initChartWithOption(chtid, option);
-            console.log("chart generated");
-        }
-        $('#collapseTwo').collapse("show");
+        {tname: choosed_table,
+        dbname: choosed_db,
+        lastfields: lastfields,
+        fields: fields,
+        type: type,
+        summary: summary,
+        instructions: instructions},
+        function error_func(data) {
+            showMsg("error submit data.");
+        },
+        function success_func(data) {
+            $("#chartslist").html(CHART_CONTAINER_SAVE_REPORT);
+            var line = data.data;
+            console.log("line=" + line);
+            // data format-> row 1: chart count
+            //               row 2: chart id list
+            //               row 3: chart option list
+            // generate chart 
+            for (var i = 0; i < line[0]; i++) {
+                var chtid = line[1][i];
+                console.log("process " + i + "\t with id of " + chtid);
+                var chtcontainer = CHART_CONTAINER.replace("@ID", chtid).replace("@OPTION",line[2][i]);
+                $("#chartslist").append(chtcontainer);
+                option = eval(line[2][i]);
+                initChartWithOption(chtid, option);
+            }
+            $('#collapseTwo').collapse("show");
     });
 }
 

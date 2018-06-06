@@ -136,3 +136,4 @@ function GetDataF(url, error_func, success_func) {
         setProgressBar(false);
     });
 }
+

@@ -49,6 +49,7 @@ public class CustomizeAnalyzer {
         ArrayList<Chart> chtarr = new ArrayList<>();
         for (CustomizeJob job : jobs) {
             Debug.log("current process field=", job.column_name, "\ttype=", job.type, "\tpoolf=", job.pool_func);
+            Debug.log("chtarr.size()=", chtarr.size());
             switch (job.type) {
                 case CustomizeJob.TYPE_NUMBER:
                     switch (job.pool_func) {
@@ -71,7 +72,7 @@ public class CustomizeAnalyzer {
                             chtarr.add(generateSumationChart(job));
                             break;
                         default:
-                            ;
+                            break;
                     }
                     break;
                 case CustomizeJob.TYPE_TEXT:   // for text type, we generate pie chart
@@ -84,7 +85,9 @@ public class CustomizeAnalyzer {
                             break;
                         default:
                             chtarr.add(generateCountsChart(job));
+                            break;
                     }
+                    break;
                 case CustomizeJob.TYPE_BOOLEAN:  // for Boolean type ,we generate piechart
                     chtarr.add(generateCountsChart(job));
                     break;
@@ -93,7 +96,6 @@ public class CustomizeAnalyzer {
                     break;
             }
         }
-        Debug.log("chtarr.size()=", chtarr.size());
         return chtarr;
     }
 

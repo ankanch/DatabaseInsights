@@ -75,7 +75,7 @@
                 </h5>
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                <div class="card-body" id="customizeret">
+                <div class="card-body" id="chartslist">
                     <div class="alert alert-danger" role="alert" >
                         请完成第一步后，再查看分析结果
                     </div>

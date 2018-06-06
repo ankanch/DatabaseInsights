@@ -14,8 +14,9 @@ var CHART_CONTAINER = `<div class="card">
                 <div class="card-body">
                     <div id="@ID" style="width: 800px;height:400px;display:inline-block;"></div>
                     <div id="@ID_note" style="width:200px;height:400px;display:inline-block;">
-                        <textarea class="form-control" id="exampleTextarea" rows="14" placeholder="write notes here if you want to add more information about this chart."></textarea>
+                        <textarea class="form-control" rows="14" placeholder="write notes here if you want to add more information about this chart."></textarea>
                     </div>
+                    <div id="@ID_option" style="display:none;">@OPTION</div>
                 </div>
             </div>`;
 
@@ -78,11 +79,12 @@ function getCharts(v) {
         // generate chart 
         for (var i = 0; i < pie[0]; i++) {
             var chtid = pie[1][i];
-            var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
+            var chtcontainer = CHART_CONTAINER.replace("@ID", chtid).replace("@OPTION",pie[2][i]);
             $("#chartslist").append(chtcontainer);
             option = eval(pie[2][i]);
             initChartWithOption(chtid, option);
         }
+        $("#chartslist").append(CHART_CONTAINER_SAVE_REPORT);
     });
 
     //get line charts
@@ -97,7 +99,7 @@ function getCharts(v) {
         // generate chart 
         for (var i = 0; i < line[0]; i++) {
             var chtid = line[1][i];
-            var chtcontainer = CHART_CONTAINER.replace("@ID", chtid);
+            var chtcontainer = CHART_CONTAINER.replace("@ID", chtid).replace("@OPTION",line[2][i]);
             $("#chartslist").append(chtcontainer);
             option = eval(line[2][i]);
             initChartWithOption(chtid, option);
@@ -106,8 +108,5 @@ function getCharts(v) {
     //get histogram charts
     
     
-    // show report options
-    $("#chartslist").append(CHART_CONTAINER_SAVE_REPORT);
-
 }
 
