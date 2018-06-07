@@ -74,7 +74,6 @@ function startAnalyze() {
 }
 
     var choosed_table = "";
-
     var choosed_db = "";
 
     function chooseNumber(v) {

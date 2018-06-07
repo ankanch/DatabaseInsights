@@ -13,12 +13,16 @@
 var CHART_CONTAINER = `<div class="card">
                 <div class="card-body">
                     <div id="@ID" style="width: 800px;height:400px;display:inline-block;"></div>
-                    <div id="@ID_note" style="width:200px;height:400px;display:inline-block;">
+                    <div class="notes" style="width:200px;height:400px;display:inline-block;">
                         <textarea class="form-control" rows="14" placeholder="write notes here if you want to add more information about this chart."></textarea>
                     </div>
-                    <div id="@ID_option" style="display:none;">@OPTION</div>
+                    <div class="option" style="display:none;">@OPTION</div>
                 </div>
             </div>`;
+
+var choosed_table = "";
+var choosed_db = "";
+var fl = true;
 
 function initChartWithOption(id, option) {
     var myChart = echarts.init(document.getElementById(id));
@@ -43,6 +47,7 @@ function getDatabases() {
 function getTables(v) {
     var dbname = document.getElementById(v.id).innerText;
     document.getElementById("buttonMenu1").innerHTML = dbname;
+    choosed_db = dbname;
     SubmitFormKVF("/api/getTables", {dbname: dbname}, function error(data) {
         showMsg("Failed to load table list.");
     }, function success(data) {
@@ -62,7 +67,9 @@ function getCharts(v) {
     $("#chartslist").html("please wait while we loading your charts.");
     var tablename = document.getElementById(v.id).innerText;
     document.getElementById("buttonMenu2").innerHTML = tablename;
+    choosed_table = tablename;
     var dbname = document.getElementById("buttonMenu1").innerText;
+    fl = true;
 
     //get pie charts
     showMsg("Loading charts...");
@@ -71,8 +78,8 @@ function getCharts(v) {
         $("#card_title").text("Failed to load Auto Analytics,please try again later.");
     }, function success(data) {
         $("#card_title").text("Auto Analytics");
-        $("#chartslist").html(REPORT_HEAD);
         var pie = data.data;
+        firstLoad();
         // data format-> row 1: chart count
         //               row 2: chart id list
         //               row 3: chart option list
@@ -84,7 +91,6 @@ function getCharts(v) {
             option = eval(pie[2][i]);
             initChartWithOption(chtid, option);
         }
-        $("#chartslist").append(CHART_CONTAINER_SAVE_REPORT);
     });
 
     //get line charts
@@ -93,6 +99,7 @@ function getCharts(v) {
         // $("#card_title").text("Failed to load Auto Analytics,please try again later.");
     }, function success(data) {
         var line = data.data;
+         firstLoad();
         // data format-> row 1: chart count
         //               row 2: chart id list
         //               row 3: chart option list
@@ -107,6 +114,13 @@ function getCharts(v) {
     });
     //get histogram charts
     
-    
+}
+
+function firstLoad(){
+    if(fl){
+        var chartsdata = REPORT_HEAD + CHART_CONTAINER_SAVE_REPORT;
+        $("#chartslist").html(chartsdata);
+        fl = false;
+    }
 }
 

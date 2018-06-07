@@ -35,7 +35,6 @@ import dbi.utils.GlobeVar;
 import java.sql.Connection;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -59,9 +58,10 @@ public class ReportManager {
      */
     public boolean addReport(int uid, Report rep) {
         if (dbhelper.Connect()) {
-            String sql = "INSERT INTO T_DATABASE_REPORT VALUES({0},{1},{2},{3},{4})";
-            Date now = new Date();
-            sql = MessageFormat.format(sql, rep.userid, rep.title, now, rep.des,
+            String sql = "INSERT INTO T_DATABASE_REPORT VALUES({0},''{1}'',''{2}'',''{3}'',''{4}'')";
+            rep.userid = uid;
+            Debug.log("Report to be commited:",rep);
+            sql = MessageFormat.format(sql, rep.userid, rep.title, rep.generatedate, rep.des,
                     DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
             if (dbhelper.runSQL(sql)) {
                 return true;

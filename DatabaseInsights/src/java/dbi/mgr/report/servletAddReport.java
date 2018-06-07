@@ -61,16 +61,15 @@ public class servletAddReport extends HttpServlet {
         if (!DataValidation.containsNULL(repdata)) {
             Report rep = new Report(repdata);
             if (GlobeVar.OBJ_MANAGER_REPORT.addReport(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), rep)) {
-                GlobeVar.OBJ_MANAGER_REPORT.addReport(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), rep);
                 status = true;
             }
         }
 
         try (PrintWriter out = response.getWriter()) {
             if (status) {
-                out.println(DBIDataExchange.makeupStatusCode(status, "success"));
+                out.println(DBIDataExchange.makeupStatusCode(status, "Report has been saved. You can view it via Report Manager."));
             } else {
-                out.println(DBIDataExchange.makeupStatusCode(status, "error"));
+                out.println(DBIDataExchange.makeupStatusCode(status, "An error occured, please try again later."));
             }
         }
     }

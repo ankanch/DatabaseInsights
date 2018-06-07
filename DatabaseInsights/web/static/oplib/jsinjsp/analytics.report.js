@@ -41,19 +41,23 @@ function savereport() {
     var chartsdata = DBIEX.toString(data);
     var title = $("#report_title").val();
     var des = $("#report_des").val();
+    var relation = choosed_db + "->" + choosed_table + ";";
     if(title.length < 1){
         title = "no title specified";
     }
     if(des.length < 1){
         des = " ";
     }
-    var repdata = encodeReport(title,des,chartsdata,"");
-    
+    var repdata = encodeReport(title,des,chartsdata,relation);
+    if(repdata.length < 110 ){
+        showMsg("no charts selected!");
+        return;
+    }
     // send to sevlet
     SubmitFormKVF("addReport", {repdata:repdata}, function error(data){
-        showMsg(data.msg);
+        showMsg(data.message);
     }, function success(data){
-        showMsg(data.msg);
+        showMsg(data.message);
     });
 
 }
