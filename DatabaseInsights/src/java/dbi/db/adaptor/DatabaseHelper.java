@@ -25,6 +25,7 @@
  */
 package dbi.db.adaptor;
 
+import com.mysql.jdbc.StringUtils;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
@@ -125,18 +126,24 @@ public class DatabaseHelper {
     /**
     * 得到一个给定数据库的全部表的名字<br/>
     * 返回值：DBIResultSet，每一行是一个表名
+     * @param <error>
      */
-    public DBIResultSet getTables() {
+    public DBIResultSet getTables(String dbname) {
         DBIResultSet tables = new DBIResultSet();
         String table_name = "";
+        String tablename="";
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
             ResultSet rs = st.executeQuery(DBAdaptor.getTableList());
             // 遍历获取结果
-
+            if(databaseConfig.getDatabase()==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
+                tablename="Tables_in_"+ dbname;
+            }else if(databaseConfig.getDatabase()==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
+                tablename="table_name";
+            }
             while (rs.next()) {
-                table_name = rs.getString("table_name");
+                table_name = rs.getString(tablename);
                 tables.addToRow(table_name);
             }
             tables.finishRow();
@@ -176,13 +183,13 @@ public class DatabaseHelper {
     * 得到一个给定表的全部列的性质，并存入T_DATABASE_COLUMN表中<br/>
     * 返回值：DBIResultSet，每一行是一个列的全部性质
      */
-    public DBIResultSet getAllColumnSpecies(String table, int userid, int did) {
+    public DBIResultSet getAllColumnSpecies(String table, int userid, int did,DatabaseHelper dbhelper) {
         DBIResultSet getresult = runSQLForResult(DBAdaptor.findTablecolspe(table));
         DBIResultSet primary = runSQLForResult(DBAdaptor.findPrimaryKey(table));
         DBIResultSet foreign = runSQLForResult(DBAdaptor.findForeignKey(table));
         DBIResultSet tid=new DBIResultSet();
         DBIResultSet species=new DBIResultSet();
-        tid=runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='"+getresult.getRow(1).get(0)+"'");
+        tid=dbhelper.runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='"+getresult.getRow(1).get(0)+"'");
         int isPrimary = 0;
         int isRef = 0;
         for (int i = 1; i <= getresult.rowCount(); i++) {
@@ -209,7 +216,7 @@ public class DatabaseHelper {
             species.addToRow(isPrimary);
             species.addToRow(isRef);
             species.finishRow();
-            runSQL("insert into T_DATABASE_COLUMN(TID,DID,USERID,COLUMNNAME,DATATYPE,ISPRIMARY,ISFOREIGNKEY) \n"
+            dbhelper.runSQL("insert into T_DATABASE_COLUMN(TID,DID,USERID,COLUMNNAME,DATATYPE,ISPRIMARY,ISFOREIGNKEY) \n"
                     + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did 
                     + "," + userid + ",'" + getresult.getRow(i).get(1) + "','" 
                     + getresult.getRow(i).get(2) + "'," + isPrimary + "," + isRef + ")");

@@ -58,8 +58,7 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回数据库的全部表的列表的sql语句
      */     
     public String getTableList(){
-        return "SELECT TABLE_NAME\n" +
-                "FROM information_schema.tables";
+        return "show tables";
     }
     
     /**
@@ -116,10 +115,7 @@ public class MySQLAdaptor extends DatabaseAdaptor{
     * 返回值：String，返回查找外键的sql语句
      */      
     public String findTablecolspe(String table){
-        return "select  c.TABLE_NAME,c.COLUMN_NAME,t.DATA_TYPE " +
-                "from user_tab_columns  t,user_col_comments  c " +
-                " where t.table_name = c.table_name"
-                + " and t.column_name = c.column_name and t.table_name = '"+table+"'";
+        return "select table_name,column_name,data_type from information_schema.columns  where table_name='"+table+"'";
     }
     
     /**

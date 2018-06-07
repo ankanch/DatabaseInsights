@@ -34,6 +34,7 @@ public class DatabaseConfig {
     private String host;
     private String user;
     private String password;
+    private String dbname;
     
     public DatabaseConfig(int database,String driver,String host,String user,String password){
         this.driver=driver;
@@ -104,6 +105,7 @@ public class DatabaseConfig {
             if(dbcode == DatabaseCode.DATABASE_ORACLE_12C){
                 return makeUpJDBCHost(ORACLE_THIN,host,dbname);
             }else if(dbcode == DatabaseCode.DATABASE_MYSQL){
+                dbname=dbname+"?useSSL=true";
                 return makeUpJDBCHost(MYSQL,host,dbname);
             }
             return makeUpJDBCHost(ORACLE_THIN,host,dbname);

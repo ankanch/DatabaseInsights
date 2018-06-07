@@ -50,7 +50,6 @@ public class CredentialManager {
     public Boolean addCredential(String dbhost, String dbname, String dbuser, String dbpawd, String userid, String dbtype) {
         if (dbhelper.Connect()) {
             try {
-                
                 int rv = (int) dbhelper.executeOracleFunction("F_CREATE_CREDENTIAL(?,?,?,?,?,?)", dbhost, dbname, dbuser, dbpawd, userid, dbtype);
                 switch (rv) {
                     case 1:
@@ -83,26 +82,27 @@ public class CredentialManager {
             DatabaseHelper userdbhelper = new DatabaseHelper(userdbconfig);
             DBIResultSet column=null;            
             if(userdbhelper.Connect()){
-                DBIResultSet table = userdbhelper.getTables();
-                DBIResultSet did = userdbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
+                DBIResultSet did = dbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
+                DBIResultSet table = userdbhelper.getTables(dbname);
                 Debug.log(did.getRow(1).get(0));
                 int dids=Integer.valueOf((String)did.getRow(1).get(0));
                 for(int i=0;i<table.getRow(1).size();i++){
-                    userdbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.getRow(1).get(i)+"')");
+                    dbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.getRow(1).get(i)+"')");
                 }
-                DBIResultSet usid=userdbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
+                DBIResultSet usid=dbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
                 for(int i=0;i<table.getRow(1).size();i++){
-                    userdbhelper.getAllColumnSpecies((String)table.getRow(1).get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),dids);
+                    userdbhelper.getAllColumnSpecies((String)table.getRow(1).get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),
+                            dids,dbhelper);
                 }
-                  DBIResultSet selectforeign=userdbhelper.runSQLForResult("select columnname,colid from T_DATABASE_COLUMN where isforeignkey=1");
+                  DBIResultSet selectforeign=dbhelper.runSQLForResult("select columnname,colid from T_DATABASE_COLUMN where isforeignkey=1");
                   Debug.log(selectforeign.getRow(1));
                   System.out.println(selectforeign.rowCount());
                   System.out.println(selectforeign.getRow(2));
                   for(int jj=0;jj<selectforeign.rowCount();jj++){
-                      DBIResultSet pri=userdbhelper.runSQLForResult("select colid from T_DATABASE_COLUMN where isPrimary=1 and columnname='"
+                      DBIResultSet pri=dbhelper.runSQLForResult("select colid from T_DATABASE_COLUMN where isPrimary=1 and columnname='"
                               +selectforeign.getRow(jj+1).get(0)+"'");
                       Debug.log("pri.getRow(1).get(0):"+pri.getRow(1).get(0));
-                      userdbhelper.runSQL("update T_DATABASE_COLUMN set foreignkeyref="+
+                      dbhelper.runSQL("update T_DATABASE_COLUMN set foreignkeyref="+
                               Integer.valueOf(String.valueOf(pri.getRow(1).get(0)))
                               +" where colid="+Integer.valueOf(String.valueOf(selectforeign.getRow(jj+1).get(1))));
                   }
@@ -202,9 +202,12 @@ public class CredentialManager {
 
     public static void main(String[] args) {
         CredentialManager a = new CredentialManager();
-        Boolean q = a.addCredential("cd.kcs.akakanch.com", "DatabaseInsights", GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD,
-                "11DAD71A91396AAEE1B8D19DE406FDBD", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C));
+        Debug.log("validiateCreditial:",a.validiateCreditial(String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_MYSQL),
+                "cd.kcs.akakanch.com", "dbitest", "dbitest", "dbitest",DatabaseConfig.DatabaseCode.DATABASE_MYSQL));
+        Boolean q = a.addCredential("cd.kcs.akakanch.com", "dbitest", "dbitest", "dbitest",
+                "BCD0E71D46CB1F0C332886736DB63255", String.valueOf(DatabaseConfig.DatabaseCode.DATABASE_MYSQL));
         Debug.log("addCredential:",q);
+        /*
         q= a.deleteCredential("11DAD71A91396AAEE1B8D19DE406FDBD");
         Debug.log("deleteCredential:",q);
         q= a.alterCredential("11DAD71A91396AAEE1B8D19DE406FDBD","change name","change host","change password");
@@ -213,6 +216,7 @@ public class CredentialManager {
         Debug.log("getCredential:",s.getRows());
         q=a.validiateCreditial("", "change host", "change name", "", "", 0);
         Debug.log("validiateCreditial:",q);
+*/
     }
 
 }
