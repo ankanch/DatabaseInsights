@@ -29,12 +29,12 @@ function setProgressBar(type) {
     // check progress bar exist
     var pb = document.getElementById("progressbar");
     if (pb) {
-        if(type === true){
+        if (type === true) {
             //show progress bar
             pb.style.display = '';
-        }else{
+        } else {
             // hide progress bar
-            pb.style.display = 'none'; 
+            pb.style.display = 'none';
         }
         return true;
     }
@@ -137,3 +137,16 @@ function GetDataF(url, error_func, success_func) {
     });
 }
 
+function findGetParameter(parameterName) {
+    var result = null,
+            tmp = [];
+    location.search
+            .substr(1)
+            .split("&")
+            .forEach(function (item) {
+                tmp = item.split("=");
+                if (tmp[0] === parameterName)
+                    result = decodeURIComponent(tmp[1]);
+            });
+    return result;
+}

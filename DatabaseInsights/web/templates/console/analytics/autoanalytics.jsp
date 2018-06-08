@@ -46,6 +46,7 @@
 </div>
 
 <script src="static/oplib/jsinjsp/analytics.auto.js"></script>
+<script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
 <script src="static/oplib/jsinjsp/analytics.report.js"></script>
 <script>
     $('#analytics_auto').bootstrapMaterialDesign();

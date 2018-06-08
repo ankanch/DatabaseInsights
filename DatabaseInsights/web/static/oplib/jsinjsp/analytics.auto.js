@@ -24,11 +24,6 @@ var choosed_table = "";
 var choosed_db = "";
 var fl = true;
 
-function initChartWithOption(id, option) {
-    var myChart = echarts.init(document.getElementById(id));
-    myChart.setOption(option);
-}
-
 function getDatabases() {
     GetDataF("/api/getDatabases", function error(data) {
         showMsg("Failed to load database list.");

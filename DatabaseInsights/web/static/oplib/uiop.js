@@ -63,3 +63,7 @@ function GetCellValues(tableid, rowx, coly) {
     var table = document.getElementById(tableid);
     return table.rows[rowx-1].cells[coly-1].innerHTML;
 }
+
+function GetTableRow(tableid,rowx){
+    return document.getElementById(tableid).rows[rowx-1];
+}

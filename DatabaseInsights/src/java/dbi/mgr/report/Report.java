@@ -27,7 +27,6 @@ package dbi.mgr.report;
 
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
-import dbi.utils.Debug;
 import java.util.Date;
 
 /**
@@ -59,8 +58,14 @@ public class Report {
 
     @Override
     public String toString() {
-        return "{" + "title:" + title + ", des:" + des + ", id:" + id + ", userid:" + userid
-                + ", generatedate:" + generatedate + ", relations:" + relations + ", charts:" + charts + '}';
+        DBIResultSet ret = new DBIResultSet();
+        ret.addToRow(title);
+        ret.addToRow(des);
+        ret.addToRow(id);
+        ret.finishRow();
+        ret.addRow(charts.getRows().get(0));
+        ret.addRow(charts.getRows().get(1));
+        return  DBIDataExchange.makeupInternalExchangeData(ret.getRows()) ;
     }
 
 }

@@ -86,6 +86,7 @@
 </div>
 
 <script src="static/oplib/jsinjsp/analytics.customize.js"></script>
+<script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
 <script src="static/oplib/jsinjsp/analytics.report.js"></script>
 <script>
     $("#columnstable").hide();

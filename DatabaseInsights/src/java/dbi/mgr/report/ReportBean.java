@@ -71,7 +71,10 @@ public class ReportBean {
                 + "                            <button type=\"button\" class=\"btn btn-primary\" onclick=\"inspect({5})\">DETAILS</button>                      "
                 + "                            <button type=\"button\" class=\"btn btn-info\" onclick=\"view({5})\">View</button>                         "
                 + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({5})\">Delete</button>                      "
-                + "                             <input type=\"text\"  value=\"{5}\" style=\"display:none\">"
+                + "                             <input type=\"text\" class=\"report-id\" value=\"{5}\" style=\"display:none\">"
+                + "                             <input type=\"text\" class=\"report-relations\" value=\"{6}\" style=\"display:none\">"
+                + "                             <input type=\"text\" class=\"report-fulldes\" value=\"{7}\" style=\"display:none\">"
+                + "                             <input type=\"text\" class=\"report-fulltitle\" value=\"{8}\" style=\"display:none\">"
                 + "                        </td>                   "
                 + "                    </tr>";
         String rows = "";
@@ -82,7 +85,10 @@ public class ReportBean {
                     rep.generatedate,
                     terminated(rep.des, 20),
                     transReportRelations(rep.relations),
-                    rep.id);
+                    rep.id,
+                    rep.relations,
+                    rep.des,
+                    rep.title);
         }
 
         return ret.replace("@DATA", rows);

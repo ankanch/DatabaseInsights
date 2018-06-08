@@ -19,12 +19,6 @@ var CHART_CONTAINER = `<div class="card">
                 </div>
             </div>`;
 
-// 用于将图表option实例化
-function initChartWithOption(id, option) {
-    var myChart = echarts.init(document.getElementById(id));
-    myChart.setOption(option);
-}
-
 function showRowcolnum() {
     var tab = document.getElementById("columnstable");
     var rows = tab.rows.length;

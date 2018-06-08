@@ -53,32 +53,9 @@
         </div>
     </div>
 </div>
+<script src="static/oplib/jsinjsp/report.manager.js"></script>
+<script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
 <script>
     $('#reports').bootstrapMaterialDesign();
-
-    function getReports() {
-        GetDataF("getReport?gtype=1", function error(data) {
-            showMsg("loading error :" + data.msg);
-        }, function success(data) {
-            $("#reportscontainer").html(data.data[0]);
-        });
-    }
-
-    function view() {
-
-    }
-
-    function del() {
-
-    }
-
-    function inspect() {
-        $("#modelinfo_title").html(GetCellValues("report_table", 2, 2));
-        $("#modelinfo_created").html(GetCellValues("report_table", 2, 3));
-        $("#modelinfo_des").html(GetCellValues("report_table", 2, 4));
-        $("#modelinfo_ralation").html(GetCellValues("report_table", 2, 5));
-        $('#exampleModalCenter').modal('show');
-    }
-
     getReports();
 </script>
