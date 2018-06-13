@@ -32,9 +32,15 @@ import dbi.utils.DBIResultSet;
 import dbi.utils.DataValidation;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -60,7 +66,7 @@ public class ReportManager {
         if (dbhelper.Connect()) {
             String sql = "INSERT INTO T_DATABASE_REPORT VALUES({0},''{1}'',''{2}'',''{3}'',''{4}'')";
             rep.userid = uid;
-            Debug.log("Report to be commited:",rep);
+            Debug.log("Report to be commited:", rep);
             sql = MessageFormat.format(sql, rep.userid, rep.title, rep.generatedate, rep.des,
                     DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
             if (dbhelper.runSQL(sql)) {
@@ -109,12 +115,33 @@ public class ReportManager {
         return replist;
     }
 
+    public boolean saveReport(String content, String id) {
+        int count = 1000;//写文件行数
+        try {
+            File file = new File("../data/reports/"+id);
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        } catch (IOException ex) {
+            Debug.error(ex);
+            return false;
+        }
+        return true;
+    }
+
     public static void main(String[] argv) {
+        /*
         ReportManager rm = new ReportManager();
         Report rp = new Report();
         //Debug.log("addReport=",rm.addReport(43, rp));
         Debug.log("getReport=", rm.getReport(1));
         Debug.log("getUserReportsList=", rm.getUserReportsList(43));
+         */
+        ReportManager report = new ReportManager();
+        String test = "ghsadgshadsgadjghsajg";
+        Debug.log("写入文件是否成功：", report.saveReport(test, "test1"));
     }
 
 }

@@ -108,6 +108,9 @@ public class servletGetTableFields extends HttpServlet {
                 + "                            <td>"
                 + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\" id=\"instructions_{0}\">"
                 + "                            </td>"
+                + "                            <td>"
+                + "                               <button type=\"button\" id=\"antibutton(''{0}'')\" class=\"btn btn-primary\" onclick=\"disabledcolumn(''{0}'')\">禁用</button>"
+                + "                            </td>"
                 + "                        </tr>";
         StringBuilder a = new StringBuilder();
         System.out.println("ret.rowCount()" + ret.rowCount());
@@ -123,7 +126,7 @@ public class servletGetTableFields extends HttpServlet {
                 out.println(DBIDataExchange.makeupStatusCode(status, "No column!"));
             } else {
                 status = true;
-                out.println(DBIDataExchange.makeupReturnData(status, "the table field is:", a));
+                out.println(DBIDataExchange.makeupReturnData(status, "the table field is:", a+"***"+ret.rowCount()));
             }
         }
     }
