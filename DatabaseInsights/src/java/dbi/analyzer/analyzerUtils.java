@@ -56,7 +56,7 @@ public class analyzerUtils {
         this.table = table;
         dbhelper = new DatabaseHelper(dbconfig);
         if (dbhelper.Connect()) {
-            user = dbhelper.getUserdbhelper(this.uid);
+            user = dbhelper.getUserdbhelper(this.uid,database);
         }
     }
 

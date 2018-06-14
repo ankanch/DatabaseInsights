@@ -73,6 +73,7 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
         String tname = request.getParameter("tname");
         String lastfields = request.getParameter("lastfields");
         String newfields = request.getParameter("fields");
+        String dname= request.getParameter("dbname");
         String type = request.getParameter("type");
         String summary = request.getParameter("summary");
         String instructions = request.getParameter("instructions");
@@ -91,7 +92,7 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
                 jobs.addToRow(cj);
             }
             jobs.finishRow();
-            CustomizeAnalyzer ca = new CustomizeAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid),"DATABASE", tname);
+            CustomizeAnalyzer ca = new CustomizeAnalyzer(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid),dname, tname);
             ArrayList<Chart> charts = ca.generateCharts(jobs.toArray1D(CustomizeJob.class));
             ret.addToRow(charts.size());
             ret.finishRow();

@@ -109,7 +109,7 @@ public class servletGetTableFields extends HttpServlet {
                 + "                               <input type=\"text\" class=\"form-control\" style=\"width: 80%;\" id=\"instructions_{0}\">"
                 + "                            </td>"
                 + "                            <td>"
-                + "                               <button type=\"button\" id=\"antibutton(''{0}'')\" class=\"btn btn-primary\" onclick=\"disabledcolumn(''{0}'')\">禁用</button>"
+                + "                               <button type=\"button\" id=\"antibutton_{0}\" class=\"btn btn-primary\" onclick=\"disabledcolumn(''{0}'')\">禁用</button>"
                 + "                            </td>"
                 + "                        </tr>";
         StringBuilder a = new StringBuilder();

@@ -86,6 +86,7 @@ public class DatabaseHelper {
             try {
                 // 创建数据库连接
                 Class.forName(databaseConfig.getDriver());
+                Debug.log("dbhose=",databaseConfig.getHost(),"\tuname=",databaseConfig.getUsername(),"\tpwd=",databaseConfig.getPassword());
                 conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
             } catch (Exception e) {
                 Debug.error(e);
@@ -385,13 +386,13 @@ public class DatabaseHelper {
     }
     
     /**
-    * 得到指定uid的DatabaseHelper对象<br/>
+    * 得到指定uid，数据库名的DatabaseHelper对象<br/>
     * 返回值：boolean，返回指定uid的DatabaseHelper对象
      */
-    public DatabaseHelper getUserdbhelper(int uid){
+    public DatabaseHelper getUserdbhelper(int uid,String database){
         DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD,name from "
-                + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid"
-                + " and a.userid="+uid);
+                + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid and a.did=b.did"
+                + " and a.userid="+uid+" and NAME='"+database+"'");
         String dbtype=(String)result.getRow(1).get(1);
         String dbhost=(String)result.getRow(1).get(2);
         String username=(String)result.getRow(1).get(3);

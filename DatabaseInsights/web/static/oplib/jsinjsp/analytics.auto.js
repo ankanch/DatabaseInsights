@@ -38,9 +38,9 @@ function getDatabases() {
         element.innerHTML = str;
     });
 }
-
+var dbname;
 function getTables(v) {
-    var dbname = document.getElementById(v.id).innerText;
+    dbname = document.getElementById(v.id).innerText;
     document.getElementById("buttonMenu1").innerHTML = dbname;
     choosed_db = dbname;
     SubmitFormKVF("/api/getTables", {dbname: dbname}, function error(data) {
@@ -63,7 +63,6 @@ function getCharts(v) {
     var tablename = document.getElementById(v.id).innerText;
     document.getElementById("buttonMenu2").innerHTML = tablename;
     choosed_table = tablename;
-    var dbname = document.getElementById("buttonMenu1").innerText;
     fl = true;
 
     //get pie charts

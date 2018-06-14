@@ -82,14 +82,14 @@ public class CredentialManager {
             DatabaseHelper userdbhelper = new DatabaseHelper(userdbconfig);
             DBIResultSet column=null;            
             if(userdbhelper.Connect()){
-                DBIResultSet did = dbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"'"); 
+                DBIResultSet usid=dbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
+                DBIResultSet did = dbhelper.runSQLForResult("select did from T_DATABASE_INFO where name='"+dbname+"' and userid="+usid.getRow(1).get(0)); 
                 DBIResultSet table = userdbhelper.getTables(dbname);
                 Debug.log(did.getRow(1).get(0));
                 int dids=Integer.valueOf((String)did.getRow(1).get(0));
                 for(int i=0;i<table.getRow(1).size();i++){
                     dbhelper.runSQL("insert into T_DATABASE_TABLE(did,TNAME) values("+dids+",'"+table.getRow(1).get(i)+"')");
                 }
-                DBIResultSet usid=dbhelper.runSelect("userid", "T_DI_USER", "USESSION='"+userid+"'");
                 for(int i=0;i<table.getRow(1).size();i++){
                     userdbhelper.getAllColumnSpecies((String)table.getRow(1).get(i),Integer.valueOf(String.valueOf(usid.getRow(1).get(0))),
                             dids,dbhelper);
@@ -121,6 +121,7 @@ public class CredentialManager {
      * 返回值：boolean，成功返回true，失败返回false
      */
     public Boolean deleteCredential(String crdid) {
+        Debug.log("crdid:",crdid);
         if (dbhelper.Connect()) {
             try {
                 Object rv = dbhelper.executeOracleFunction("F_DELETE_CREDENTIAL(?)", crdid);

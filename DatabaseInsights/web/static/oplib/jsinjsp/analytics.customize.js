@@ -1,4 +1,4 @@
-<<<<<<< Upstream, based on origin/master
+
 /* 
  * The MIT License
  *
@@ -171,7 +171,7 @@ function startAnalyze() {
     }
 
 
-=======
+
 /* 
  * The MIT License
  *
@@ -408,4 +408,3 @@ function startAnalyze() {
     
 
 
->>>>>>> 0bc3afc 1.完成savereport 2.完成禁用取消
