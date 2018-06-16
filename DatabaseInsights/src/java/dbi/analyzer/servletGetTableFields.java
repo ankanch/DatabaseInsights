@@ -76,10 +76,11 @@ public class servletGetTableFields extends HttpServlet {
         //根据数据库名和表名取出其列的信息，取出列名和类型
         DatabaseHelper helper = new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
         helper.Connect();
-        String[] tables = {"T_DATABASE_COLUMN", "T_DATABASE_TABLE", "T_DATABASE_INFO"};
-        ret = helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
-                + "and T_DATABASE_INFO.did=T_DATABASE_COLUMN.DID "
-                + "and tname='" + table + "' and name='" + database + "'");
+        String[] tables = {"T_DATABASE_COLUMN", "T_DATABASE_TABLE", "T_DATABASE_INFO","T_DI_USER"};
+        ret = helper.runJoinSelect("columnname,datatype", tables, " T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
+                + "and T_DATABASE_INFO.did=T_DATABASE_COLUMN.DID and T_DATABASE_COLUMN.USERID=T_DI_USER.USERID "
+                + "and tname='"+table+"' and name='"+database+"' "
+                + "and T_DI_USER.USESSION='"+sid+"'");
         //根据上面DBIResultSet的内容，生成表，并返回主界面
         String str = "<tr>"
                 + "                            <th scope=\"row\" id=\"row_{0}\">{0}</th>"

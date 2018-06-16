@@ -27,6 +27,7 @@ package dbi.mgr.report;
 
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -53,7 +54,8 @@ public class Report {
         charts = DBIDataExchange.parse(decoded[2]);
         relations = decoded[3];
         Date now = new Date();
-        generatedate = now.toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+        generatedate = sdf.format(now);
     }
 
     @Override

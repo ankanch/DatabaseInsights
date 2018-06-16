@@ -301,8 +301,10 @@ public class UserManager {
         Debug.log("validateSession:",b);
         b=manager.checkPassword("30975E7ADB577CD3CD051823729AED26", "123");
         Debug.log("checkPassword:",b);
-        b=manager.loginInUser("TEST_P", "TEST_P", "30975E7ADB577CD3CD051823729AED26");
+        //b=manager.loginInUser("TEST_P", "TEST_P", "30975E7ADB577CD3CD051823729AED26");
         Debug.log("loginInUser:",b);
+        
+        Debug.log("getUserTables=",manager.getUserTables("5FF53CD720E945128945DE815D6E2047", "DatabaseInsights"));
     }
 
 }
