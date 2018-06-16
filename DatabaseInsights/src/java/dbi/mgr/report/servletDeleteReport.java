@@ -3,7 +3,7 @@
  *
  * *** Copyright © Long Zhang(kanch)
  * *** Email: kanchisme@gmail.com
- * *** Code created on Jun 03 2018
+ * *** Code created on Jun 16 2018
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletAddReport", urlPatterns = {"/addReport"})
-public class servletAddReport extends HttpServlet {
+@WebServlet(name = "servletDeleteReport", urlPatterns = {"/deleteReport"})
+public class servletDeleteReport extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,19 +67,17 @@ public class servletAddReport extends HttpServlet {
             return;
         }
         //- | --> ADD YOUR CODE BELOW
-        String repdata = request.getParameter("repdata");
-        if (!DataValidation.containsNULL(repdata)) {
-            Report rep = new Report(repdata);
-            if (GlobeVar.OBJ_MANAGER_REPORT.addReport(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid), rep)) {
+        String repid = request.getParameter("repid");
+        if (!DataValidation.containsNULL(repid)) {
+            if (GlobeVar.OBJ_MANAGER_REPORT.deleteReport(Integer.parseInt(repid))) {
                 status = true;
             }
         }
-
         try (PrintWriter out = response.getWriter()) {
             if (status) {
-                out.println(DBIDataExchange.makeupStatusCode(status, "Report has been saved. You can view it via Report Manager."));
+                out.println(DBIDataExchange.makeupStatusCode(status, "Report has been deleted."));
             } else {
-                out.println(DBIDataExchange.makeupStatusCode(status, "An error occured, please try again later."));
+                out.println(DBIDataExchange.makeupStatusCode(status, "An error occured when deleting, please try again later."));
             }
         }
     }

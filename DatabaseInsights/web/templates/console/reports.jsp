@@ -52,6 +52,26 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="delconfirm" tabindex="-2" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle1">Confirm Delete?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Once delete, you will not access this report anymore!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cencel</button>
+                    <button type="button" class="btn btn-primary" id="delcon">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="static/oplib/jsinjsp/report.manager.js"></script>
 <script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>

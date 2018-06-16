@@ -121,7 +121,6 @@ public class CredentialManager {
      * 返回值：boolean，成功返回true，失败返回false
      */
     public Boolean deleteCredential(String crdid) {
-        Debug.log("crdid:",crdid);
         if (dbhelper.Connect()) {
             try {
                 Object rv = dbhelper.executeOracleFunction("F_DELETE_CREDENTIAL(?)", crdid);

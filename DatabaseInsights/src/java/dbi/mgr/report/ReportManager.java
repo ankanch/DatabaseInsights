@@ -32,20 +32,8 @@ import dbi.utils.DBIResultSet;
 import dbi.utils.DataValidation;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.text.MessageFormat;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -53,14 +41,11 @@ import java.util.logging.Logger;
  */
 public class ReportManager {
 
-    private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper;
-    private ArrayList<Report> reportlist;
 
     public ReportManager() {
         dbhelper = new DatabaseHelper(dbconfig);
-        reportlist = new ArrayList<>();
         dbhelper.Connect();
     }
 
@@ -68,19 +53,19 @@ public class ReportManager {
     * 向给定用户添加一个分析报告
      */
     public boolean addReport(int uid, Report rep) {
-        //生成id
-        //存入文件
-        //插入id到数据库
-        Debug.log("uid:",Integer.toString(uid),",title:",rep.title,",descrption:",rep.des);
-                Debug.log("jjj:",DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
-        try{
+        Debug.log("uid:", Integer.toString(uid), ",title:", rep.title, ",descrption:", rep.des);
+        try {
             if (dbhelper.Connect()) {
-                int result=dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?)", 
-                        Integer.toString(uid),rep.title,rep.des,
+                int ret = dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?)",
+                        Integer.toString(uid), rep.title, rep.des,
                         DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
+                if (ret != 1) {
+                    Debug.log("error in save report");
+                    return false;
+                }
             }
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             Debug.error(e);
         }
         return false;
@@ -99,9 +84,24 @@ public class ReportManager {
             rep.title = ret.getData(1, 3, String.class);
             rep.generatedate = ret.getData(1, 4, String.class);
             rep.des = ret.getData(1, 5, String.class);
-            rep.charts = DBIDataExchange.parse(DataValidation.decodeFromBase64(ret.getData(1, 6, String.class)) );
+            rep.charts = DBIDataExchange.parse(DataValidation.decodeFromBase64(ret.getData(1, 6, String.class)));
         }
         return rep;
+    }
+
+    /*
+    * delete report by report id
+     */
+    public boolean deleteReport(int repid) {
+        if (dbhelper.Connect()) {
+            try {
+                dbhelper.executeOracleFunction("F_DELETE_REPORT(?)", String.valueOf(repid));
+            } catch (Exception e) {
+                Debug.error(e);
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -126,7 +126,7 @@ public class ReportManager {
     }
 
     public static void main(String[] argv) {
-        
+
         ReportManager report = new ReportManager();
         ReportManager rm = new ReportManager();
         Report rp = new Report();
@@ -134,8 +134,6 @@ public class ReportManager {
         Debug.log("getReport=", rm.getReport(105));
         Debug.log("getUserReportsList=", rm.getUserReportsList(48));
 
-        
-        
     }
 
 }

@@ -22,8 +22,23 @@ function view(rownum) {
     var w = window.open('report.viewfull.jsp?repid=' + repid, "report title", "height=640,width=1024");
 }
 
-function del() {
-
+function del(repid, tip) {
+    if (tip) {
+        $('#delconfirm').modal('show');
+        $("#delcon").click(function a() {
+            del(repid, false);
+        });
+    } else {
+        //delete
+        console.log("delete id=" + repid);
+        $('#delconfirm').modal('hide');
+        GetDataF("/deleteReport?repid=" + repid, function error(data) {
+            showMsg("error in deleting : " + data.message);
+        }, function success(data) {
+            showMsg(data.message);
+            $("#rep_" + repid).remove();
+        });
+    }
 }
 
 function inspect(rownum) {

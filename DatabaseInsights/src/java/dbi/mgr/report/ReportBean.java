@@ -54,7 +54,7 @@ public class ReportBean {
                 + "                </tbody>            "
                 + "            </table>";
 
-        String rowtemp = "<tr id=\"credtable_row_194\">   "
+        String rowtemp = "<tr id=\"rep_{5}\">   "
                 + "                        <th scope=\"row\" style=\"vertical-align: inherit;\">{0}</th>     "
                 + "                        <td style=\"vertical-align: inherit;padding: 0rem;\">      "
                 + "                            {1}               "
@@ -68,9 +68,9 @@ public class ReportBean {
                 + "                            {4}"
                 + "                        </td>                       "
                 + "                        <td>   "
-                + "                            <button type=\"button\" class=\"btn btn-primary\" onclick=\"inspect({5})\">DETAILS</button>                      "
-                + "                            <button type=\"button\" class=\"btn btn-info\" onclick=\"view({5})\">View</button>                         "
-                + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({5})\">Delete</button>                      "
+                + "                            <button type=\"button\" class=\"btn btn-primary\" onclick=\"inspect({0})\">DETAILS</button>                      "
+                + "                            <button type=\"button\" class=\"btn btn-info\" onclick=\"view({0})\">View</button>                         "
+                + "                            <button type=\"button\" class=\"btn btn-danger\" onclick=\"del({5},true)\">Delete</button>                      "
                 + "                             <input type=\"text\" class=\"report-id\" value=\"{5}\" style=\"display:none\">"
                 + "                             <input type=\"text\" class=\"report-relations\" value=\"{6}\" style=\"display:none\">"
                 + "                             <input type=\"text\" class=\"report-fulldes\" value=\"{7}\" style=\"display:none\">"
