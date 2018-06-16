@@ -348,7 +348,6 @@ public class DatabaseHelper {
      * 返回值：int，返回执行结果（成功与否）
      */
     public int executeOracleFunction(String funcDef, String... params) throws SQLException {
-
         String query = "{? = call @funcDef@}".replace("@funcDef@", funcDef);
         CallableStatement statement = conn.prepareCall(query);
         statement.registerOutParameter(1, Types.INTEGER);
