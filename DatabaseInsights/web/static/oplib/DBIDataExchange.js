@@ -61,6 +61,7 @@ class DBIEX {
     }
 
     static toString(arr) {
+        // input a 2d arr, and convert it to DBIResultSet format
         var SP_COLUMN = "<@C>";
         var SP_ROW = "<@R>";
         var SP_MESSAGE = "<@MSG>";

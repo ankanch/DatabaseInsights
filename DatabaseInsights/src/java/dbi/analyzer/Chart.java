@@ -35,12 +35,17 @@ import java.util.UUID;
  */
 public class Chart {
 
+    // single data chart
     public static final int CHART_PIECHART = 1;
     public static final int CHART_LINECHART = 2;
     public static final int CHART_HISTOGRAM = 3;
     public static final int CHART_SCATTER_AVERGAE = 4;
     public static final int CHART_HISTOGRAM_FULLAREA = 5;
     public static final int CHART_TREE_MAP = 6;
+    
+    //multiple data chart
+    public static final int CHARTM_PIECHART = 7;
+    public static final int CHARTM_TRENDCHART = 8;
 
     public int type = 0;
     public String id = "cht_";
