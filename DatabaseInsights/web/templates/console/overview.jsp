@@ -59,8 +59,32 @@
                 <h5><font size="5">Database Insights News</font></h5>
             </div>
             <div class="card-body">
-                <p class="card-title">用户名：</p>
-                <p class="card-text">test_test</p>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Database Insights v1.0 is online</h5>
+                            <small>3 days ago</small>
+                        </div>
+                        <p class="mb-1">After works on days and nights, exciting to announce Database Insights has now been out for use. The ...</p>
+                        <small>click to read more.</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Introduce analysis report!</h5>
+                            <small class="text-muted">1 week ago</small>
+                        </div>
+                        <p class="mb-1">We are happy to introduce a new function of Database Insights : Report System, which helps you ...</p>
+                        <small class="text-muted">click to read more.</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">Project landed.</h5>
+                            <small class="text-muted">2 month ago</small>
+                        </div>
+                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <small class="text-muted">click to read more.</small>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

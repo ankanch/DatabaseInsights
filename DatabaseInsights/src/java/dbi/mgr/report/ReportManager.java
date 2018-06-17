@@ -59,9 +59,10 @@ public class ReportManager {
         dbilog.log(String.valueOf(uid),DBILog.TYPE_INFO,"create a new report with title " + rep.title);
         try {
             if (dbhelper.Connect()) {
-                int ret = dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?)",
+                int ret = dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?,?)",
                         Integer.toString(uid), rep.title, rep.des,
-                        DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())));
+                        DataValidation.encodeToBase64(DBIDataExchange.makeupInternalExchangeData(rep.charts.getRows())),
+                        rep.relations);
                 if (ret != 1) {
                     Debug.log("error in save report");
                     return false;
@@ -88,6 +89,7 @@ public class ReportManager {
             rep.generatedate = ret.getData(1, 4, String.class);
             rep.des = ret.getData(1, 5, String.class);
             rep.charts = DBIDataExchange.parse(DataValidation.decodeFromBase64(ret.getData(1, 6, String.class)));
+            rep.relations = ret.getData(1, 7, String.class);
         }
         return rep;
     }
@@ -113,7 +115,7 @@ public class ReportManager {
     public ArrayList<Report> getUserReportsList(int uid) {
         ArrayList<Report> replist = new ArrayList<>();
         if (dbhelper.Connect()) {
-            String sql = "SELECT RID,USERID,TITLE,GENERATEDATE,DESCRIPTION FROM T_DATABASE_REPORT WHERE USERID=" + String.valueOf(uid);
+            String sql = "SELECT RID,USERID,TITLE,GENERATEDATE,DESCRIPTION,RELATION FROM T_DATABASE_REPORT WHERE USERID=" + String.valueOf(uid);
             DBIResultSet ret = dbhelper.runSQLForResult(sql);
             for (int i = 1; i <= ret.rowCount(); i++) {
                 Report rep = new Report();
@@ -122,6 +124,7 @@ public class ReportManager {
                 rep.title = ret.getData(i, 3, String.class);
                 rep.generatedate = ret.getData(i, 4, String.class);
                 rep.des = ret.getData(i, 5, String.class);
+                rep.relations = ret.getData(i, 6, String.class);
                 replist.add(rep);
             }
         }

@@ -95,6 +95,9 @@ public class ReportBean {
     }
 
     public String transReportRelations(String relations) {
+        if(relations == null){
+            return "None";
+        }
         if (relations.split(";").length > 1) {
             return "Multiple";
         }

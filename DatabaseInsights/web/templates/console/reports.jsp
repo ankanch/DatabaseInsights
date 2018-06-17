@@ -47,7 +47,7 @@
                     <p class="console-report-details-note">Relations:<span class="console-report-details-text" id="modelinfo_ralation">111</span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">View Full Report</button>
+                    <button type="button" class="btn btn-primary" id="viewfullreport">View Full Report</button>
                 </div>
             </div>
         </div>

@@ -47,6 +47,9 @@ function inspect(rownum) {
     $("#modelinfo_created").html(GetCellValues("report_table", rownum, 3));
     $("#modelinfo_des").html($(GetTableRow("report_table", rownum).cells[5]).find(".report-fulldes").val());
     $("#modelinfo_ralation").html($(GetTableRow("report_table", rownum).cells[5]).find(".report-relations").val());
+    $("#viewfullreport").click(function a() {
+        view(rownum-1);
+    });
     $('#exampleModalCenter').modal('show');
 }
 
