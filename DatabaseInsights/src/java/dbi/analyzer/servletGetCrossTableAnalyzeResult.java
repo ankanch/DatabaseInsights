@@ -28,8 +28,6 @@ package dbi.analyzer;
 import dbi.mgr.user.UserManager;
 import dbi.utils.DBIDataExchange;
 import dbi.utils.DBIResultSet;
-import dbi.utils.DataValidation;
-import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author kanch
  */
-@WebServlet(name = "servletGetCrossTableAnalyzeResult", urlPatterns = {"/getCrossTableAnalyzeResult"})
+@WebServlet(name = "servletGetCrossTableAnalyzeResult", urlPatterns = {"/api/getCrossTableAnalyzeResult"})
 public class servletGetCrossTableAnalyzeResult extends HttpServlet {
 
     /**

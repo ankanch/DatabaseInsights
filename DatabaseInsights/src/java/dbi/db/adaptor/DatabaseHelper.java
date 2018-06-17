@@ -25,7 +25,6 @@
  */
 package dbi.db.adaptor;
 
-import com.mysql.jdbc.StringUtils;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
@@ -86,7 +85,7 @@ public class DatabaseHelper {
             try {
                 // 创建数据库连接
                 Class.forName(databaseConfig.getDriver());
-                Debug.log("dbhose=",databaseConfig.getHost(),"\tuname=",databaseConfig.getUsername(),"\tpwd=",databaseConfig.getPassword());
+                //Debug.log("dbhose=",databaseConfig.getHost(),"\tuname=",databaseConfig.getUsername(),"\tpwd=",databaseConfig.getPassword());
                 conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
             } catch (Exception e) {
                 Debug.error(e);

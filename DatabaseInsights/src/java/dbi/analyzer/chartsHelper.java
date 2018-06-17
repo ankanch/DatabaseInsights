@@ -26,13 +26,31 @@
 package dbi.analyzer;
 
 import dbi.utils.DBIResultSet;
+import dbi.utils.Debug;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
  * @author kanch
  */
 public class chartsHelper {
+
+    public static ArrayList<Integer> generateXAxis(int start, int end) {
+        ArrayList<Integer> ai = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            ai.add(i);
+        }
+        return ai;
+    }
+    
+    public static String convertToStringArray(Set<String> set){
+        String ret = "";
+        for(String obj : set){
+            ret += "\"" + obj + "\",";
+        }
+        return "[" + ret.substring(0,ret.length()-1) + "]";
+    }
 
     /**
      * 生成饼状图。<br/>

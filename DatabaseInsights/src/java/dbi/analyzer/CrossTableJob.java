@@ -25,6 +25,7 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.Debug;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,19 +48,21 @@ public class CrossTableJob {
     public String graph_des = "";
     public int poolf = PF_COUNT;
     public int dtype = TYPE_TEXT;
-    public ArrayList<String[]> collist = new ArrayList<>();
-    public HashMap<String, String[]> hm = new HashMap<>();   // Table : {Database,Column} 
+    public ArrayList<String[]> collist = new ArrayList<>();     // element : [column name,col coments]
+    public HashMap<String, String> hmt = new HashMap<>();   // Table : {Database} 
+    public HashMap<String, String[]> hmc = new HashMap<>();   // Column : {Database,Table} 
 
-    public CrossTableJob(String gname, String gdes, String columns, String coltype, String poolf, String comments) {
-        graph_name = gname;
-        graph_des = gdes;
-        String[] cols = columns.split(";");
-        String[] colcoms = comments.split(";");
+    public CrossTableJob(Object gname, Object gdes, Object columns, Object coltype, Object poolf, Object comments) {
+        graph_name = String.valueOf(gname);
+        graph_des = String.valueOf(gdes);
+        String[] cols = String.valueOf(columns).split(";");          // element: DB->TB->COL
+        String[] colcoms = String.valueOf(comments).split(";");
         for (int i = 0; i < cols.length; i++) {
             String[] col = {cols[i], colcoms[i]};
             collist.add(col);
             String[] loc = cols[i].split("->");
-            hm.put(loc[1], new String[]{loc[0], loc[2]}); // Table : {Database,Column} 
+            hmt.put(loc[1], loc[0]); // Table : Database 
+            hmc.put(loc[2], new String[]{loc[0], loc[1]}); // Column : {Database,Table} 
         }
         switch (String.valueOf(coltype)) {
             case "type_number":
@@ -80,37 +83,6 @@ public class CrossTableJob {
                 break;
             default:
                 this.poolf = PF_COUNT;
-        }
-    }
-
-    public CrossTableJob(Object gname, Object gdes, Object columns, Object coltype, Object poolf, Object comments) {
-        graph_name = String.valueOf(gname);
-        graph_des = String.valueOf(gdes);
-        String[] cols = String.valueOf(columns).split(";");
-        String[] colcoms = String.valueOf(comments).split(";");
-        for (int i = 0; i < cols.length; i++) {
-            String[] col = {cols[i], colcoms[i]};
-            collist.add(col);
-        }
-        switch (String.valueOf(coltype)) {
-            case "type_number":
-                dtype = TYPE_NUMBER;
-                break;
-            default:
-                dtype = TYPE_TEXT;
-        }
-        switch (String.valueOf(poolf)) {
-            case "pf_trend":
-                poolf = PF_TREND;
-                break;
-            case "pf_min":
-                poolf = PF_MIN;
-                break;
-            case "pf_max":
-                poolf = PF_MAX;
-                break;
-            default:
-                poolf = PF_COUNT;
         }
     }
 }

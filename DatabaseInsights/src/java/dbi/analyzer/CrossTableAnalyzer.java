@@ -26,6 +26,7 @@
 package dbi.analyzer;
 
 import dbi.utils.DBILog;
+import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,56 +48,85 @@ public class CrossTableAnalyzer {
     public ArrayList<Chart> generateCharts(ArrayList<CrossTableJob> jobs) {
         ArrayList<Chart> chtarr = new ArrayList<>();
         for (CrossTableJob job : jobs) {
-            Debug.log("current process field=", job.graph_name);
+            Debug.log("current process field=", job.graph_name, "\tjob.dtype=", job.dtype, "\tjob.poolf=", job.poolf);
             Debug.log("chtarr.size()=", chtarr.size());
-            Debug.log("process");
-            HashMap<String, analyzerUtils> hm = new HashMap<>();
-            Debug.log("create db operator...");
-            for (String key : job.hm.keySet()) {
-                String[] dbcol = job.hm.get(key);
-                hm.put(dbcol[1], createAnalyzerUtils(dbcol[0], key)); //create db operate instance
-            }
-            Debug.log("start analyze");
             switch (job.dtype) {
                 case CrossTableJob.TYPE_NUMBER:
                     switch (job.poolf) {
                         case CrossTableJob.PF_TREND:
+                            chtarr.add(generateTrendChart(job));
                             break;
                         case CrossTableJob.PF_MAX:
+                            chtarr.add(generateMaxChart(job));
                             break;
                         case CrossTableJob.PF_MIN:
+                            chtarr.add(generateMinChart(job));
                             break;
                         default: //CrossTableJob.PF_COUNT;
-
+                            chtarr.add(generateCountChart(job));
                             break;
                     }
                     break;
                 default:    //TYPE_TEXT
-
+                    chtarr.add(generateCountChart(job));
                     break;
             }
-            for (String[] col : job.collist) {
-
-            }
-
         }
         return chtarr;
     }
 
-    private analyzerUtils createAnalyzerUtils(String database, String table) {
-        au = new analyzerUtils(uid, database, table);
-        return au;
+    private HashMap<String, analyzerUtils> createAnalyzerUtils(CrossTableJob job) {
+        HashMap<String, analyzerUtils> hmau = new HashMap<>();
+        for (String key : job.hmt.keySet()) {    //generate analyzerUtils instance by table name
+            String dbname = job.hmt.get(key);
+            if (!hmau.containsKey(key)) {
+                hmau.put(key, new analyzerUtils(uid, dbname, key)); //create db operate instance col: au
+            }
+        }
+        Debug.log("analyzerUtils instance generted count=", hmau.size());
+        return hmau;
+    }
+
+    /*
+    * this function will cut off data based on the shortest data column
+     */
+    private Chart generateTrendChart(CrossTableJob job) {
+        Debug.log("generate Trending chart");
+        HashMap<String, analyzerUtils> hmau = createAnalyzerUtils(job);
+        ArrayList<Object[]> coldatalist = new ArrayList<>();   // format: {colname,coldata}
+        int i = 1;
+        int minsize = Integer.MAX_VALUE;
+        for (String col : job.hmc.keySet()) { // loop over columns and comments
+            //Debug.log("retriving data from database", i++, "/", job.hmc.size(), "...");
+            DBIResultSet coldata = hmau.get(job.hmc.get(col)[1])
+                    .getColumnData(analyzerUtils.SORT_ASC, col); // get instance by table name
+            coldatalist.add(new Object[]{col, coldata});
+            //Debug.log("column", col, "=", coldata);
+            if (coldata.rowCount() <= minsize) {   // ready for cut off data 
+                minsize = coldata.rowCount();
+            }
+        }
+        //Debug.log("generate chart option for trending chart");
+        String ydata = "";
+        String xdata = chartsHelper.generateXAxis(0, minsize).toString();
+        String lengenddata = chartsHelper.convertToStringArray(job.hmc.keySet());
+        for (Object[] cc : coldatalist) {
+            String v = ChartOption.OPTION_TRENDM_DATA;
+            v = v.replace("@NAME", String.valueOf(cc[0])).replace("@DATA", (((DBIResultSet) cc[1]).toArray1D()).subList(0, minsize).toString());
+            ydata += v;
+        }
+        String option = ChartOption.OPTION_TRENDM.replace("@YDATA", ydata)
+                .replace("@XDATA", xdata)
+                .replace("@TITLE", job.graph_name)
+                .replace("@LEGEND_DATA", lengenddata);
+        Chart cht = new Chart(option, Chart.CHARTM_TRENDCHART);
+        return cht;
     }
 
     private Chart generateCountChart(CrossTableJob job) {
         Chart cht = new Chart("", Chart.CHARTM_PIECHART);
         return cht;
 
-    }
-
-    private Chart generateTrendChart(CrossTableJob job) {
-        Chart cht = new Chart("", Chart.CHARTM_TRENDCHART);
-        return cht;
     }
 
     private Chart generateMaxChart(CrossTableJob job) {
