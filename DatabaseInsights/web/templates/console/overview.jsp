@@ -4,6 +4,9 @@
     Author     : kanch
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="dbi.utils.GlobeVar"%>
+<%@page import="dbi.utils.DBILog"%>
 <%@page import="dbi.utils.DBIResultSet"%>
 <%@page import="dbi.localization.lang"%>
 <%@page import="java.util.HashMap"%>
@@ -94,8 +97,29 @@
                 <h5><font size="5">Recent Activities</font></h5>
             </div>
             <div class="card-body">
-                <p class="card-title">用户名：</p>
-                <p class="card-text">test_test</p>
+                <div class="list-group">
+                    <%
+                        DBILog dbilog = new DBILog();
+                        DBIResultSet dbirs = dbilog.getRecentLog(session.getId());
+                        if (dbirs == null || dbirs.rowCount() == 0) {
+                    %>
+                    No Recent Activities recorded.
+                    <%
+                    } else {
+                        for (ArrayList<Object> row : dbirs.getRows()) {
+                    %>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <small><%=row.get(3)%></small>
+                        </div>
+                        <p class="mb-1"><%=row.get(6)%></p>
+                        <small><%=row.get(4) + "->" + row.get(5)%></small>
+                    </a>
+                    <%
+                            }
+                        }
+                    %>
+                </div>
             </div>
         </div>
     </div>

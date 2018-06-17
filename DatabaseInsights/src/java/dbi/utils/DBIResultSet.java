@@ -70,18 +70,18 @@ public class DBIResultSet {
     public final void addRow(ArrayList<Object> row) {
         rs.add(row);
     }
-    
-    public final void addRow(Object[] row){
-        rs.add( new ArrayList<>(Arrays.asList(row)) );
+
+    public final void addRow(Object[] row) {
+        rs.add(new ArrayList<>(Arrays.asList(row)));
     }
 
-    public Object setValue(int row, int col , Object val){
-        ArrayList<Object> orgrow = rs.get(row-1);
-        orgrow.set(col-1, val);
-        rs.set(row-1, orgrow );
+    public Object setValue(int row, int col, Object val) {
+        ArrayList<Object> orgrow = rs.get(row - 1);
+        orgrow.set(col - 1, val);
+        rs.set(row - 1, orgrow);
         return val;
     }
-    
+
     /**
      * add current data to one temporery row
      */
@@ -114,11 +114,11 @@ public class DBIResultSet {
         return rs.get(row - 1).get(col - 1);
     }
 
-    public final<T> T getData(int row,int col, Class<T> cname){
-        Object obj = getData(row,col);
+    public final <T> T getData(int row, int col, Class<T> cname) {
+        Object obj = getData(row, col);
         return cname.cast(obj);
     }
-    
+
     // get all rows of current DBIResultSet
     public final ArrayList<ArrayList<Object>> getRows() {
         return rs;
@@ -141,8 +141,8 @@ public class DBIResultSet {
         }
         return arr;
     }
-    
-        /**
+
+    /**
      * parse DBIResultSet to ArrayList<Object>, only works when DBIResultSet is
      * n*1 or 1*n
      */
@@ -154,7 +154,7 @@ public class DBIResultSet {
             }
         } else if (colCount() == 1) {
             for (ArrayList<Object> objo : rs) {
-                arr.add( cname.cast(objo.get(0)));
+                arr.add(cname.cast(objo.get(0)));
             }
         }
         return arr;
