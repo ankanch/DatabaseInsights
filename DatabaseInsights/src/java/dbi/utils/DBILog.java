@@ -91,7 +91,7 @@ public class DBILog {
         }
     }
 
-    DBIResultSet searchlog(String uid, String time) {
+    public DBIResultSet searchlog(String uid, String time) {
         String times = "";
         DBIResultSet result = null;
         switch (time) {
@@ -121,6 +121,21 @@ public class DBILog {
             System.out.println("wrong");
         }
         return result;
+    }
+    
+    public DBIResultSet getRecentLog(String sid){
+        DBIResultSet dbirs = searchlog(String.valueOf(GlobeVar.OBJ_MANAGER_USER.getUIDbySessionID(sid)),"全部");
+        if(dbirs == null){
+            return null;
+        }
+        if(dbirs.rowCount()  < 5){
+            return dbirs;
+        }
+        DBIResultSet ret = new DBIResultSet();
+        for(int i=1;i<=5;i++){
+            ret.addRow(dbirs.getRow(i));
+        }
+        return ret;
     }
 
     public static void main(String args[]) {
