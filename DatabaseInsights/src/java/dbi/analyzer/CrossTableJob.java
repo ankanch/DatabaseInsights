@@ -48,9 +48,9 @@ public class CrossTableJob {
     public String graph_des = "";
     public int poolf = PF_COUNT;
     public int dtype = TYPE_TEXT;
-    public ArrayList<String[]> collist = new ArrayList<>();     // element : [column name,col coments]
     public HashMap<String, String> hmt = new HashMap<>();   // Table : {Database} 
     public HashMap<String, String[]> hmc = new HashMap<>();   // Column : {Database,Table} 
+    public HashMap<String,String> hmcomments = new HashMap<>();  // Column : comments
 
     public CrossTableJob(Object gname, Object gdes, Object columns, Object coltype, Object poolf, Object comments) {
         graph_name = String.valueOf(gname);
@@ -58,9 +58,8 @@ public class CrossTableJob {
         String[] cols = String.valueOf(columns).split(";");          // element: DB->TB->COL
         String[] colcoms = String.valueOf(comments).split(";");
         for (int i = 0; i < cols.length; i++) {
-            String[] col = {cols[i], colcoms[i]};
-            collist.add(col);
             String[] loc = cols[i].split("->");
+            hmcomments.put(loc[2], colcoms[i]);  // Column : comments
             hmt.put(loc[1], loc[0]); // Table : Database 
             hmc.put(loc[2], new String[]{loc[0], loc[1]}); // Column : {Database,Table} 
         }

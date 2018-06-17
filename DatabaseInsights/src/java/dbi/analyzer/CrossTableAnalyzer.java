@@ -99,7 +99,7 @@ public class CrossTableAnalyzer {
         for (String col : job.hmc.keySet()) { // loop over columns and comments
             //Debug.log("retriving data from database", i++, "/", job.hmc.size(), "...");
             DBIResultSet coldata = hmau.get(job.hmc.get(col)[1])
-                    .getColumnData(analyzerUtils.SORT_ASC, col); // get instance by table name
+                    .getColumnData(analyzerUtils.SORT_ASC, col); // get instance by table name,then get column data
             coldatalist.add(new Object[]{col, coldata});
             //Debug.log("column", col, "=", coldata);
             if (coldata.rowCount() <= minsize) {   // ready for cut off data 
@@ -123,10 +123,56 @@ public class CrossTableAnalyzer {
         return cht;
     }
 
+    /*
+    * only support 4 level circle graph
+     */
     private Chart generateCountChart(CrossTableJob job) {
-        Chart cht = new Chart("", Chart.CHARTM_PIECHART);
+        Debug.log("generate count chart");
+        HashMap<String, analyzerUtils> hmau = createAnalyzerUtils(job);
+        ArrayList<Object[]> coldatalist = new ArrayList<>();   // format: {colname,coldata}
+        int i = 1;
+        for (String col : job.hmc.keySet()) { // loop over columns and comments
+            Debug.log("retriving data from database", i++, "/", job.hmc.size(), "...");
+            DBIResultSet coldata = hmau.get(job.hmc.get(col)[1])
+                    .getColumnValueCounts(col); // get instance by table name,then get column data count
+            coldatalist.add(new Object[]{col, coldata});
+            Debug.log("column", col, "=", coldata);
+        }
+        String count_temp = " {value:@V, name:'@N'},";
+        String count_temp_selected = "{value:@V, name:'@N', selected:true},";
+        Debug.log("generate chart option for count(pie) chart");
+        ArrayList<String> radius = chartsHelper.computeRadius(coldatalist.size());
+        Debug.log("radius generated :", radius);
+        String data = "";
+        i = 0;
+        for (int t = 0; t < coldatalist.size(); t++) {  // we assure there must be more than two data set
+            Object[] cc = coldatalist.get(t);
+            String datatemp = "";
+            for (ArrayList<Object> arr : ((DBIResultSet) cc[1]).getRows()) {
+                if (i == 0 && t == 0) {
+                    datatemp += count_temp_selected.replace("@V", String.valueOf(arr.get(1)))
+                            .replace("@N", String.valueOf(arr.get(0)));
+                    i++;
+                } else {
+                    datatemp += count_temp.replace("@V", String.valueOf(arr.get(1)))
+                            .replace("@N", String.valueOf(arr.get(0)));
+                }
+            }
+            if (t + 1 == coldatalist.size()) {   // last one
+                data += ChartOption.OPTION_COUNTM_OUTERCIRCLE.replace("@TIP", job.hmcomments.get(String.valueOf(cc[0])))
+                        .replace("@RADIUS", radius.get(t))
+                        .replace("@YDATA", datatemp);
+                break;
+            }
+            data += ChartOption.OPTION_COUNTM_INNERCIRCLE.replace("@TIP", job.hmcomments.get(String.valueOf(cc[0])))
+                    .replace("@RADIUS", radius.get(t))
+                    .replace("@YDATA", datatemp);
+        }
+        String option = ChartOption.OPTION_COUNTM.replace("@TITLE", job.graph_name)
+                .replace("@LEGNED_DATA", "[]")
+                .replace("@DATA", data);
+        Chart cht = new Chart(option, Chart.CHARTM_PIECHART);
         return cht;
-
     }
 
     private Chart generateMaxChart(CrossTableJob job) {

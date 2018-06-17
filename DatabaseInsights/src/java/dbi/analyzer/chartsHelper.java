@@ -43,13 +43,29 @@ public class chartsHelper {
         }
         return ai;
     }
-    
-    public static String convertToStringArray(Set<String> set){
+
+    public static String convertToStringArray(Set<String> set) {
         String ret = "";
-        for(String obj : set){
+        for (String obj : set) {
             ret += "\"" + obj + "\",";
         }
-        return "[" + ret.substring(0,ret.length()-1) + "]";
+        return "[" + ret.substring(0, ret.length() - 1) + "]";
+    }
+
+    public static ArrayList<String> computeRadius(int chartsum) {
+        ArrayList<String> radiusset = new ArrayList<>();
+        // first pie chart
+        int pre = 100 / (chartsum + 1);
+        radiusset.add("['0%','" + String.valueOf(pre) + "%']");
+        // generate the rest
+        double rest = (89 - pre) / (chartsum - 1);
+        double space = rest * 0.3;  // 30% of graph used for space
+        double lower = pre;
+        for (int i = 1; i < chartsum; i++) {
+            radiusset.add("['" + String.valueOf(lower + space) + "%','" + String.valueOf(lower + rest) + "%']");
+            lower += rest;
+        }
+        return radiusset;
     }
 
     /**
