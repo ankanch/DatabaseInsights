@@ -57,11 +57,6 @@
     <hr class="console-nav-split"><span class="console-nav-split-text"><%=local.getString(langID.JSP_NAV_SIDE_TITLE_DATABASE) %></span>
     <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-            <a class="nav-link console-siderbar" data-url="/templates/console/logs" href="javascript:">
-                <i class="material-icons console-sidebar-icon-text">content_cut</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_OTHERS) %></span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link console-siderbar" data-url="/templates/console/credentials" href="javascript:">
                 <i class="material-icons console-sidebar-icon-text">archive</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_CREDENTIALS) %></span>
             </a>

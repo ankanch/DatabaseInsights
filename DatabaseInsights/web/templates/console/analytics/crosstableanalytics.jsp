@@ -66,13 +66,13 @@
 
         function addtoColumn(a, v) {
             var neirong = document.getElementById("col_" + a + "_" + v).innerHTML;
-            document.getElementById("buttonMenu_3_"+ a).innerHTML=neirong;
+            document.getElementById("buttonMenu_3_" + a).innerHTML = neirong;
         }
-        
-        function addCol(a){
-            console.log("neirong_"+a);
-            var neirong = document.getElementById("buttonMenu_3_"+a).innerHTML;
-            $("neirong_"+a).append("<tr><th>"+neirong+"</th><th>Savings</th></tr>");
+
+        function addCol(a) {
+            console.log("neirong_" + a);
+            $("#neirong_" + a).html($("#neirong_" + a).html() + `<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>`);
+            $('.modal').modal('hide');
         }
 
         function deletecolumn(v) {
@@ -129,68 +129,64 @@
                     "        </div>" +
                     "" +
                     "        <div class=\"card-body bg-light\">" +
-                    "               <table class=\"table table-striped text-dark\" id=\"neirong_ssss\">" +
-                    "                   <tbody>" +
-                    "                           <tr></tr>" +
+                    "               <table class=\"table table-striped text-dark\">" +
+                    "                   <tbody id=\"neirong_ssss\">" +
                     "                   </tbody>" +
                     "        </table>" +
                     "        </div>" +
                     "    </div>";
-            var yincang = "<div class=\"modal fade\" id=\"myModal_ssss\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">" +
-                    "    <div class=\"modal-dialog\" role=\"document\">" +
-                    "        <div class=\"modal-content\">" +
-                    "            <div class=\"modal-header\">" +
-                    "                <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\">添加行</button>" +
-                    "            </div>" +
-                    "            <div class=\"modal-body\">" +
-                    "                <table class=\"table\">" +
-                    "                    <tbody>" +
-                    "                        <tr>" +
-                    "                            <th scope=\"row\">1</th>" +
-                    "                            <td>" +
-                    "                                <div class=\"btn-group\">" +
-                    "                                    <button type=\"button\" id=\"buttonMenu_1_ssss\" onclick=\"getDatabase(ssss)\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
-                    "                                        select databases" +
-                    "                                    </button>" +
-                    "                                    <div class=\"dropdown-menu\" id=\"showDatabase_ssss\">" +
-                    "                                    </div>" +
-                    "                                </div>" +
-                    "                            </td>" +
-                    "                        </tr>" +
-                    "                        <tr>" +
-                    "                            <th scope=\"row\">2</th>" +
-                    "                            <td>" +
-                    "                                <div class=\"btn-group\">" +
-                    "                                    <button type=\"button\" id=\"buttonMenu_2_ssss\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
-                    "                                        select tables" +
-                    "                                    </button>" +
-                    "                                    <div class=\"dropdown-menu\" id=\"showTables_ssss\">" +
-                    "                                    </div>" +
-                    "                                </div>" +
-                    "                            </td>" +
-                    "                        </tr>" +
-                    "                        <tr>" +
-                    "                            <th scope=\"row\">3</th>" +
-                    "                            <td>" +
-                    "                                <div class=\"btn-group\">" +
-                    "                                    <button type=\"button\" id=\"buttonMenu_3_ssss\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
-                    "                                        select column" +
-                    "                                    </button>" +
-                    "                                    <div class=\"dropdown-menu\" id=\"showColumns_ssss\">" +
-                    "                                    </div>" +
-                    "                                </div>" +
-                    "                            </td>" +
-                    "                        </tr>" +
-                    "                    </tbody>" +
-                    "                </table>" +
-                    "            </div>" +
-                    "            <div class=\"modal-footer\">" +
-                    "                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>关闭</button>" +
-                    "                <button type=\"button\" onclick=\"addCol(ssss)\" id=\"btn_submit\" class=\"btn btn-primary\" ><span class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></span>添加</button>" +
-                    "            </div>" +
-                    "        </div>" +
-                    "    </div>" +
-                    "</div>";
+            var yincang = `<div class="modal fade" id="myModal_ssss" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                       <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                               <div class="modal-header">
+                                   添加新行
+                               </div>
+                               <div class="modal-body">
+                                   <table class="table">
+                                       <tbody>
+                                           <tr>
+                                               <td>
+                                                   <div class="btn-group">
+                                                       <button type="button" id="buttonMenu_1_ssss" onclick="getDatabase(ssss)" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                           select databases
+                                                       </button>
+                                                       <div class="dropdown-menu" id="showDatabase_ssss">
+                                                       </div>
+                                                   </div>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td>
+                                                   <div class="btn-group">
+                                                       <button type="button" id="buttonMenu_2_ssss" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                           select tables
+                                                       </button>
+                                                       <div class="dropdown-menu" id="showTables_ssss">
+                                                       </div>
+                                                   </div>
+                                               </td>
+                                           </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" id="buttonMenu_3_ssss" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            select column
+                                                        </button>
+                                                        <div class="dropdown-menu" id="showColumns_ssss">
+                                                       </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                                    <button type="button" onclick="addCol(ssss)" id="btn_submit" class="btn btn-primary" ><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>添加</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
             var zong = html + yincang;
             $("#tablediv").append(zong.replace(/ssss/g, iii));
             console.log("zong:" + zong);
