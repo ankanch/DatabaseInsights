@@ -25,6 +25,7 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.DBILog;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import java.util.ArrayList;
@@ -37,15 +38,18 @@ public class CustomizeAnalyzer {
 
     private int uid = -1;
     private String table = "";
+    private DBILog dbilog;
     private analyzerUtils au;
 
     public CustomizeAnalyzer(int uid, String database, String table) {
         this.uid = uid;
         this.table = table;
         au = new analyzerUtils(this.uid, database, table);
+        dbilog = new DBILog(database,table,uid);
     }
 
     public ArrayList<Chart> generateCharts(ArrayList<CustomizeJob> jobs) {
+        dbilog.log("perform customize analysis.");
         ArrayList<Chart> chtarr = new ArrayList<>();
         for (CustomizeJob job : jobs) {
             Debug.log("current process field=", job.column_name, "\ttype=", job.type, "\tpoolf=", job.pool_func);

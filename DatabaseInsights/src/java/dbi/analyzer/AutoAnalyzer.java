@@ -25,6 +25,7 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.DBILog;
 import dbi.utils.DBIResultSet;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
@@ -40,6 +41,7 @@ public class AutoAnalyzer {
     private int uid = -1;
     private String table = "";
     private String database = "";
+    private DBILog dbilog;
     private analyzerUtils au;
 
     public AutoAnalyzer(int uid,String database, String table) {
@@ -47,9 +49,11 @@ public class AutoAnalyzer {
         this.table = table;
         this.database = database;
         au = new analyzerUtils(this.uid,database,table);
+        dbilog = new DBILog(database,table,uid);
     }
 
     public ArrayList<Chart> getAutoCharts(int chttype) {
+        dbilog.log("perform automatic analysis.");
         switch (chttype) {
             case Chart.CHART_HISTOGRAM:
                 return getAutoHistogramCharts();

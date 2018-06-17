@@ -28,11 +28,11 @@ package dbi.mgr.report;
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
 import dbi.utils.DBIDataExchange;
+import dbi.utils.DBILog;
 import dbi.utils.DBIResultSet;
 import dbi.utils.DataValidation;
 import dbi.utils.Debug;
 import dbi.utils.GlobeVar;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -43,10 +43,12 @@ public class ReportManager {
 
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
     private final DatabaseHelper dbhelper;
+    private DBILog dbilog;
 
     public ReportManager() {
         dbhelper = new DatabaseHelper(dbconfig);
         dbhelper.Connect();
+        dbilog = new DBILog();
     }
 
     /*
@@ -54,6 +56,7 @@ public class ReportManager {
      */
     public boolean addReport(int uid, Report rep) {
         Debug.log("uid:", Integer.toString(uid), ",title:", rep.title, ",descrption:", rep.des);
+        dbilog.log(String.valueOf(uid),DBILog.TYPE_INFO,"create a new report with title " + rep.title);
         try {
             if (dbhelper.Connect()) {
                 int ret = dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?)",

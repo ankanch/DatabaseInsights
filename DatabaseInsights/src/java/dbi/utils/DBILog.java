@@ -26,9 +26,7 @@ package dbi.utils;
 
 import dbi.db.adaptor.DatabaseConfig;
 import dbi.db.adaptor.DatabaseHelper;
-import java.sql.Connection;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -37,122 +35,58 @@ import java.util.Date;
  */
 public class DBILog {
 
-    public class DBILogItem {
-
-        public int userid;
-        public int log_type;
-        public String dbname;
-        public String tname;
-        public String message;
-        public String logtime;
-
-        @Override
-        public String toString() {
-            return " VALUES(" + userid + "," + log_type + ",'" + logtime + "','" + dbname + "','" + tname + "','" + message + "') ";
-        }
-    }
-
     public String dbname;
     public String tname;
     public int userid;
-    private ArrayList<DBILogItem> reportlist = new ArrayList<>();
-    private Connection conn;
     private final DatabaseConfig dbconfig = GlobeVar.VAR_DATABASE_CONFIG;
-    private final DatabaseHelper dbhelper = new DatabaseHelper(dbconfig);
-    private static final int TYPE_INFO = 1000;
-    private static final int TYPE_ERROR = 1005;
-    private static final int TYPE_WARNING = 1010;
+    private final DatabaseHelper dbhelper;
+    private final SimpleDateFormat df;
+    public static final int TYPE_INFO = 1000;
+    public static final int TYPE_ERROR = 1005;
+    public static final int TYPE_WARNING = 1010;
 
     public DBILog(String dbname, String tname, int userid) {
         this.dbname = dbname;
         this.tname = tname;
         this.userid = userid;
+        dbhelper = new DatabaseHelper(dbconfig);
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:s");
     }
 
     public DBILog() {
+        this.dbhelper = new DatabaseHelper(dbconfig);
+        df = new SimpleDateFormat("yyyy-MM-dd HH:mm:s");
     }
-    
-    void log(int userid, int type, String dbname, String tbname, String message) {
-        DBILogItem logitem = new DBILogItem();
+
+    public void log(String message) {
         Date day = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String localtime = df.format(day);
-        logitem.userid = userid;
-        logitem.log_type = type;
-        logitem.logtime = localtime;
-        logitem.dbname = dbname;
-        logitem.tname = tbname;
-        logitem.message = message;
-        reportlist.add(logitem);
+        commit(" VALUES(" + userid + ",1000" + ",TO_DATE('" + df.format(day) + "','yyyy-mm-dd hh24:mi:ss'),'"
+                + dbname + "','" + tname + "','" + message + "') ");
     }
 
-    void log(int type, String message) {
-        DBILogItem logitem = new DBILogItem();
+    public void log(String uid, int type, String message) {
         Date day = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String localtime = df.format(day);
-        logitem.userid = userid;
-        logitem.log_type = type;
-        logitem.logtime = localtime;
-        logitem.dbname = dbname;
-        logitem.tname = tname;
-        logitem.message = message;
-        reportlist.add(logitem);
+        commit(" VALUES(" + uid + "," + String.valueOf(type) + ",TO_DATE('" + df.format(day)
+                + "','yyyy-mm-dd hh24:mi:ss'),'N/A','N/A','" + message + "') ");
     }
 
-    void logInfo(String message) {
-        DBILogItem logitem = new DBILogItem();
+    public void logError(String message) {
         Date day = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String localtime = df.format(day);
-        logitem.userid = userid;
-        logitem.log_type = TYPE_INFO;
-        logitem.logtime = localtime;
-        logitem.dbname = dbname;
-        logitem.tname = tname;
-        logitem.message = message;
-        reportlist.add(logitem);
+        commit(" VALUES(" + userid + ",1005" + ",TO_DATE('" + df.format(day) + "','yyyy-mm-dd hh24:mi:ss'),'"
+                + dbname + "','" + tname + "','" + message + "') ");
     }
 
-    void logError(String message) {
-        DBILogItem logitem = new DBILogItem();
+    public void logWarning(String message) {
         Date day = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String localtime = df.format(day);
-        logitem.userid = userid;
-        logitem.log_type = TYPE_ERROR;
-        logitem.logtime = localtime;
-        logitem.dbname = dbname;
-        logitem.tname = tname;
-        logitem.message = message;
-        reportlist.add(logitem);
+        commit(" VALUES(" + userid + ",1010" + ",TO_DATE('" + df.format(day) + "','yyyy-mm-dd hh24:mi:ss'),'"
+                + dbname + "','" + tname + "','" + message + "') ");
     }
 
-    void logWarning(String message) {
-        DBILogItem logitem = new DBILogItem();
-        Date day = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String localtime = df.format(day);
-        logitem.userid = userid;
-        logitem.log_type = TYPE_WARNING;
-        logitem.logtime = localtime;
-        logitem.dbname = dbname;
-        logitem.tname = tname;
-        logitem.message = message;
-        reportlist.add(logitem);
-    }
-
-    void log(DBILogItem logitem) {
-        reportlist.add(logitem);
-    }
-
-    void commit() {
+    private void commit(String insertvals) {
         if (dbhelper.Connect()) {
-            for (DBILogItem logitem : reportlist) {
-                String sql = "INSERT INTO T_DI_LOG" + logitem;
-                if (dbhelper.runSQL(sql)) {
-                    System.out.println("success:" + sql);
-                }
+            String sql = "INSERT INTO T_DI_LOG(USERID,LTYPE,LDATE,LDBNAME,LTNAME,LMESSAGE) " + insertvals;
+            if (!dbhelper.runSQL(sql)) {
+                Debug.error("DBILog error.");
             }
         }
     }
@@ -190,5 +124,9 @@ public class DBILog {
     }
 
     public static void main(String args[]) {
+        DBILog dbilog = new DBILog("DatabaseInsights", "T_DI_USER", 43);
+        dbilog.log("user logged in.");
+        dbilog.logWarning("try to login, but password incorrect.");
+        dbilog.logError("Password incorrect for 10 times");
     }
 }

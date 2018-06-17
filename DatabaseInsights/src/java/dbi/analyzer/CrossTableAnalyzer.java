@@ -25,6 +25,7 @@
  */
 package dbi.analyzer;
 
+import dbi.utils.DBILog;
 import dbi.utils.Debug;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class CrossTableAnalyzer {
 
     private int uid = -1;
     private analyzerUtils au;
+    private DBILog dbilog;
 
     public CrossTableAnalyzer(int uid) {
         this.uid = uid;
