@@ -119,8 +119,8 @@ public class AutoAnalyzer {
         Debug.log("Generate linecharts...--------cur chart_list.length=", charts_list.size());
         ArrayList<String> cols = new ArrayList<>();
         for (int i = 1; i <= colSpecies.rowCount(); i++) {
-            Debug.log("-Detecting column with type ", colSpecies.getRow(i).get(5));
-            if (colSpecies.getRow(i).get(5).equals("NUMBER")) {
+            //Debug.log("-Detecting column with type ", colSpecies.getRow(i).get(5));
+            if (colSpecies.getRow(i).get(5).equals(au.getUserDatabaseType("NUMBER"))) {
                 cols.add((String) colSpecies.getRow(i).get(4));
                 Debug.log("--Found ", colSpecies.getRow(i).get(5));
             }

@@ -73,6 +73,10 @@ public class DatabaseHelper {
         }
         return null;
     }
+    
+    public String getDatabaseTypeName(String type){
+        return DBAdaptor.sql_getTypeName(type);
+    }
 
     /**
      * 连接数据库<br/>

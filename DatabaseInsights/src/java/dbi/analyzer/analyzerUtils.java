@@ -59,6 +59,10 @@ public class analyzerUtils {
             user = dbhelper.getUserdbhelper(this.uid,database);
         }
     }
+    
+    public String getUserDatabaseType(String type){
+        return user.getDatabaseTypeName(type);
+    }
 
     /**
      * 获取一列的所有数据,参数指定是否排序，否则为SORT_NONE 返回值：DBIResultSet，多行，每行一个数据
@@ -99,7 +103,7 @@ public class analyzerUtils {
         if (dbhelper.Connect()) {
             if ((user = DatabaseHelper.isAvailable(user)) != null) {
                 String column = "";
-                DBIResultSet tablename = user.runSQLForResult("select distinct columnname  from t_database_column where userid=" + uid + " and "
+                DBIResultSet tablename = dbhelper.runSQLForResult("select distinct columnname  from t_database_column where userid=" + uid + " and "
                         + "tid in(select tid from T_DATABASE_TABLE where tname='" + table + "')");
                 for (int i = 0; i < tablename.rowCount() - 1; i++) {
                     column = column + "count(distinct " + tablename.getRow(i + 1).get(0) + "),";

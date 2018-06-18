@@ -30,7 +30,9 @@ package dbi.db.adaptor;
  */
 public class DatabaseAdaptor {
     
-    
+    public String sql_getTypeName(String type) {
+        return "";
+    }
     
     
     /**
