@@ -49,7 +49,6 @@ public class DatabaseHelper {
     private DatabaseConfig databaseConfig;
     private Connection conn;
 
-    
     public DatabaseHelper(DatabaseConfig databaseConfig) {
         this.databaseConfig = databaseConfig;
         int dbcode = this.databaseConfig.getDatabase();
@@ -60,16 +59,15 @@ public class DatabaseHelper {
             DBAdaptor = new OracleAdaptor();
         }
     }
-    
-    
+
     /*
     * 检查 给定DatabaseHelper对象是否为空，以及是否已经建立连接,如果未建立连接，则尝试建立连接
-    */
-    public static DatabaseHelper isAvailable(DatabaseHelper dbh){
-        if(null != dbh){
-            if(dbh.checkConnection()){
+     */
+    public static DatabaseHelper isAvailable(DatabaseHelper dbh) {
+        if (null != dbh) {
+            if (dbh.checkConnection()) {
                 return dbh;
-            }else if(dbh.Connect()){
+            } else if (dbh.Connect()) {
                 return dbh;
             }
         }
@@ -77,14 +75,16 @@ public class DatabaseHelper {
     }
 
     /**
-    * 连接数据库<br/>
-    * 返回值：Boolean，连接数据库是否成功
+     * 连接数据库<br/>
+     * 返回值：Boolean，连接数据库是否成功
      */
     public Boolean Connect() {
         if (!checkConnection()) {
             try {
                 // 创建数据库连接
                 Class.forName(databaseConfig.getDriver());
+                //Debug.log(databaseConfig.getHost());
+                //Debug.log(databaseConfig.getDriver());
                 //Debug.log("dbhose=",databaseConfig.getHost(),"\tuname=",databaseConfig.getUsername(),"\tpwd=",databaseConfig.getPassword());
                 conn = DriverManager.getConnection(databaseConfig.getHost(), databaseConfig.getUsername(), databaseConfig.getPassword());
             } catch (Exception e) {
@@ -94,11 +94,11 @@ public class DatabaseHelper {
         }
         return true;
     }
-    
+
     /**
-    * 检查数据库是否连接<br/>
-    * 返回值：Boolean，若成功连接返回true，不成功返回false
-     */    
+     * 检查数据库是否连接<br/>
+     * 返回值：Boolean，若成功连接返回true，不成功返回false
+     */
     private Boolean checkConnection() {
         try {
             if (conn.isClosed()) {
@@ -112,9 +112,9 @@ public class DatabaseHelper {
     }
 
     /**
-    * 解除数据库连接<br/>
-    * 返回值：无
-     */    
+     * 解除数据库连接<br/>
+     * 返回值：无
+     */
     public void Disconnect() {
         try {
             conn.close();
@@ -124,23 +124,24 @@ public class DatabaseHelper {
     }
 
     /**
-    * 得到一个给定数据库的全部表的名字<br/>
-    * 返回值：DBIResultSet，每一行是一个表名
+     * 得到一个给定数据库的全部表的名字<br/>
+     * 返回值：DBIResultSet，每一行是一个表名
+     *
      * @param <error>
      */
     public DBIResultSet getTables(String dbname) {
         DBIResultSet tables = new DBIResultSet();
         String table_name = "";
-        String tablename="";
+        String tablename = "";
         try {
             Statement st = conn.createStatement();
             // 执行数据库语句
             ResultSet rs = st.executeQuery(DBAdaptor.getTableList());
             // 遍历获取结果
-            if(databaseConfig.getDatabase()==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
-                tablename="Tables_in_"+ dbname;
-            }else if(databaseConfig.getDatabase()==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
-                tablename="table_name";
+            if (databaseConfig.getDatabase() == DatabaseConfig.DatabaseCode.DATABASE_MYSQL) {
+                tablename = "Tables_in_" + dbname;
+            } else if (databaseConfig.getDatabase() == DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C) {
+                tablename = "table_name";
             }
             while (rs.next()) {
                 table_name = rs.getString(tablename);
@@ -155,8 +156,8 @@ public class DatabaseHelper {
     }
 
     /**
-    * 得到给定表的全部列名<br/>
-    * 返回值：DBIResultSet，每一行是一个列名
+     * 得到给定表的全部列名<br/>
+     * 返回值：DBIResultSet，每一行是一个列名
      */
     public DBIResultSet getColumns(String table) {
         DBIResultSet columns = new DBIResultSet();
@@ -180,20 +181,20 @@ public class DatabaseHelper {
     }
 
     /**
-    * 得到一个给定表的全部列的性质，并存入T_DATABASE_COLUMN表中<br/>
-    * 返回值：DBIResultSet，每一行是一个列的全部性质
+     * 得到一个给定表的全部列的性质，并存入T_DATABASE_COLUMN表中<br/>
+     * 返回值：DBIResultSet，每一行是一个列的全部性质
      */
-    public DBIResultSet getAllColumnSpecies(String table, int userid, int did,DatabaseHelper dbhelper) {
+    public DBIResultSet getAllColumnSpecies(String table, int userid, int did, DatabaseHelper dbhelper) {
         DBIResultSet getresult = runSQLForResult(DBAdaptor.findTablecolspe(table));
         DBIResultSet primary = runSQLForResult(DBAdaptor.findPrimaryKey(table));
         DBIResultSet foreign = runSQLForResult(DBAdaptor.findForeignKey(table));
-        DBIResultSet tid=new DBIResultSet();
-        DBIResultSet species=new DBIResultSet();
-        tid=dbhelper.runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='"+getresult.getRow(1).get(0)+"'");
+        DBIResultSet tid = new DBIResultSet();
+        DBIResultSet species = new DBIResultSet();
+        tid = dbhelper.runSQLForResult("select tid from T_DATABASE_TABLE where TNAME='" + getresult.getRow(1).get(0) + "'");
         int isPrimary = 0;
         int isRef = 0;
         for (int i = 1; i <= getresult.rowCount(); i++) {
-            if (primary.rowCount()!=0) {
+            if (primary.rowCount() != 0) {
                 if (getresult.getRow(i).get(1).equals(primary.getRow(1).get(0))) {
                     isPrimary = 1;
                 } else {
@@ -201,7 +202,7 @@ public class DatabaseHelper {
                 }
             }
 
-            if (foreign.rowCount()!=0) {
+            if (foreign.rowCount() != 0) {
                 for (int j = 0; j < foreign.rowCount(); j++) {
                     if (getresult.getRow(i).get(1).equals(foreign.getRow(j + 1).get(0))) {
                         isRef = 1;
@@ -217,8 +218,8 @@ public class DatabaseHelper {
             species.addToRow(isRef);
             species.finishRow();
             dbhelper.runSQL("insert into T_DATABASE_COLUMN(TID,DID,USERID,COLUMNNAME,DATATYPE,ISPRIMARY,ISFOREIGNKEY) \n"
-                    + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did 
-                    + "," + userid + ",'" + getresult.getRow(i).get(1) + "','" 
+                    + "values(" + tid.getRow(tid.rowCount()).get(0) + "," + did
+                    + "," + userid + ",'" + getresult.getRow(i).get(1) + "','"
                     + getresult.getRow(i).get(2) + "'," + isPrimary + "," + isRef + ")");
             isRef = 0;
         }
@@ -226,8 +227,8 @@ public class DatabaseHelper {
     }
 
     /**
-    * 运行select语句<br/>
-    * 返回值：DBIResultSet，返回select操作后的全部结果
+     * 运行select语句<br/>
+     * 返回值：DBIResultSet，返回select操作后的全部结果
      */
     public DBIResultSet runSelect(String querys, String table, String condition) {
         DBIResultSet sqlResult = null;
@@ -244,18 +245,18 @@ public class DatabaseHelper {
 
         return sqlResult;
     }
-    
+
     /**
-    * 运行含有多个表的select语句<br/>
-    * 返回值：DBIResultSet，返回select操作后的全部结果
+     * 运行含有多个表的select语句<br/>
+     * 返回值：DBIResultSet，返回select操作后的全部结果
      */
     public DBIResultSet runJoinSelect(String querys, String[] tables, String joinconditions) {
-        DBIResultSet sqlResult=null;
+        DBIResultSet sqlResult = null;
         try {
             Statement st = conn.createStatement();
             String table = tables[0];
             for (int i = 1; i <= tables.length - 1; i++) {
-                table = table+","+tables[i];
+                table = table + "," + tables[i];
                 System.out.println(table);
             }
             String sql = "select " + querys + " from " + table + " where " + joinconditions;
@@ -268,9 +269,10 @@ public class DatabaseHelper {
         }
         return sqlResult;
     }
+
     /**
-    * 运行update语句<br/>
-    * 返回值：boolean，返回update是否成功
+     * 运行update语句<br/>
+     * 返回值：boolean，返回update是否成功
      */
     public boolean runUpdate(String table, HashMap<String, Object> keyValues, String condition) {
         // make up SQL UPDATE statment
@@ -306,8 +308,8 @@ public class DatabaseHelper {
     }
 
     /**
-    * 运行sql语句<br/>
-    * 返回值：boolean，返回sql执行是否成功，成功返回true，不成功返回false
+     * 运行sql语句<br/>
+     * 返回值：boolean，返回sql执行是否成功，成功返回true，不成功返回false
      */
     public boolean runSQL(String sql) {
         try {
@@ -323,9 +325,9 @@ public class DatabaseHelper {
     }
 
     /**
-    * 运行sql语句<br/>
-    * 返回值：boolean，返回sql执行结果
-     */    
+     * 运行sql语句<br/>
+     * 返回值：boolean，返回sql执行结果
+     */
     public DBIResultSet runSQLForResult(String sql) {
         DBIResultSet sqlResult = new DBIResultSet();
         try {
@@ -341,10 +343,8 @@ public class DatabaseHelper {
         return sqlResult;
     }
 
-
     /**
-     * 运行oracle函数
-     * 返回值：int，返回执行结果（成功与否）
+     * 运行oracle函数 返回值：int，返回执行结果（成功与否）
      */
     public int executeOracleFunction(String funcDef, String... params) throws SQLException {
         String query = "{? = call @funcDef@}".replace("@funcDef@", funcDef);
@@ -356,23 +356,23 @@ public class DatabaseHelper {
         statement.execute();
         return statement.getInt(1);
     }
-    
+
     /**
-    * 检查给定用户表的每一列是否为数字或非数字。如果是数字，为1，如果不是，为0<br/>
-    * 返回值：DBIResultSet，每一行包含列名和是否为数字列
-    */
-    public DBIResultSet getIsNumberColumns(int uid,String table){
+     * 检查给定用户表的每一列是否为数字或非数字。如果是数字，为1，如果不是，为0<br/>
+     * 返回值：DBIResultSet，每一行包含列名和是否为数字列
+     */
+    public DBIResultSet getIsNumberColumns(int uid, String table) {
         DBIResultSet tables = new DBIResultSet();
-        String numberType[]=DBAdaptor.numberType();
+        String numberType[] = DBAdaptor.numberType();
         try {
-            DBIResultSet res=runSQLForResult("select distinct columnname,datatype,colid from T_DATABASE_COLUMN where userid='"+uid+"' and TID in\n" +
-                                            "(select tid from T_DATABASE_TABLE where tname='"+table+"') and isprimary=0\n" +
-                                            "order by colid");
-            for(int i=0;i<res.rowCount();i++){
-                tables.addToRow(res.getRow(i+1).get(0));
-                if(Arrays.asList(numberType).contains((String)res.getRow(i+1).get(1))){
+            DBIResultSet res = runSQLForResult("select distinct columnname,datatype,colid from T_DATABASE_COLUMN where userid='" + uid + "' and TID in\n"
+                    + "(select tid from T_DATABASE_TABLE where tname='" + table + "') and isprimary=0\n"
+                    + "order by colid");
+            for (int i = 0; i < res.rowCount(); i++) {
+                tables.addToRow(res.getRow(i + 1).get(0));
+                if (Arrays.asList(numberType).contains((String) res.getRow(i + 1).get(1))) {
                     tables.addToRow("1");
-                }else{
+                } else {
                     tables.addToRow("0");
                 }
                 tables.finishRow();
@@ -382,41 +382,39 @@ public class DatabaseHelper {
         }
         return tables;
     }
-    
+
     /**
-    * 得到指定uid，数据库名的DatabaseHelper对象<br/>
-    * 返回值：boolean，返回指定uid的DatabaseHelper对象
+     * 得到指定uid，数据库名的DatabaseHelper对象<br/>
+     * 返回值：boolean，返回指定uid的DatabaseHelper对象
      */
-    public DatabaseHelper getUserdbhelper(int uid,String database){
-        DBIResultSet result=runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD,name from "
+    public DatabaseHelper getUserdbhelper(int uid, String database) {
+        DBIResultSet result = runSQLForResult("select distinct a.userid,dbtype,host,username,b.PASSWORD,name from "
                 + "T_DATABASE_INFO a, T_DATABASE_CERTIFICATION b where a.userid=b.userid and a.did=b.did"
-                + " and a.userid="+uid+" and NAME='"+database+"'");
-        String dbtype=(String)result.getRow(1).get(1);
-        String dbhost=(String)result.getRow(1).get(2);
-        String username=(String)result.getRow(1).get(3);
-        String password=(String)result.getRow(1).get(4);
-        String dbname=(String)result.getRow(1).get(5);
-        if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C){
-                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.ORACLE_THIN, dbhost, dbname);
-         }
-        if(Integer.valueOf(dbtype)==DatabaseConfig.DatabaseCode.DATABASE_MYSQL){
-                dbhost=DatabaseConfig.JDBCHostPrefix.makeUpJDBCHost(DatabaseConfig.JDBCHostPrefix.MYSQL, dbhost, dbname);
-        }
-        DatabaseConfig config=new DatabaseConfig(Integer.valueOf(dbtype),GlobeVar.CONFIG_DATABASE_DRIVER,dbhost,username,password);
+                + " and a.userid=" + uid + " and NAME='" + database + "'");
+        String dbtype = (String) result.getRow(1).get(1);
+        String dbhost = (String) result.getRow(1).get(2);
+        String username = (String) result.getRow(1).get(3);
+        String password = (String) result.getRow(1).get(4);
+        String dbname = (String) result.getRow(1).get(5);
+        int idbtype = Integer.valueOf(dbtype);
+        DatabaseConfig config = new DatabaseConfig(Integer.valueOf(dbtype),
+                DatabaseConfig.DatabaseDriver.chooseDriver(idbtype),
+                DatabaseConfig.JDBCHostPrefix.autoGenHost(idbtype, dbhost, dbname),
+                 username, password);
         return new DatabaseHelper(config);
     }
 
     public static void main(String[] args) {
-        
-        DatabaseHelper helper=new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
+
+        DatabaseHelper helper = new DatabaseHelper(GlobeVar.VAR_DATABASE_CONFIG);
         helper.Connect();
-        String []tables={"T_DATABASE_COLUMN","T_DATABASE_TABLE","T_DATABASE_INFO"};
-        DBIResultSet ret=helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
+        String[] tables = {"T_DATABASE_COLUMN", "T_DATABASE_TABLE", "T_DATABASE_INFO"};
+        DBIResultSet ret = helper.runJoinSelect("columnname,datatype", tables, "T_DATABASE_COLUMN.tid=T_DATABASE_TABLE.tid "
                 + "and T_DATABASE_INFO.did=T_DATABASE_COLUMN.DID "
                 + "and tname='T_DATABASE_CERTIFICATION' and name='DatabaseInsights'");
-        for(int i=0;i<ret.rowCount();i++){
-            Debug.log(ret.getRow(i+1));
+        for (int i = 0; i < ret.rowCount(); i++) {
+            Debug.log(ret.getRow(i + 1));
         }
-        
+
     }
 }

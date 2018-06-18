@@ -29,87 +29,94 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class DatabaseConfig {
+
     private int database;
     private String driver;
     private String host;
     private String user;
     private String password;
     private String dbname;
-    
-    public DatabaseConfig(int database,String driver,String host,String user,String password){
-        this.driver=driver;
-        this.host=host;
-        this.user=user;
-        this.password=password;
-        this.database=database;
+
+    public DatabaseConfig(int database, String driver, String host, String user, String password) {
+        this.driver = driver;
+        this.host = host;
+        this.user = user;
+        this.password = password;
+        this.database = database;
     }
-    
-    public String getDriver(){
+
+    public String getDriver() {
         return driver;
     }
-    
-    public String getHost(){
+
+    public String getHost() {
         return host;
     }
-    
-    public String getUsername(){
+
+    public String getUsername() {
         return user;
     }
-    
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
-    
-    public int getDatabase(){
+
+    public int getDatabase() {
         return database;
     }
-    
-    public static class DatabaseCode{
+
+    public static class DatabaseCode {
+
         public static int DATABASE_ORACLE_12C = 1000;
         public static int DATABASE_MYSQL = 2000;
         public static int DATABASE_SQL_SERVER = 3000;
-        public static boolean check(int dbcode){
-            int[] codelist = new int[]{1000,2000,3000};
-            for(int i : codelist){
-                if(i == dbcode){
+
+        public static boolean check(int dbcode) {
+            int[] codelist = new int[]{1000, 2000, 3000};
+            for (int i : codelist) {
+                if (i == dbcode) {
                     return true;
                 }
             }
             return false;
         }
     }
-    
-    public static class DatabaseDriver{
+
+    public static class DatabaseDriver {
+
         public static String ORACLE_12C = "oracle.jdbc.driver.OracleDriver";
         public static String MYSQL = "org.gjt.mm.mysql.Driver";
         public static String SQLSERVER = "...";
-        public static String chooseDriver(int dbcode){
-            if(dbcode == DatabaseCode.DATABASE_ORACLE_12C){
+
+        public static String chooseDriver(int dbcode) {
+            if (dbcode == DatabaseCode.DATABASE_ORACLE_12C) {
                 return ORACLE_12C;
-            }else if(dbcode == DatabaseCode.DATABASE_MYSQL){
+            } else if (dbcode == DatabaseCode.DATABASE_MYSQL) {
                 return MYSQL;
-            }else if(dbcode == DatabaseCode.DATABASE_SQL_SERVER){
+            } else if (dbcode == DatabaseCode.DATABASE_SQL_SERVER) {
                 return SQLSERVER;
             }
-            return ORACLE_12C; 
+            return ORACLE_12C;
         }
     }
-    
-    public static class JDBCHostPrefix{
+
+    public static class JDBCHostPrefix {
+
         public static String ORACLE_THIN = "jdbc:oracle:thin:@//";
         public static String MYSQL = "jdbc:mysql://";
-        public static String makeUpJDBCHost(String prefix,String host,String dbname){
+
+        public static String makeUpJDBCHost(String prefix, String host, String dbname) {
             return prefix + host + "/" + dbname;
         }
-        public static String autoGenHost(int dbcode,String host,String dbname){
-            if(dbcode == DatabaseCode.DATABASE_ORACLE_12C){
-                return makeUpJDBCHost(ORACLE_THIN,host,dbname);
-            }else if(dbcode == DatabaseCode.DATABASE_MYSQL){
-                dbname=dbname+"?useSSL=true";
-                return makeUpJDBCHost(MYSQL,host,dbname);
+
+        public static String autoGenHost(int dbcode, String host, String dbname) {
+            if (dbcode == DatabaseCode.DATABASE_ORACLE_12C) {
+                return makeUpJDBCHost(ORACLE_THIN, host, dbname);
+            } else if (dbcode == DatabaseCode.DATABASE_MYSQL) {
+                return makeUpJDBCHost(MYSQL, host, dbname + "?useSSL=false");
             }
-            return makeUpJDBCHost(ORACLE_THIN,host,dbname);
+            return makeUpJDBCHost(ORACLE_THIN, host, dbname);
         }
     }
-   
+
 }

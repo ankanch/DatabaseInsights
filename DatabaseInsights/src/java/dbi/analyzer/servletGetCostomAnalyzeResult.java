@@ -78,7 +78,7 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
         String summary = request.getParameter("summary");
         String instructions = request.getParameter("instructions");
         DBIResultSet ret = new DBIResultSet();
-        Debug.log("parameters=",tname, lastfields, newfields, type, summary, instructions);
+        //Debug.log("parameters=",tname, lastfields, newfields, type, summary, instructions);
         if (!DataValidation.containsNULL(tname, lastfields, newfields, type, summary, instructions)) {
             DBIResultSet jobs = new DBIResultSet();
             String[] lastf = lastfields.split(",");
@@ -87,7 +87,7 @@ public class servletGetCostomAnalyzeResult extends HttpServlet {
             String[] pools = summary.split(",");
             String[] comments = instructions.split(",");
             for (int i = 0; i < lastf.length; i++) {
-                Debug.log("parse parameters=",lastf[i], newf[i], types[i], pools[i], comments[i]);
+                //Debug.log("parse parameters=",lastf[i], newf[i], types[i], pools[i], comments[i]);
                 CustomizeJob cj = new CustomizeJob(lastf[i], newf[i], types[i], pools[i], comments[i]);
                 jobs.addToRow(cj);
             }

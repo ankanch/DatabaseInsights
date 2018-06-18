@@ -41,7 +41,7 @@ public class Debug {
     public static void log(String... msgs) {
         String callerClassName = new Exception().getStackTrace()[1].getClassName();
         String methordName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        System.out.print(MSG_HEADER + "LOG|@" + callerClassName + "::" + methordName + "|:::>>>");
+        System.out.print(MSG_HEADER + " LOG |@" + callerClassName + "::" + methordName + "|:::>>>");
         for (String s : msgs) {
             System.out.print(s);
             System.out.print(" ");
@@ -56,7 +56,7 @@ public class Debug {
     public static void log(Object... msgs) {
         String callerClassName = new Exception().getStackTrace()[1].getClassName();
         String methordName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        System.out.print(MSG_HEADER + "LOG|@" + callerClassName + "::" + methordName + "|:::>>>");
+        System.out.print(MSG_HEADER + " LOG |@" + callerClassName + "::" + methordName + "|:::>>>");
         for (Object o : msgs) {
             System.out.print(String.valueOf(o));
             System.out.print(" ");
@@ -71,7 +71,7 @@ public class Debug {
     public static void error(String... msgs) {
         String callerClassName = new Exception().getStackTrace()[1].getClassName();
         String methordName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        System.out.print(MSG_HEADER + "LOG|@" + callerClassName + "::" + methordName + "|:::>>>");
+        System.out.print(MSG_HEADER + "ERROR|@" + callerClassName + "::" + methordName + "|:::>>>");
         for (String s : msgs) {
             System.out.print(s);
             System.out.print(" ");
@@ -86,7 +86,7 @@ public class Debug {
     public static void error(Object... msgs) {
         String callerClassName = new Exception().getStackTrace()[1].getClassName();
         String methordName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        System.out.print(MSG_HEADER + "LOG|@" + callerClassName + "::" + methordName + "|:::>>>");
+        System.out.print(MSG_HEADER + "ERROR|@" + callerClassName + "::" + methordName + "|:::>>>");
         for (Object o : msgs) {
             System.out.print(String.valueOf(o));
             System.out.print(" ");
