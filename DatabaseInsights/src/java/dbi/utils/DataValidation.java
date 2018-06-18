@@ -32,23 +32,52 @@ import java.util.Base64;
  * @author kanch
  */
 public class DataValidation {
-    
-    public static boolean containsNULL(Object... objs){
-        for(Object obj : objs){
-            if(obj == null){
+
+    public static boolean containsNULL(Object... objs) {
+        for (Object obj : objs) {
+            if (obj == null) {
                 return true;
             }
         }
         return false;
     }
-    
-    public static String encodeToBase64(String s){
+
+    public static String encodeToBase64(String s) {
         return Base64.getEncoder().encodeToString((s.getBytes()));
     }
-    
-    public static String decodeFromBase64(String s){
+
+    public static String decodeFromBase64(String s) {
         return new String(Base64.getDecoder().decode(s));
     }
-   
-    
+
+    public static int findMin(DBIResultSet dbirs,int colnum) {
+        int minint = Integer.MAX_VALUE;
+        for (int i = 1; i <= dbirs.rowCount(); i++) {
+            int v = Integer.parseInt(dbirs.getData(i, colnum, String.class));
+            if (v < minint) {
+                minint = v;
+            }
+        }
+        return minint;
+    }
+
+    public static int findMax(DBIResultSet dbirs, int colnum) {
+        int maxint = Integer.MIN_VALUE;
+        for (int i = 1; i <= dbirs.rowCount(); i++) {
+            int v = Integer.parseInt(dbirs.getData(i, colnum, String.class));
+            if (v > maxint) {
+                maxint = v;
+            }
+        }
+        return maxint;
+    }
+
+    public static int getAverage(DBIResultSet dbirs, int colnum) {
+        double sum = 0;
+        for (int i = 1; i <= dbirs.rowCount(); i++) {
+            sum += Integer.parseInt(dbirs.getData(i, colnum, String.class));
+        }
+        return (int)(sum/dbirs.rowCount());
+    }
+
 }

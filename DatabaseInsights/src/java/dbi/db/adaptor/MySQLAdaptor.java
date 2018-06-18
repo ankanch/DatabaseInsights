@@ -29,6 +29,10 @@ package dbi.db.adaptor;
  * @author Miss Zhang
  */
 public class MySQLAdaptor extends DatabaseAdaptor{
+    
+    
+    
+    
     /**
     * 得到某种数据库的数字的全部类型<br/>
     * 返回值：String[]，返回带有全部类型字符串的字符数组
