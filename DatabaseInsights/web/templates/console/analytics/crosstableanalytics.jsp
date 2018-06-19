@@ -49,38 +49,32 @@
                 var comment = "";
                 var linzong = "";
                 chart = $("#chartname_" + colrep[i][0]).val();
-
-
                 linshi.push(chart);
                 chartcomment = $("#comment_" + colrep[i][0]).val();
-
                 linshi.push(chartcomment);
                 for (var j = 1; j < colrep[i].length; j++) {
                     col = colrep[i][j];
                     database = document.getElementById("database_" + colrep[i][0] + "_" + col).innerHTML;
-
                     table = document.getElementById("table_" + colrep[i][0] + "_" + col).innerHTML;
-
                     linzong = linzong + database + "->" + table + "->" + col + ";";
-
                 }
                 linshi.push(linzong);
                 shujuleixing = document.getElementById("btn_selecttype_" + colrep[i][0]).dataset.poolf;
-
                 juhehanshu = document.getElementById("buttonnames_" + colrep[i][0]).dataset.poolf;
                 linshi.push(shujuleixing);
                 linshi.push(juhehanshu);
 
                 for (var j = 1; j < colrep[i].length; j++) {
                     col = colrep[i][j];
-
-                    comment = comment + document.getElementById("colid_" + colrep[i][0] + "_" + col).innerHTML + ";";
+                    var qn=$("#colid_" + colrep[i][0] + "_" + col).val();
+                    if(qn===''){
+                        comment = comment + col + ";";
+                    }else{
+                        comment = comment + qn + ";";
+                    }
                 }
-
                 linshi.push(comment);
-
                 v.push(linshi);
-
             }
             console.log("hhh:");
             console.log(v);
@@ -180,6 +174,11 @@
                     }
                     colrep[i] = colreplace;
                     break;
+                }
+            }
+            for(var i=0;i<colrep.length;i++){
+                if(colrep[i].length===1){
+                    colrep.splice(i, 1);
                 }
             }
             console.log("colreplace:");
