@@ -189,9 +189,7 @@ public class ChartOption {
             + "    }]"
             + "};";
 
-    public static String OPTION_COUNTM = "app.title = '@TITLE';"
-            + ""
-            + "option = {"
+    public static String OPTION_COUNTM = "option = {"   ////app.title = '@TITLE';
             + "    tooltip: {"
             + "        trigger: 'item',"
             + "        formatter: \"{a} <br/>{b}: {c} ({d}%)\""

@@ -10,11 +10,23 @@
     <button type="button" class="btn btn-primary" onclick="writenewchart()">新建图表</button>
     <button type="button" style="float: right" class="btn btn-secondary" onclick="analyze()">生成报告</button>
     <div id="tablediv"></div>
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="card">
+                <h5 class="card-header" id="card_title">Auto Analytics</h5>
+                <div class="card-body" id="chartslist">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
- 
+
 
 <script src="static/oplib/jsinjsp/analytics.customize.js"></script>
+<script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
+<script src="static/oplib/jsinjsp/analytics.report.js"></script>
 <script>
         var iii = 1;
         var currentcol = 1;
@@ -66,10 +78,10 @@
 
                 for (var j = 1; j < colrep[i].length; j++) {
                     col = colrep[i][j];
-                    var qn=$("#colid_" + colrep[i][0] + "_" + col).val();
-                    if(qn===''){
+                    var qn = $("#colid_" + colrep[i][0] + "_" + col).val();
+                    if (qn === '') {
                         comment = comment + col + ";";
-                    }else{
+                    } else {
                         comment = comment + qn + ";";
                     }
                 }
@@ -82,6 +94,21 @@
                 showMsg("Failed to load table list.");
             }, function success(data) {
                 showMsg("success");
+                $("#chartslist").html(CHART_CONTAINER_SAVE_REPORT + REPORT_HEAD);
+                var line = data.data;
+                console.log("line=" + line);
+                // data format-> row 1: chart count
+                //               row 2: chart id list
+                //               row 3: chart option list
+                // generate chart 
+                for (var i = 0; i < line[0]; i++) {
+                    var chtid = line[1][i];
+                    console.log("process " + i + "\t with id of " + chtid);
+                    var chtcontainer = CHART_CONTAINER.replace("@ID", chtid).replace("@OPTION", line[2][i]);
+                    $("#chartslist").append(chtcontainer);
+                    option = eval(line[2][i]);
+                    initChartWithOption(chtid, option);
+                }
             });
         }
 
@@ -156,6 +183,7 @@
             }
             console.log(colrep);
             r = r + 1;
+            $(".modal").modal("hide");
         }
 
         function deletecolumns(a, b, obj) {
@@ -164,10 +192,10 @@
             tr.parentNode.removeChild(tr);//从tr的父元素[tbody]移除tr
             colreplace.push(a);
             for (var i = 0; i < colrep.length; i++) {
-                console.log("colrep[i][0]:"+colrep[i][0]+",a:"+a);
+                console.log("colrep[i][0]:" + colrep[i][0] + ",a:" + a);
                 if (colrep[i][0] === a) {
                     for (var j = 1; j < colrep[i].length; j++) {
-                        console.log("colrep:"+colrep[i][j]+",b"+b);
+                        console.log("colrep:" + colrep[i][j] + ",b" + b);
                         if (colrep[i][j] !== b) {
                             colreplace.push(colrep[i][j]);
                         }
@@ -176,8 +204,8 @@
                     break;
                 }
             }
-            for(var i=0;i<colrep.length;i++){
-                if(colrep[i].length===1){
+            for (var i = 0; i < colrep.length; i++) {
+                if (colrep[i].length === 1) {
                     colrep.splice(i, 1);
                 }
             }
