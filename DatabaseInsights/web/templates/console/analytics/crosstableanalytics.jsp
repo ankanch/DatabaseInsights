@@ -88,7 +88,7 @@
                 linshi.push(comment);
                 v.push(linshi);
             }
-            console.log("hhh:");
+            showMsg("Start analyzing...");
             console.log(v);
             SubmitFormKVF("/api/getCrossTableAnalyzeResult", {data: DBIEX.toString(v)}, function error(data) {
                 showMsg("Failed to load table list.");
@@ -248,7 +248,6 @@
                     "                </button>" +
                     "                <div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">" +
                     "                    <a class=\"dropdown-item\" onclick=\"chooseNumber(ssss)\">数字</a>" +
-                    "                    <a class=\"dropdown-item\" onclick=\"chooseBoolean(ssss)\">布尔型</a>" +
                     "                    <a class=\"dropdown-item\" onclick=\"chooseText(ssss)\">文本</a>" +
                     "                </div>" +
                     "            </div>" +
@@ -346,12 +345,10 @@
                     "                aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf='pf_none'>无</button>" +
                     "                <div class=\"dropdown-menu\">" +
                     "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_none\">无</a>" +
-                    "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_avg\" data-text='平均'>平均</a>" +
+                    "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_trend\" data-text='平均'>趋势</a>" +
                     "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count\">计数</a>" +
-                    "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count_norepeat\">非重复计数</a>" +
                     "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_max\">最大</a>" +
                     "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_min\">最小</a>" +
-                    "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_sum\">总和</a>" +
                     "                </div>";
 
             element.innerHTML = str;
@@ -374,15 +371,6 @@
                     "                <a class=\"dropdown-item\" href='javascript:' onclick='choosetypename(this," + v.toString() + ") ' data-poolf=\"pf_count_norepeat\">非重复计数</a>" +
                     "                </div>";
 
-            element.innerHTML = str;
-        }
-
-        function chooseBoolean(v) {
-            document.getElementById("btn_selecttype_" + v.toString()).innerHTML = "布尔值";
-            document.getElementById("btn_selecttype_" + v.toString()).dataset.poolf = "type_boolean";
-            var element = document.getElementById("choosetype_" + v.toString());
-            var str = "<button class=\"btn btn-outline-secondary text-white\" type=\"button\" data-toggle=\"dropdown\"" +
-                    "aria-haspopup=\"true\" aria-expanded=\"false\" style=\"border-style:none\" data-poolf=\"pf_none\" id=\"buttonnames_" + v.toString() + "\">无</button>";
             element.innerHTML = str;
         }
 </script>
