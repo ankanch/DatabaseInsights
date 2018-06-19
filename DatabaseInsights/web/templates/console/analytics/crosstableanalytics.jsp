@@ -8,16 +8,17 @@
 <% lang local = lang.detectLang(request);%>
 <div id="crosstableanalysis">
     <button type="button" class="btn btn-primary" onclick="writenewchart()">新建图表</button>
-    <button type="button" style="float: right" class="btn btn-secondary" onclick="">生成报告</button>
+    <button type="button" style="float: right" class="btn btn-secondary" onclick="analyze()">生成报告</button>
     <div id="tablediv"></div>
 </div>
 
-
+ 
 
 <script src="static/oplib/jsinjsp/analytics.customize.js"></script>
 <script>
         var iii = 1;
         var currentcol = 1;
+        var colrep = [];
         $('#crosstableanalysis').bootstrapMaterialDesign();
         function getDatabase(v) {
             GetDataF("/api/getDatabases", function error(data) {
@@ -34,9 +35,66 @@
             });
         }
 
+        function analyze() {
+            var v = [];
+            for (var i = 0; i < colrep.length; i++) {
+                var linshi = [];
+                var chart = "";
+                var chartcomment = "";
+                var database = "";
+                var table = "";
+                var col = "";
+                var shujuleixing = "";
+                var juhehanshu = "";
+                var comment = "";
+                var linzong = "";
+                chart = $("#chartname_" + colrep[i][0]).val();
+
+
+                linshi.push(chart);
+                chartcomment = $("#comment_" + colrep[i][0]).val();
+
+                linshi.push(chartcomment);
+                for (var j = 1; j < colrep[i].length; j++) {
+                    col = colrep[i][j];
+                    database = document.getElementById("database_" + colrep[i][0] + "_" + col).innerHTML;
+
+                    table = document.getElementById("table_" + colrep[i][0] + "_" + col).innerHTML;
+
+                    linzong = linzong + database + "->" + table + "->" + col + ";";
+
+                }
+                linshi.push(linzong);
+                shujuleixing = document.getElementById("btn_selecttype_" + colrep[i][0]).dataset.poolf;
+
+                juhehanshu = document.getElementById("buttonnames_" + colrep[i][0]).dataset.poolf;
+                linshi.push(shujuleixing);
+                linshi.push(juhehanshu);
+
+                for (var j = 1; j < colrep[i].length; j++) {
+                    col = colrep[i][j];
+
+                    comment = comment + document.getElementById("colid_" + colrep[i][0] + "_" + col).innerHTML + ";";
+                }
+
+                linshi.push(comment);
+
+                v.push(linshi);
+
+            }
+            console.log("hhh:");
+            console.log(v);
+            SubmitFormKVF("/api/getCrossTableAnalyzeResult", {data: DBIEX.toString(v)}, function error(data) {
+                showMsg("Failed to load table list.");
+            }, function success(data) {
+                showMsg("success");
+            });
+        }
+
         function getTable(a, b) {
-            var dbname = document.getElementById("iddb" + "_" + a + "_" + b).innerText;
-            document.getElementById("buttonMenu_1_" + a).innerHTML = dbname;
+            var dbname = document.getElementById("iddb" + "_" + a + "_" + b).innerHTML;
+            document.getElementById("buttonMenu_1_" + a).innerText = dbname;
+            document.getElementById("buttonMenu_1_" + a).dataset.poolf = dbname;
             SubmitFormKVF("/api/getTables", {dbname: dbname}, function error(data) {
                 showMsg("Failed to load table list.");
             }, function success(data) {
@@ -69,21 +127,77 @@
             document.getElementById("buttonMenu_3_" + a).innerHTML = neirong;
         }
 
+        var r = 0;
         function addCol(a) {
-            console.log("neirong_" + a);
-            $("#neirong_" + a).html($("#neirong_" + a).html() + `<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>`);
-            $('.modal').modal('hide');
+            var neirong = document.getElementById("buttonMenu_3_" + a).innerHTML;
+            var databasename = document.getElementById("buttonMenu_1_" + a).dataset.poolf;
+            var table = document.getElementById("buttonMenu_2_" + a).innerHTML;
+            var iid = "colid_" + a + "_" + neirong;
+            var databaseid = "database_" + a + "_" + neirong;
+            var tableid = "table_" + a + "_" + neirong;
+            var myvar = "<tr>" +
+                    "       <td id=\"" + databaseid + "\">" + databasename + "</td>" +
+                    "      <td id=\"" + tableid + "\">" + table + "</td>" +
+                    "       <td>" + neirong + "</td>" +
+                    "      <td><input id=\"tttt\" type=\"text\" class=\"form-control\" aria-label=\"Default\" aria-describedby=\"inputGroup-sizing-default\"></td>" +
+                    "       <td><button type=\"button\" onclick='deletecolumns(" + a + ",\"ssss\",this)' class=\"btn btn-primary\">删除</button></td>" +
+                    "</tr>";
+            $("#neirong_" + a).append(myvar.replace("ssss", neirong).replace("tttt", iid));
+            var p = 0;
+            for (var i = 0; i < colrep.length; i++) {
+                console.log(colrep[i][0] + "  " + a);
+                if (colrep[i][0] === a) {
+                    p = 1;
+                    colrep[i].push(neirong);
+                    console.log("success");
+                }
+            }
+            if (p === 0) {
+                colrep.push([a]);
+                colrep[colrep.length - 1].push(neirong);
+            }
+            console.log(colrep.length);
+            if (colrep.length > 0) {
+                console.log("test");
+            }
+            console.log(colrep);
+            r = r + 1;
         }
 
-        function deletecolumn(v) {
-            var cell = document.getElementById("cnum_" + v.toString());
-            var mainbody = document.getElementById("tablediv");
-            mainbody.removeChild(cell);
+        function deletecolumns(a, b, obj) {
+            var colreplace = [];
+            var tr = obj.parentNode.parentNode;//得到按钮[obj]的父元素[td]的父元素[tr]
+            tr.parentNode.removeChild(tr);//从tr的父元素[tbody]移除tr
+            colreplace.push(a);
+            for (var i = 0; i < colrep.length; i++) {
+                console.log("colrep[i][0]:"+colrep[i][0]+",a:"+a);
+                if (colrep[i][0] === a) {
+                    for (var j = 1; j < colrep[i].length; j++) {
+                        console.log("colrep:"+colrep[i][j]+",b"+b);
+                        if (colrep[i][j] !== b) {
+                            colreplace.push(colrep[i][j]);
+                        }
+                    }
+                    colrep[i] = colreplace;
+                    break;
+                }
+            }
+            console.log("colreplace:");
+            console.log(colreplace);
+            console.log("after delete:");
+            console.log(colrep);
         }
 
         function removeDiv(v) {
             var div = document.getElementById("coldiv_" + v.toString());
             div.remove();
+            for (var i = 0; i < colrep.length; i++) {
+                if (colrep[i][0] === v) {
+                    colrep.splice(i, 1);
+                    break;
+                }
+            }
+            console.log(colrep);
         }
 
         function createNewchart(v) {
@@ -96,10 +210,10 @@
             var html = "<div class=\"card text-white bg-info mb-3\" style=\"max-width: 100%;\" id=\"coldiv_ssss\">" +
                     "        <div class=\"card-header bg-secondary\">" +
                     "            <div style=\"float: left;\">" +
-                    "                <input type=\"text\" value=\"图表ssss\" style=\"width: 80%\" class=\"form-control text-white\" aria-label=\"Small\"  aria-describedby=\"inputGroup-sizing-sm\">" +
+                    "                <input type=\"text\" id=\"chartname_ssss\" value=\"图表ssss\" style=\"width: 80%\" class=\"form-control text-white\" aria-label=\"Small\"  aria-describedby=\"inputGroup-sizing-sm\">" +
                     "            </div>" +
                     "            <div style=\"float: left;\">" +
-                    "                <input type=\"text\" value=\"描述\" class=\"form-control text-white\" aria-label=\"Small\" aria-describedby=\"inputGroup-sizing-sm\">" +
+                    "                <input type=\"text\" id=\"comment_ssss\" value=\"描述\" class=\"form-control text-white\" aria-label=\"Small\" aria-describedby=\"inputGroup-sizing-sm\">" +
                     "            </div>" +
                     "            <div class=\"dropdown\" style=\"float: left;\">" +
                     "                <button class=\"btn btn-secondary dropdown-toggle text-white\" type=\"button\" id=\"btn_selecttype_ssss\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
@@ -129,64 +243,68 @@
                     "        </div>" +
                     "" +
                     "        <div class=\"card-body bg-light\">" +
-                    "               <table class=\"table table-striped text-dark\">" +
-                    "                   <tbody id=\"neirong_ssss\">" +
+                    "               <table class=\"table table-striped text-dark\" id=\"neirong_ssss\">" +
+                    "                   <tbody>" +
+                    "                           <tr></tr>" +
                     "                   </tbody>" +
                     "        </table>" +
                     "        </div>" +
                     "    </div>";
-            var yincang = `<div class="modal fade" id="myModal_ssss" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                       <div class="modal-dialog" role="document">
-                           <div class="modal-content">
-                               <div class="modal-header">
-                                   添加新行
-                               </div>
-                               <div class="modal-body">
-                                   <table class="table">
-                                       <tbody>
-                                           <tr>
-                                               <td>
-                                                   <div class="btn-group">
-                                                       <button type="button" id="buttonMenu_1_ssss" onclick="getDatabase(ssss)" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                           select databases
-                                                       </button>
-                                                       <div class="dropdown-menu" id="showDatabase_ssss">
-                                                       </div>
-                                                   </div>
-                                               </td>
-                                           </tr>
-                                           <tr>
-                                               <td>
-                                                   <div class="btn-group">
-                                                       <button type="button" id="buttonMenu_2_ssss" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                           select tables
-                                                       </button>
-                                                       <div class="dropdown-menu" id="showTables_ssss">
-                                                       </div>
-                                                   </div>
-                                               </td>
-                                           </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" id="buttonMenu_3_ssss" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            select column
-                                                        </button>
-                                                        <div class="dropdown-menu" id="showColumns_ssss">
-                                                       </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
-                                    <button type="button" onclick="addCol(ssss)" id="btn_submit" class="btn btn-primary" ><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>添加</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+            var yincang = "<div class=\"modal fade\" id=\"myModal_ssss\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">" +
+                    "    <div class=\"modal-dialog\" role=\"document\">" +
+                    "        <div class=\"modal-content\">" +
+                    "            <div class=\"modal-header\">" +
+                    "                <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\">添加行</button>" +
+                    "            </div>" +
+                    "            <div class=\"modal-body\">" +
+                    "                <table class=\"table\">" +
+                    "                    <tbody>" +
+                    "                        <tr>" +
+                    "                            <th scope=\"row\">1</th>" +
+                    "                            <td>" +
+                    "                                <div class=\"btn-group\">" +
+                    "                                    <button type=\"button\" id=\"buttonMenu_1_ssss\" onclick=\"getDatabase(ssss)\" data-poolf=\"\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
+                    "                                        select databases" +
+                    "                                    </button>" +
+                    "                                    <div class=\"dropdown-menu\" id=\"showDatabase_ssss\">" +
+                    "                                    </div>" +
+                    "                                </div>" +
+                    "                            </td>" +
+                    "                        </tr>" +
+                    "                        <tr>" +
+                    "                            <th scope=\"row\">2</th>" +
+                    "                            <td>" +
+                    "                                <div class=\"btn-group\">" +
+                    "                                    <button type=\"button\" id=\"buttonMenu_2_ssss\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
+                    "                                        select tables" +
+                    "                                    </button>" +
+                    "                                    <div class=\"dropdown-menu\" id=\"showTables_ssss\">" +
+                    "                                    </div>" +
+                    "                                </div>" +
+                    "                            </td>" +
+                    "                        </tr>" +
+                    "                        <tr>" +
+                    "                            <th scope=\"row\">3</th>" +
+                    "                            <td>" +
+                    "                                <div class=\"btn-group\">" +
+                    "                                    <button type=\"button\" id=\"buttonMenu_3_ssss\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
+                    "                                        select column" +
+                    "                                    </button>" +
+                    "                                    <div class=\"dropdown-menu\" id=\"showColumns_ssss\">" +
+                    "                                    </div>" +
+                    "                                </div>" +
+                    "                            </td>" +
+                    "                        </tr>" +
+                    "                    </tbody>" +
+                    "                </table>" +
+                    "            </div>" +
+                    "            <div class=\"modal-footer\">" +
+                    "                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span>关闭</button>" +
+                    "                <button type=\"button\" onclick=\"addCol(ssss)\" id=\"btn_submit\" class=\"btn btn-primary\" ><span class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></span>添加</button>" +
+                    "            </div>" +
+                    "        </div>" +
+                    "    </div>" +
+                    "</div>";
             var zong = html + yincang;
             $("#tablediv").append(zong.replace(/ssss/g, iii));
             console.log("zong:" + zong);
