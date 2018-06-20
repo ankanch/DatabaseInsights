@@ -37,30 +37,27 @@ import dbi.mgr.user.UserManager;
  * @author kanch
  */
 public class GlobeVar {
-    
+
     // globe status code 
     public static String SERVLET_IDENTIFIER_ERROR = "!@ERR!";
     public static String SERVLET_IDENTIFIER_SUCCESS = "!@SUCC!";
-    
+
     // globe database configures
-    public static String CONFIG_DATABASE_HOST ="jdbc:oracle:thin:@//cd.kcs.akakanch.com:1521/DatabaseInsights";
-    public static String CONFIG_DATABASE_USER="di";
-    public static String CONFIG_DATABASE_PASSWORD="DI2017";
-    public static String CONFIG_DATABASE_DRIVER=DatabaseConfig.DatabaseDriver.ORACLE_12C;
+    public static String CONFIG_DATABASE_HOST = "FILL YOUR OWN DATA HERE" ; 
+    public static String CONFIG_DATABASE_USER = "FILL YOUR OWN DATA HERE" ; 
+    public static String CONFIG_DATABASE_PASSWORD = "FILL YOUR OWN DATA HERE" ; 
+    public static String CONFIG_EMAIL_SENDGRID_APIKEY = "FILL YOUR OWN DATA HERE" ; 
+    public static String CONFIG_DATABASE_DRIVER = DatabaseConfig.DatabaseDriver.ORACLE_12C;
     public static final DatabaseConfig VAR_DATABASE_CONFIG = new DatabaseConfig(DatabaseConfig.DatabaseCode.DATABASE_ORACLE_12C,
-                    GlobeVar.CONFIG_DATABASE_DRIVER, GlobeVar.CONFIG_DATABASE_HOST,GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD);
-    
+            GlobeVar.CONFIG_DATABASE_DRIVER, GlobeVar.CONFIG_DATABASE_HOST, GlobeVar.CONFIG_DATABASE_USER, GlobeVar.CONFIG_DATABASE_PASSWORD);
+
     // globe manager object
     public static UserManager OBJ_MANAGER_USER = new UserManager();
     public static CredentialManager OBJ_MANAGER_CREDENTIAL = new CredentialManager();
     public static ReportManager OBJ_MANAGER_REPORT = new ReportManager();
-    
+
     //localization objs
     public static langChinese OBJ_LOCALIZATION_CHINESE = new langChinese();
     public static langEnglish OBJ_LOCALIZATION_ENGLISH = new langEnglish();
-    
-    
-    
+
 }
-
-

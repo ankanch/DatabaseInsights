@@ -39,4 +39,6 @@ nb-configuration.xml
 log/
 target/
 
+securedinfo/
+
 

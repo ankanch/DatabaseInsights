@@ -48,7 +48,7 @@ public class DBIEmailHelper {
         Content content = new Content("text/plain", mcontent);
         Mail mail = new Mail(from, title, to, content);
 
-        SendGrid sg = new SendGrid("KEYHERE");
+        SendGrid sg = new SendGrid(GlobeVar.CONFIG_EMAIL_SENDGRID_APIKEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
