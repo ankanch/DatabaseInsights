@@ -13,11 +13,11 @@
                 6个月
             </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#" onclick="chooseTime(this)">7天</a>
-                <a class="dropdown-item" href="#" onclick="chooseTime(this)">1个月</a>
-                <a class="dropdown-item" href="#" onclick="chooseTime(this)">6个月</a>
-                <a class="dropdown-item" href="#" onclick="chooseTime(this)">1年</a>
-                <a class="dropdown-item" href="#" onclick="chooseTime(this)">全部</a>
+                <a class="dropdown-item" href="#" id="7d" onclick="chooseTime('7d',this)">7天</a>
+                <a class="dropdown-item" href="#" id="1m" onclick="chooseTime('1m',this)">1个月</a>
+                <a class="dropdown-item" href="#" id="6m" onclick="chooseTime('6m',this)">6个月</a>
+                <a class="dropdown-item" href="#" id="1y" onclick="chooseTime('1y',this)">1年</a>
+                <a class="dropdown-item" href="#" id="all" onclick="chooseTime('all',this)">全部</a>
               </div>
            
         </div>
@@ -30,10 +30,10 @@
 <script>
     $('#logs').bootstrapMaterialDesign();
     
-    function chooseTime(v){
-        var element = v.innerText;
+    function chooseTime(v,q){
+        var element = document.getElementById(q.id).innerText;
         document.getElementById("dropdownMenuButton").innerHTML=element;
-        SubmitFormKVF("/getLogs",{time:element} , function error(data) {
+        SubmitFormKVF("/getLogs",{time:v} , function error(data) {
             showMsg("Failed to load log.");
         }, function success(data) {
             var element = document.getElementById("tablecontent");
@@ -41,7 +41,7 @@
         });
     }
     
-    SubmitFormKVF("/getLogs",{time:"6个月"} , function error(data) {
+    SubmitFormKVF("/getLogs",{time:"6m"} , function error(data) {
             showMsg("Failed to load log.");
         }, function success(data) {
             var element = document.getElementById("tablecontent");

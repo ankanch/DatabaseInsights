@@ -95,22 +95,22 @@ public class DBILog {
         String times = "";
         DBIResultSet result = null;
         switch (time) {
-            case "7天":
+            case "7d":
                 times = "where LDATE between sysdate - interval '7' day and sysdate and userid='" + uid + "'";
                 break;
-            case "1个月":
+            case "1m":
                 times = "where LDATE between sysdate - interval '30' day and sysdate and userid='" + uid + "'";
                 break;
-            case "6个月":
+            case "6m":
                 times = "where LDATE between sysdate - 150 and sysdate and userid='" + uid + "'";
                 break;
-            case "7个月":
+            case "7m":
                 times = "where LDATE between sysdate - interval '7' month and sysdate and userid='" + uid + "'";
                 break;
-            case "1年":
+            case "1y":
                 times = "where LDATE between sysdate - 365 and sysdate and userid='" + uid + "'";
                 break;
-            case "全部":
+            case "all":
                 times = "where userid='" + uid + "'";
                 break;
         }

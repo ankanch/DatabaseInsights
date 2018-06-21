@@ -9,20 +9,43 @@
 <div id="crosstableanalysis">
     <button type="button" class="btn btn-primary" onclick="writenewchart()">新建图表</button>
     <button type="button" style="float: right" class="btn btn-secondary" onclick="analyze()">生成报告</button>
-    <div id="tablediv"></div>
-    <div class="row mt-2">
-        <div class="col-md-12">
-            <div class="card">
-                <h5 class="card-header" id="card_title">Auto Analytics</h5>
-                <div class="card-body" id="chartslist">
+    <div id="accordion">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        1.选择字段
+                    </button>
+                </h5>
+            </div>
 
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    <div id="tablediv">
+                        <div class="card-body">
+                            <div class="alert alert-primary" role="alert" id="alert">
+                                点击左上角新建图表
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            2.分析结果
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body" id="chartslist">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <script src="static/oplib/jsinjsp/analytics.customize.js"></script>
 <script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
@@ -109,6 +132,7 @@
                     option = eval(line[2][i]);
                     initChartWithOption(chtid, option);
                 }
+                $('#collapseTwo').collapse("show");
             });
         }
 
@@ -234,8 +258,9 @@
         }
 
         function writenewchart() {
-            var html = "<div class=\"card text-white bg-info mb-3\" style=\"max-width: 100%;\" id=\"coldiv_ssss\">" +
-                    "        <div class=\"card-header bg-secondary\">" +
+            $("#alert").hide();
+            var html = "<div class=\"card text-white bg-primary mb-3\" style=\"max-width: 100%;\" id=\"coldiv_ssss\">" +
+                    "        <div class=\"card-header bg-primary text-info\" style=\"height:60px\">" +
                     "            <div style=\"float: left;\">" +
                     "                <input type=\"text\" id=\"chartname_ssss\" value=\"图表ssss\" style=\"width: 80%\" class=\"form-control text-white\" aria-label=\"Small\"  aria-describedby=\"inputGroup-sizing-sm\">" +
                     "            </div>" +
