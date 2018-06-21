@@ -10,7 +10,7 @@
 <% lang local = lang.detectLang(request);%>
 <div id="reports">
 
-    <h1>Reports</h1>
+    <h1><%=local.getString(langID .JSP_CONSOLE_REPORT_TITLE)%></h1>
     <div class="card">
         <div class="progress-line" id="progressbar" style="display:none;"></div>
         <div class="card-body">
@@ -35,19 +35,19 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Report Details</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle"><%=local.getString(langID.JSP_CONSOLE_REPORT_CW_DETAIL_TITLE)%></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p class="console-report-details-note">Title:<span class="console-report-details-text" id="modelinfo_title">111</span></p>
-                    <p class="console-report-details-note">Created on:<span class="console-report-details-text" id="modelinfo_created">111</span></p>
-                    <p class="console-report-details-note">Description:<span class="console-report-details-text" id="modelinfo_des">111</span></p>
-                    <p class="console-report-details-note">Relations:<span class="console-report-details-text" id="modelinfo_ralation">111</span></p>
+                    <p class="console-report-details-note"><%=local.getString(langID.JSP_CONSOLE_REPORT_TIP_REPORT_TITLE)%><span class="console-report-details-text" id="modelinfo_title">111</span></p>
+                    <p class="console-report-details-note"><%=local.getString(langID.JSP_CONSOLE_REPORT_TIP_REPORT_DATE)%><span class="console-report-details-text" id="modelinfo_created">111</span></p>
+                    <p class="console-report-details-note"><%=local.getString(langID.JSP_CONSOLE_REPORT_TIP_REPORT_DES)%><span class="console-report-details-text" id="modelinfo_des">111</span></p>
+                    <p class="console-report-details-note"><%=local.getString(langID.JSP_CONSOLE_REPORT_TIP_REPORT_RELATION)%><span class="console-report-details-text" id="modelinfo_ralation">111</span></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="viewfullreport">View Full Report</button>
+                    <button type="button" class="btn btn-primary" id="viewfullreport"><%=local.getString(langID.JSP_CONSOLE_REPORT_BTN_VIEWFULL)%></button>
                 </div>
             </div>
         </div>
@@ -57,17 +57,17 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle1">Confirm Delete?</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle1"><%=local.getString(langID.JSP_CONSOLE_REPORT_CW_TITLE)%></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Once delete, you will not access this report anymore!
+                    <%=local.getString(langID.JSP_CONSOLE_REPORT_CW_TIP)%>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cencel</button>
-                    <button type="button" class="btn btn-primary" id="delcon">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><%=local.getString(langID.JSP_CONSOLE_REPORT_CW_CANCEL)%></button>
+                    <button type="button" class="btn btn-primary" id="delcon"><%=local.getString(langID.JSP_CONSOLE_REPORT_CW_CONFIRM)%></button>
                 </div>
             </div>
         </div>

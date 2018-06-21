@@ -140,4 +140,46 @@ THE SOFTWARE.
     <!-- dbi.db.adaptor   -->
     <!-- dbi.utils   -->
     <!-- web pages   -->
+    <!-- autoanalytics.jsp -->
+    <l id="ANA_AUTO_TIP_SELECDBT" value="Select your database and table to start" />
+    <l id="ANA_AUTO_TIP_BTN_SELDB" value="Select Database" />
+    <l id="ANA_AUTO_TIP_BTN_SELTB" value="Select Table" />
+    <l id="ANA_AUTO_TIP_RET_TITLE" value="Auto Analytics" />
+    <!-- costomizeAnalysis.jsp -->
+    <l id="ANA_CUSTOM_TITLE" value="Costomize Analytics" />
+    <l id="ANA_CUSTOM_TIP_SELECDBT" value="Select your database and table to start" />
+    <l id="ANA_CUSTOM_TIP_BTN_SELDB" value="Select Database" />
+    <l id="ANA_CUSTOM_TIP_BTN_SELTB" value="Select Table" />
+    <l id="ANA_CUSTOM_TIP_CLP_TITLE1" value="1.Select Fields" />
+    <l id="ANA_CUSTOM_TIP_CLP_TITLE2" value="2.View Results" />
+    <l id="ANA_CUSTOM_TIP_C1" value="Please Choose Database and Table first, then you can continue." />
+    <l id="ANA_CUSTOM_TIP_C2" value="Comeback after you first setp 1 : Select Fields" />
+    <l id="ANA_CUSTOM_TABLE_C1_INDEX" value="Index" />
+    <l id="ANA_CUSTOM_TABLE_C2_FIELD" value="Column" />
+    <l id="ANA_CUSTOM_TABLE_C3_TYPE" value="Data Type" />
+    <l id="ANA_CUSTOM_TABLE_C4_POOLF" value="Pooling" />
+    <l id="ANA_CUSTOM_TABLE_C5_COMMENT" value="Comment" />
+    <l id="ANA_CUSTOM_BTN_START" value="Start Analyze" />
+    <!-- reports.jsp -->
+    <l id="JSP_CONSOLE_REPORT_TITLE" value="Reports" />
+    <l id="JSP_CONSOLE_REPORT_CW_DETAIL_TITLE" value="Report Details" />
+    <l id="JSP_CONSOLE_REPORT_CW_TITLE" value="Confirm Delete?" />
+    <l id="JSP_CONSOLE_REPORT_CW_TIP" value="Once delete, you will not access this report anymore!" />
+    <l id="JSP_CONSOLE_REPORT_CW_CANCEL" value="Cancel" />
+    <l id="JSP_CONSOLE_REPORT_CW_CONFIRM" value="Confirm" />
+    <l id="JSP_CONSOLE_REPORT_BTN_VIEWFULL" value="View Full Report" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_TITLE" value="Title:" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_DATE" value="Created on:" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_DES" value="Description:" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_RELATION" value="Relations:" />
+    <!-- overview.jsp -->
+    <l id="JSP_OVERVIEW_CONSOLE_ACCOUNTINFO_TITLE" value="Account Info" />
+    <l id="JSP_OVERVIEW_CONSOLE_DATABASEINFO_TITLE" value="Database Info" />
+    <l id="JSP_OVERVIEW_CONSOLE_NEWS_TITLE" value="Database Insights News" />
+    <l id="JSP_OVERVIEW_CONSOLE_RECENTACT_TITLE" value="Recent Activities" />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_NORECENT" value="No Recent Activities recorded." />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_WELCOME" value="Welcome " />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_LASTLOGIN" value="Last Login at " />
+
+    
 </root>

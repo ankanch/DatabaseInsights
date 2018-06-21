@@ -4,6 +4,7 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.langID"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="dbi.utils.GlobeVar"%>
 <%@page import="dbi.utils.DBILog"%>
@@ -16,24 +17,25 @@
     UserManager um1 = new UserManager();
     HashMap<String, String> hm = um1.getUserInfo(lang.detectLang(request), session.getId());
     String databaseHtml = "";
+    lang local = lang.detectLang(request);
 %>
 <div class="row">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h5><font size="5">Account Info</font></h5>
+                <h5><font size="5"><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_ACCOUNTINFO_TITLE)%></font></h5>
             </div>
 
             <div class="card-body">
-                <p>Welcome <b><%= hm.get("USERNAME")%></b> !</p>
-                <p>Last Login at <b><%=hm.get("LASTLOGIN")%></b></p>
+                <p><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_TIP_WELCOME)%><b><%= hm.get("USERNAME")%></b> !</p>
+                <p><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_TIP_LASTLOGIN)%><b><%=hm.get("LASTLOGIN")%></b></p>
             </div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card" >
             <div class="card-header">
-                <h5><font size="5">Database Info</font></h5>
+                <h5><font size="5"><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_DATABASEINFO_TITLE)%></font></h5>
             </div>
             <div class="card-body">
                 <%
@@ -59,7 +61,7 @@
     <div class="col-md-5">
         <div class="card" >
             <div class="card-header">
-                <h5><font size="5">Database Insights News</font></h5>
+                <h5><font size="5"><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_NEWS_TITLE)%></font></h5>
             </div>
             <div class="card-body">
                 <div class="list-group">
@@ -94,7 +96,7 @@
     <div class="col-md-7">
         <div class="card">
             <div class="card-header">
-                <h5><font size="5">Recent Activities</font></h5>
+                <h5><font size="5"><%=local.getString(langID.JSP_OVERVIEW_CONSOLE_RECENTACT_TITLE)%></font></h5>
             </div>
             <div class="card-body">
                 <div class="list-group">
@@ -103,7 +105,7 @@
                         DBIResultSet dbirs = dbilog.getRecentLog(session.getId());
                         if (dbirs == null || dbirs.rowCount() == 0) {
                     %>
-                    No Recent Activities recorded.
+                    <%=local.getString(langID.JSP_OVERVIEW_CONSOLE_TIP_NORECENT)%>
                     <%
                     } else {
                         for (ArrayList<Object> row : dbirs.getRows()) {

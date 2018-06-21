@@ -137,6 +137,45 @@ THE SOFTWARE.
     <!-- dbi.db.adaptor  -->
     <!-- dbi.utils  -->
     <!-- web pages   -->
-
+    <!-- autoanalytics.jsp -->
+    <l id="ANA_AUTO_TIP_SELECDBT" value="请选择要执行自动化分析的数据库和表：" />
+    <l id="ANA_AUTO_TIP_BTN_SELDB" value="选择数据库" />
+    <l id="ANA_AUTO_TIP_BTN_SELTB" value="选择表" />
+    <l id="ANA_AUTO_TIP_RET_TITLE" value="自动化分析结果" />
+    <!-- costomizeAnalysis.jsp -->
+    <l id="ANA_CUSTOM_TITLE" value="自定义分析" />
+    <l id="ANA_CUSTOM_TIP_SELECDBT" value="请选择要执行自定义分析的数据库和表：" />
+    <l id="ANA_CUSTOM_TIP_BTN_SELDB" value="选择数据库" />
+    <l id="ANA_CUSTOM_TIP_BTN_SELTB" value="选择表" />
+    <l id="ANA_CUSTOM_TIP_CLP_TITLE1" value="1.选择字段" />
+    <l id="ANA_CUSTOM_TIP_CLP_TITLE2" value="2.查看分析结果" />
+    <l id="ANA_CUSTOM_TIP_C1" value="请选择数据库和表，选后可进行下一步操作" />
+    <l id="ANA_CUSTOM_TIP_C2" value="请完成第一步后，再查看分析结果" />
+    <l id="ANA_CUSTOM_TABLE_C1_INDEX" value="索引" />
+    <l id="ANA_CUSTOM_TABLE_C2_FIELD" value="字段" />
+    <l id="ANA_CUSTOM_TABLE_C3_TYPE" value="数据类型" />
+    <l id="ANA_CUSTOM_TABLE_C4_POOLF" value="聚合函数" />
+    <l id="ANA_CUSTOM_TABLE_C5_COMMENT" value="说明" />
+    <l id="ANA_CUSTOM_BTN_START" value="执行分析" />
+    <!-- reports.jsp -->
+    <l id="JSP_CONSOLE_REPORT_TITLE" value="报告管理" />
+    <l id="JSP_CONSOLE_REPORT_CW_DETAIL_TITLE" value="详细信息" />
+    <l id="JSP_CONSOLE_REPORT_CW_TITLE" value="确认删除?" />
+    <l id="JSP_CONSOLE_REPORT_CW_TIP" value="一旦删除，你将无法获取此报告。需要重新生成。" />
+    <l id="JSP_CONSOLE_REPORT_CW_CANCEL" value="取消" />
+    <l id="JSP_CONSOLE_REPORT_CW_CONFIRM" value="确认" />
+    <l id="JSP_CONSOLE_REPORT_BTN_VIEWFULL" value="查看完整报告" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_TITLE" value="报告标题：" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_DATE" value="创建日期:" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_DES" value="报告描述：" />
+    <l id="JSP_CONSOLE_REPORT_TIP_REPORT_RELATION" value="数据库关系：" />
+    <!-- overview.jsp -->
+    <l id="JSP_OVERVIEW_CONSOLE_ACCOUNTINFO_TITLE" value="账户信息" />
+    <l id="JSP_OVERVIEW_CONSOLE_DATABASEINFO_TITLE" value="数据库信息" />
+    <l id="JSP_OVERVIEW_CONSOLE_NEWS_TITLE" value="Database Insights 新闻" />
+    <l id="JSP_OVERVIEW_CONSOLE_RECENTACT_TITLE" value="帐户最近活动" />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_NORECENT" value="此帐户无最近活动" />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_WELCOME" value="欢迎 " />
+    <l id="JSP_OVERVIEW_CONSOLE_TIP_LASTLOGIN" value="上次登陆时间：" />
     <!-- Debug Message Localization Start Here -->
 </root>

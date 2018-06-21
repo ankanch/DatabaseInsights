@@ -4,6 +4,7 @@
     Author     : kanch
 --%>
 
+<%@page import="dbi.localization.langID"%>
 <%@page import="dbi.localization.lang"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% lang local = lang.detectLang(request);%>
@@ -12,20 +13,19 @@
     <div class="card">
         <div class="progress-line" id="progressbar" style="display:none;"></div>
         <div class="card-body">
-            <button type="button" class="btn" disabled style="color:#4e4e52;">Select your database and table to start</button>
+            <button type="button" class="btn" disabled style="color:#4e4e52;"><%=local.getString(langID.ANA_AUTO_TIP_SELECDBT)%></button>
             <div class="btn-group">
                 <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         onclick="getDatabases()">
-                    Select Database
+                    <%=local.getString(langID.ANA_AUTO_TIP_BTN_SELDB)%>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="buttonMenu1" id="showDatabase">
 
                 </div>
             </div>
             <div class="btn-group">
-                <button class="btn dropdown-toggle" type="button" id="buttonMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        >
-                    Select Table
+                <button class="btn dropdown-toggle" type="button" id="buttonMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <%=local.getString(langID.ANA_AUTO_TIP_BTN_SELTB)%>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="buttonMenu2" id="showTables">
 
@@ -36,7 +36,7 @@
     <div class="row mt-2">
         <div class="col-md-12">
             <div class="card">
-                <h5 class="card-header" id="card_title">Auto Analytics</h5>
+                <h5 class="card-header" id="card_title"><%=local.getString(langID.ANA_AUTO_TIP_RET_TITLE)%></h5>
                 <div class="card-body" id="chartslist">
 
                 </div>
@@ -49,5 +49,5 @@
 <script src="static/oplib/jsinjsp/analytics.chart.instance.js"></script>
 <script src="static/oplib/jsinjsp/analytics.report.js"></script>
 <script>
-    $('#analytics_auto').bootstrapMaterialDesign();
+                            $('#analytics_auto').bootstrapMaterialDesign();
 </script>
