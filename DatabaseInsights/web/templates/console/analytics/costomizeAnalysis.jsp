@@ -31,7 +31,7 @@
 
                 </div>
             </div>
-            <button type="button" class="btn btn-raised btn-success" id="btn_start" onclick="startAnalyze()"  style="display:none"><%=local.getString(langID.ANA_CUSTOM_BTN_START%></button>
+            <button type="button" class="btn btn-raised btn-success" id="btn_start" onclick="startAnalyze()"  style="display:none"><%=local.getString(langID.ANA_CUSTOM_BTN_START)%></button>
         </div>
     </div>
     <hr>
@@ -44,7 +44,7 @@
                     </button>
                 </h5>
             </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     <div class="alert alert-danger" role="alert" id="alarmcard">
                         <%=local.getString(langID.ANA_CUSTOM_TIP_C1)%>

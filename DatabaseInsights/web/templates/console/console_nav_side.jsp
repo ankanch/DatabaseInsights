@@ -24,11 +24,11 @@
                 <i class="material-icons console-sidebar-icon-text">assignment</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_REPORTS) %></span>
             </a>
         </li>
-        <li class="nav-item">
+        <!--li class="nav-item">
             <a class="nav-link console-siderbar" data-url="/templates/console/realtimeanalytics" href="javascript:">
                 <i class="material-icons console-sidebar-icon-text">timeline</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_REALTIME) %></span>
             </a>
-        </li>
+        </li-->
         <li class="nav-item" data-toggle="collapse" data-target="#moreAnalytics" class="collapsed">
             <a class="nav-link console-siderbar" data-url="/templates/console/analytics" href="javascript:">
                 <i class="material-icons console-sidebar-icon-text">assessment</i><span class="console-sidebar-icon-text"><%=local.getString(langID.JSP_NAV_SIDE_ANALYTICS) %></span>

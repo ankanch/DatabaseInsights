@@ -38,7 +38,9 @@
             <div class="card">
                 <h5 class="card-header" id="card_title"><%=local.getString(langID.ANA_AUTO_TIP_RET_TITLE)%></h5>
                 <div class="card-body" id="chartslist">
-
+                    <div class="alert alert-danger" role="alert" id="alert">
+                        <%=local.getString(langID.ANA_AUTO_TIP_RESULT)%>
+                    </div>
                 </div>
             </div>
         </div>

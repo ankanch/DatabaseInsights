@@ -3,43 +3,48 @@
     Created on : 2018-6-16, 12:12:18
     Author     : Miss Zhang
 --%>
+<%@page import="dbi.localization.langID"%>
 <%@page import="dbi.localization.lang"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% lang local = lang.detectLang(request);%>
+<h2><%=local.getString(langID.JSP_CTA_CONSOLE_TITLE)%></h2>
 <div id="crosstableanalysis">
-    <button type="button" class="btn btn-primary" onclick="writenewchart()">新建图表</button>
-    <button type="button" style="float: right" class="btn btn-secondary" onclick="analyze()">生成报告</button>
+    <button type="button" class="btn btn-primary" onclick="writenewchart()"><%=local.getString(langID.JSP_CTA_CONSOLE_BTN_ADDCHART)%></button>
+    <button type="button" style="float: right" class="btn btn-raised btn-success" onclick="analyze()"><%=local.getString(langID.JSP_CTA_CONSOLE_BTN_GENERATEREPORT)%></button>
     <div id="accordion">
+        <div class="progress-line" id="progressbar" style="display:none;"></div>
         <div class="card">
             <div class="card-header" id="headingOne">
                 <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        1.选择字段
+                        <%=local.getString(langID.JSP_CTA_CONSOLE_CL1_TITLE)%>
                     </button>
                 </h5>
             </div>
-
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     <div id="tablediv">
                         <div class="card-body">
-                            <div class="alert alert-primary" role="alert" id="alert">
-                                点击左上角新建图表
+                            <div class="alert alert-danger" role="alert" id="alert">
+                                <%=local.getString(langID.JSP_CTA_CONSOLE_CL1_TIP)%>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header" id="headingTwo">
-                    <h5 class="mb-0">
-                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            2.分析结果
-                        </button>
-                    </h5>
-                </div>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                    <div class="card-body" id="chartslist">
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <%=local.getString(langID.JSP_CTA_CONSOLE_CL2_TITLE)%>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body" id="chartslist">
+                    <div class="alert alert-danger" role="alert" id="alert">
+                        <%=local.getString(langID.JSP_CTA_CONSOLE_CL2_TIP)%>
                     </div>
                 </div>
             </div>

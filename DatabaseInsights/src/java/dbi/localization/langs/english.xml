@@ -145,6 +145,7 @@ THE SOFTWARE.
     <l id="ANA_AUTO_TIP_BTN_SELDB" value="Select Database" />
     <l id="ANA_AUTO_TIP_BTN_SELTB" value="Select Table" />
     <l id="ANA_AUTO_TIP_RET_TITLE" value="Auto Analytics" />
+    <l id="ANA_AUTO_TIP_RESULT" value="Please select database and table to obtain the result." />
     <!-- costomizeAnalysis.jsp -->
     <l id="ANA_CUSTOM_TITLE" value="Costomize Analytics" />
     <l id="ANA_CUSTOM_TIP_SELECDBT" value="Select your database and table to start" />
@@ -180,6 +181,13 @@ THE SOFTWARE.
     <l id="JSP_OVERVIEW_CONSOLE_TIP_NORECENT" value="No Recent Activities recorded." />
     <l id="JSP_OVERVIEW_CONSOLE_TIP_WELCOME" value="Welcome " />
     <l id="JSP_OVERVIEW_CONSOLE_TIP_LASTLOGIN" value="Last Login at " />
-
+    <!-- crossableanalytics.jsp -->
+    <l id="JSP_CTA_CONSOLE_TITLE" value="Cross-Table Analytics" />
+    <l id="JSP_CTA_CONSOLE_BTN_ADDCHART" value="Add Chart" />
+    <l id="JSP_CTA_CONSOLE_BTN_GENERATEREPORT" value="Generate Report" />
+    <l id="JSP_CTA_CONSOLE_CL1_TITLE" value="1. Select Fields" />
+    <l id="JSP_CTA_CONSOLE_CL1_TIP" value="Click button on the top left to add a chart to start." />
+    <l id="JSP_CTA_CONSOLE_CL2_TITLE" value="2. View Results" />
+    <l id="JSP_CTA_CONSOLE_CL2_TIP" value="Come back after you finish step 1." />
     
 </root>
