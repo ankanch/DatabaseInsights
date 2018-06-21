@@ -45,7 +45,7 @@ public class DBIEmailHelper {
     public static boolean  sendEmail(String target, String title, String mcontent) {
         Email from = new Email("databaseinsights@akakanch.com");
         Email to = new Email(target);
-        Content content = new Content("text/plain", mcontent);
+        Content content = new Content("text/html", mcontent);
         Mail mail = new Mail(from, title, to, content);
 
         SendGrid sg = new SendGrid(GlobeVar.CONFIG_EMAIL_SENDGRID_APIKEY);

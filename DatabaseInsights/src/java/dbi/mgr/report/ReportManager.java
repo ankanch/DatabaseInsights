@@ -56,7 +56,7 @@ public class ReportManager {
      */
     public boolean addReport(int uid, Report rep) {
         Debug.log("uid:", Integer.toString(uid), ",title:", rep.title, ",descrption:", rep.des);
-        dbilog.log(String.valueOf(uid),DBILog.TYPE_INFO,"create a new report with title " + rep.title);
+        dbilog.log(String.valueOf(uid), DBILog.TYPE_INFO, "create a new report with title " + rep.title);
         try {
             if (dbhelper.Connect()) {
                 int ret = dbhelper.executeOracleFunction("F_INSERT_REPORT(?,?,?,?,?)",
@@ -129,6 +129,25 @@ public class ReportManager {
             }
         }
         return replist;
+    }
+
+    public String generateReportEmail(int repid) {
+        Report rep = getReport(repid);
+        String email_content = "<p>Dear User,</p>"
+                + "<p>Thanks for using Database Insights ( <a href=\"https://github.com/ankanch/DatabaseInsights\">https://github.com/ankanch/DatabaseInsights</a> ).</p>"
+                + "<p>Here is the report you request.</p>"
+                + "<p> </p>"
+                + "<p><strong>Report Title:</strong> @TITLE</p>"
+                + "<p><strong>Description:</strong> @DES</p>"
+                + "<p><strong>Generate Date:</strong> @DATE</p>"
+                + "<p><strong>Report Link:</strong> http://localhost/report.viewfull.jsp?repid=@LINK</p>"
+                + "<p> </p>"
+                + "<blockquote><span style=\"color: #0000ff;\">Database Insights © 2018 .</span><span style=\"color: #0000ff;\">You recive this email because you request the report.</span></blockquote>";
+        email_content = email_content.replace("@TITLE", rep.title)
+                .replace("@DES", rep.des)
+                .replace("@DATE", rep.generatedate)
+                .replace("@LINK", String.valueOf(rep.id));
+        return email_content;
     }
 
     public static void main(String[] argv) {

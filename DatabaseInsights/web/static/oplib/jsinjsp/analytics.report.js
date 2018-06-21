@@ -26,6 +26,31 @@ function downloadreport() {
     window.print();
 }
 
+//用于使用邮件发送报告
+function emailreport(send){
+    if(send){
+        $("#send").attr("disabled", "disabled");
+        var emailaddr = $("#useremail").val(); 
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if( re.test(String(emailaddr).toLowerCase()) == false){
+            showMsg("Please enter a valid email address");
+            $("#send").removeAttr("disabled");
+            return;
+        }
+        // send to sevlet
+        SubmitFormKVF("sendReport", {repid:findGetParameter("repid"),email:emailaddr}, function error(data){
+            $("#send").removeAttr("disabled");
+            showMsg(data.message);
+        }, function success(data){
+            $("#send").removeAttr("disabled");
+            showMsg(data.message);
+            $("#emailModal").modal("hide")
+        });
+    }else{
+        $("#emailModal").modal()
+    }
+}
+
 // 用于保存报告到数据库
 function savereport() {
     // 所有报告信息都存放在 chartslist 中
