@@ -16,8 +16,10 @@ this project belongs a part of [my coursework](https://github.com/ankanch/cuit-C
 
 # How To Use
 
-TBW
+*Currently only support Oracle Database 12c as the host database of Database Insights.*
 
+* Step 1. Setting up the host database.(DatabaseInsights\docs\database-config.pdf).
+* Step 2. ...
 # Examples
 
 
