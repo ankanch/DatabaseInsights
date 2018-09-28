@@ -3,8 +3,14 @@ A project to visualize Database.
 
 this project belongs a part of [my coursework](https://github.com/ankanch/cuit-CS-project-practice).
 
-*We may use some picture subject to copyright , if so ,please contact us ASAP (kanch@ieee.org).*
+*We may use pictures subject to copyright , contact us ASAP (kanch@ieee.org).*
 
+#### Development Environment
+	NetBeans IDE 8.2
+	JDK 1.8.0_161 64 bit
+	Apache Tomcat 8.0
+	Oracle Database 12c
+	Python 3.6 (For Localization Support)
 
 # Third Party Libaries
 
@@ -18,8 +24,13 @@ this project belongs a part of [my coursework](https://github.com/ankanch/cuit-C
 
 *Currently only support Oracle Database 12c as the host database of Database Insights.*
 
-* Step 1. Setting up the host database.(DatabaseInsights\docs\database-config.pdf).
-* Step 2. ...
+* Step 1. Setting up the host database.([DatabaseInsights\docs\database-config.pdf](https://github.com/ankanch/DatabaseInsights/blob/master/docs/database-config.pdf)).
+* Step 2. Deploy the website to Apache Tomcat.
+* Step 3. Open the website just deployed, create a account, log into console.
+* Step 4. Add database in Credentials section (Only MySQL and Oracle Database Supported). 
+* Step 5. Start analyzing.
+
+
 # Examples
 
 
